@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            prefWidth="1000" prefHeight="700">
+
+    <!-- Sidebar -->
+    <left>
+        <VBox prefWidth="220" spacing="0"
+              style="-fx-background-color: #D3D3D3;">
+            <Label text="Dashboard"
+                   style="-fx-text-fill: #1a5276; -fx-cursor: hand;"
+                   wrapText="true">
+                <font><Font size="22"/></font>
+                <VBox.margin>
+                    <javafx.geometry.Insets top="20" right="15" bottom="10" left="15"/>
+                </VBox.margin>
+            </Label>
+            <Label text="Inventory Management"
+                   wrapText="true">
+                <font><Font size="22"/></font>
+                <VBox.margin>
+                    <javafx.geometry.Insets top="10" right="15" bottom="10" left="15"/>
+                </VBox.margin>
+            </Label>
+            <Label text="Supplier Management"
+                   wrapText="true">
+                <font><Font size="22"/></font>
+                <VBox.margin>
+                    <javafx.geometry.Insets top="10" right="15" bottom="10" left="15"/>
+                </VBox.margin>
+            </Label>
+            <Label text="Customer Management"
+                   wrapText="true">
+                <font><Font size="22"/></font>
+                <VBox.margin>
+                    <javafx.geometry.Insets top="10" right="15" bottom="10" left="15"/>
+                </VBox.margin>
+            </Label>
+        </VBox>
+    </left>
+
+    <!-- Main content area -->
+    <center>
+        <VBox style="-fx-background-color: white;">
+            <Label text="Business Management Application"
+                   style="-fx-font-size: 32px;">
+                <VBox.margin>
+                    <javafx.geometry.Insets top="20" left="20"/>
+                </VBox.margin>
+            </Label>
+        </VBox>
+    </center>
+
+</BorderPane>
