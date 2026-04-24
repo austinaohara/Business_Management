@@ -12,7 +12,7 @@ public class Main extends Application {
         // Initializes derby database tables
         DatabaseManager.initializeDatabase();
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/farmingdale/dashboard.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/farmingdale/main_frame.fxml"));
         Scene scene = new Scene(loader.load());
         //use same styling for each frame
         scene.getStylesheets().add(getClass().getResource("/styling/main.css").toExternalForm());

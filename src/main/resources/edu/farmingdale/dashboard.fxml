@@ -4,162 +4,95 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            prefWidth="1200" prefHeight="750">
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      styleClass="main-content">
 
-    <!-- Left Sidebar -->
-    <left>
-        <VBox prefWidth="240" styleClass="sidebar">
+    <Label text="Dashboard" styleClass="page-title">
+        <VBox.margin><Insets bottom="20"/></VBox.margin>
+    </Label>
 
-            <Label text="Business Management Application"
-                   wrapText="true" styleClass="sidebar-title">
-                <VBox.margin>
-                    <Insets top="20" right="15" bottom="25" left="15"/>
-                </VBox.margin>
-            </Label>
+    <!-- Stat Cards Row -->
+    <HBox spacing="20">
+        <VBox.margin><Insets bottom="25"/></VBox.margin>
 
-            <!-- Dashboard (open on startup) Tab -->
-            <HBox alignment="CENTER_LEFT" spacing="12" styleClass="nav-item-active">
-                <VBox.margin><Insets top="0" right="12" bottom="0" left="12"/></VBox.margin>
-                <ImageView fitWidth="20" fitHeight="20" preserveRatio="true">
-                    <image><Image url="@/images/menu.png"/></image>
+        <VBox HBox.hgrow="ALWAYS" styleClass="stat-card">
+            <HBox alignment="CENTER_LEFT">
+                <ImageView fitWidth="28" fitHeight="28" preserveRatio="true">
+                    <image><Image url="@/images/dollar.png"/></image>
                 </ImageView>
-                <Label text="Dashboard" styleClass="nav-label-bold"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <Label text="&#8593; +12.5%" styleClass="trend-up"/>
             </HBox>
+            <Label styleClass="stat-value"><text>$45,231</text></Label>
+            <Label text="Total Revenue" styleClass="stat-subtitle"/>
+        </VBox>
 
-            <!-- Inventory Management Tab -->
-            <HBox alignment="CENTER_LEFT" spacing="12" styleClass="nav-item">
-                <VBox.margin><Insets top="8" right="12" bottom="0" left="12"/></VBox.margin>
-                <ImageView fitWidth="20" fitHeight="20" preserveRatio="true">
+        <VBox HBox.hgrow="ALWAYS" styleClass="stat-card">
+            <HBox alignment="CENTER_LEFT">
+                <ImageView fitWidth="28" fitHeight="28" preserveRatio="true">
+                    <image><Image url="@/images/shopping-cart.png"/></image>
+                </ImageView>
+                <Region HBox.hgrow="ALWAYS"/>
+                <Label text="&#8593; +8.2%" styleClass="trend-up"/>
+            </HBox>
+            <Label text="1,234" styleClass="stat-value"/>
+            <Label text="Total Orders" styleClass="stat-subtitle"/>
+        </VBox>
+
+        <VBox HBox.hgrow="ALWAYS" styleClass="stat-card">
+            <HBox alignment="CENTER_LEFT">
+                <ImageView fitWidth="28" fitHeight="28" preserveRatio="true">
                     <image><Image url="@/images/box.png"/></image>
                 </ImageView>
-                <Label text="Inventory Management" wrapText="true"
-                       styleClass="nav-label" prefWidth="160"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <Label text="&#8595; -2.4%" styleClass="trend-down"/>
             </HBox>
+            <Label text="456" styleClass="stat-value"/>
+            <Label text="Active Products" styleClass="stat-subtitle"/>
+        </VBox>
 
-            <!-- Supplier Management Tab -->
-            <HBox alignment="CENTER_LEFT" spacing="12" styleClass="nav-item">
-                <VBox.margin><Insets top="8" right="12" bottom="0" left="12"/></VBox.margin>
-                <ImageView fitWidth="20" fitHeight="20" preserveRatio="true">
-                    <image><Image url="@/images/delivery.png"/></image>
-                </ImageView>
-                <Label text="Supplier Management" wrapText="true"
-                       styleClass="nav-label" prefWidth="160"/>
-            </HBox>
-
-            <!-- Customer Management Tab -->
-            <HBox alignment="CENTER_LEFT" spacing="12" styleClass="nav-item">
-                <VBox.margin><Insets top="8" right="12" bottom="0" left="12"/></VBox.margin>
-                <ImageView fitWidth="20" fitHeight="20" preserveRatio="true">
+        <VBox HBox.hgrow="ALWAYS" styleClass="stat-card">
+            <HBox alignment="CENTER_LEFT">
+                <ImageView fitWidth="28" fitHeight="28" preserveRatio="true">
                     <image><Image url="@/images/user.png"/></image>
                 </ImageView>
-                <Label text="Customer Management" wrapText="true"
-                       styleClass="nav-label" prefWidth="160"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <Label text="&#8593; +15.3%" styleClass="trend-up"/>
             </HBox>
-
+            <Label text="892" styleClass="stat-value"/>
+            <Label text="Total Customers" styleClass="stat-subtitle"/>
         </VBox>
-    </left>
 
-    <!-- Main Content Area -->
-    <center>
-        <VBox styleClass="main-content">
+    </HBox>
 
-            <Label text="Dashboard" styleClass="page-title">
-                <VBox.margin><Insets bottom="20"/></VBox.margin>
-            </Label>
+    <!-- Recent Orders Section -->
+    <VBox VBox.vgrow="ALWAYS" styleClass="section-card">
 
-            <!-- Stat Cards Row -->
-            <HBox spacing="20">
-                <VBox.margin><Insets bottom="25"/></VBox.margin>
+        <Label text="Recent Orders" styleClass="section-title">
+            <VBox.margin><Insets bottom="15"/></VBox.margin>
+        </Label>
 
-                <!-- Total Revenue -->
-                <VBox HBox.hgrow="ALWAYS" styleClass="stat-card">
-                    <HBox alignment="CENTER_LEFT">
-                        <ImageView fitWidth="28" fitHeight="28" preserveRatio="true">
-                            <image><Image url="@/images/dollar.png"/></image>
-                        </ImageView>
-                        <Region HBox.hgrow="ALWAYS"/>
-                        <Label text="&#8593; +12.5%" styleClass="trend-up"/>
-                    </HBox>
-                    <Label styleClass="stat-value"><text>$45,231</text></Label>
-                    <Label text="Total Revenue" styleClass="stat-subtitle"/>
-                </VBox>
+        <HBox styleClass="table-header-row">
+            <Label text="Order ID"   styleClass="table-header-cell" prefWidth="180"/>
+            <Label text="Customer"   styleClass="table-header-cell" prefWidth="220"/>
+            <Label text="Product"    styleClass="table-header-cell" prefWidth="220"/>
+            <Label text="Amount"     styleClass="table-header-cell" prefWidth="160"/>
+            <Label text="Status"     styleClass="table-header-cell" prefWidth="160"/>
+        </HBox>
 
-                <!-- Total Orders -->
-                <VBox HBox.hgrow="ALWAYS" styleClass="stat-card">
-                    <HBox alignment="CENTER_LEFT">
-                        <ImageView fitWidth="28" fitHeight="28" preserveRatio="true">
-                            <image><Image url="@/images/shopping-cart.png"/></image>
-                        </ImageView>
-                        <Region HBox.hgrow="ALWAYS"/>
-                        <Label text="&#8593; +8.2%" styleClass="trend-up"/>
-                    </HBox>
-                    <Label text="1,234" styleClass="stat-value"/>
-                    <Label text="Total Orders" styleClass="stat-subtitle"/>
-                </VBox>
+        <HBox alignment="CENTER_LEFT" styleClass="table-row">
+            <Label text="ORD-001"    styleClass="table-cell" prefWidth="180"/>
+            <Label text="Jayden Mo"  styleClass="table-cell" prefWidth="220"/>
+            <Label text="Flying Car" styleClass="table-cell" prefWidth="220"/>
+            <Label styleClass="table-cell" prefWidth="160"><text>$1,299</text></Label>
+            <Label text="Completed"  styleClass="status-completed"/>
+        </HBox>
 
-                <!-- Active Products -->
-                <VBox HBox.hgrow="ALWAYS" styleClass="stat-card">
-                    <HBox alignment="CENTER_LEFT">
-                        <ImageView fitWidth="28" fitHeight="28" preserveRatio="true">
-                            <image><Image url="@/images/box.png"/></image>
-                        </ImageView>
-                        <Region HBox.hgrow="ALWAYS"/>
-                        <Label text="&#8595; -2.4%" styleClass="trend-down"/>
-                    </HBox>
-                    <Label text="456" styleClass="stat-value"/>
-                    <Label text="Active Products" styleClass="stat-subtitle"/>
-                </VBox>
+    </VBox>
 
-                <!-- Total Customers -->
-                <VBox HBox.hgrow="ALWAYS" styleClass="stat-card">
-                    <HBox alignment="CENTER_LEFT">
-                        <ImageView fitWidth="28" fitHeight="28" preserveRatio="true">
-                            <image><Image url="@/images/user.png"/></image>
-                        </ImageView>
-                        <Region HBox.hgrow="ALWAYS"/>
-                        <Label text="&#8593; +15.3%" styleClass="trend-up"/>
-                    </HBox>
-                    <Label text="892" styleClass="stat-value"/>
-                    <Label text="Total Customers" styleClass="stat-subtitle"/>
-                </VBox>
-
-            </HBox>
-
-            <!-- Recent Orders Section -->
-            <VBox VBox.vgrow="ALWAYS" styleClass="section-card">
-
-                <Label text="Recent Orders" styleClass="section-title">
-                    <VBox.margin><Insets bottom="15"/></VBox.margin>
-                </Label>
-
-                <!-- Header Row -->
-                <HBox styleClass="table-header-row">
-                    <Label text="Order ID"  styleClass="table-header-cell" prefWidth="180"/>
-                    <Label text="Customer"  styleClass="table-header-cell" prefWidth="220"/>
-                    <Label text="Product"   styleClass="table-header-cell" prefWidth="220"/>
-                    <Label text="Amount"    styleClass="table-header-cell" prefWidth="160"/>
-                    <Label text="Status"    styleClass="table-header-cell" prefWidth="160"/>
-                </HBox>
-
-                <!-- Template Row — cloned programmatically when new data arrives -->
-                <HBox fx:id="templateRow" alignment="CENTER_LEFT" styleClass="table-row">
-                    <Label text="ORD-001"   styleClass="table-cell" prefWidth="180"/>
-                    <Label text="Jayden Mo" styleClass="table-cell" prefWidth="220"/>
-                    <Label text="Flying Car" styleClass="table-cell" prefWidth="220"/>
-                    <Label styleClass="table-cell" prefWidth="160"><text>$1,299</text></Label>
-                    <Label text="Completed" styleClass="status-completed"/>
-                </HBox>
-
-            </VBox>
-
-        </VBox>
-    </center>
-
-</BorderPane>
+</VBox>

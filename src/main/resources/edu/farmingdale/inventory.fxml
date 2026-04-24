@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="edu.farmingdale.InventoryController"
+      styleClass="main-content">
+
+    <!-- Title Row -->
+    <HBox alignment="CENTER_LEFT">
+        <VBox.margin><Insets bottom="20"/></VBox.margin>
+        <Label text="Inventory Management" styleClass="page-title"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Button text="+ Add Product" styleClass="btn-primary" onAction="#onAddProduct"/>
+    </HBox>
+
+    <!-- Stat Cards Row -->
+    <HBox spacing="20">
+        <VBox.margin><Insets bottom="25"/></VBox.margin>
+
+        <VBox HBox.hgrow="ALWAYS" styleClass="stat-card">
+            <HBox alignment="CENTER_LEFT">
+                <ImageView fitWidth="28" fitHeight="28" preserveRatio="true">
+                    <image><Image url="@/images/box.png"/></image>
+                </ImageView>
+            </HBox>
+            <Label text="8" styleClass="stat-value"/>
+            <Label text="Total Products" styleClass="stat-subtitle"/>
+        </VBox>
+
+        <VBox HBox.hgrow="ALWAYS" styleClass="stat-card">
+            <HBox alignment="CENTER_LEFT">
+                <ImageView fitWidth="28" fitHeight="28" preserveRatio="true">
+                    <image><Image url="@/images/dollar.png"/></image>
+                </ImageView>
+            </HBox>
+            <Label styleClass="stat-value"><text>$67,450</text></Label>
+            <Label text="Total Value" styleClass="stat-subtitle"/>
+        </VBox>
+
+        <VBox HBox.hgrow="ALWAYS" styleClass="stat-card">
+            <HBox alignment="CENTER_LEFT">
+                <ImageView fitWidth="28" fitHeight="28" preserveRatio="true">
+                    <image><Image url="@/images/box.png"/></image>
+                </ImageView>
+            </HBox>
+            <Label text="2" styleClass="stat-value-warning"/>
+            <Label text="Low Stock Items" styleClass="stat-subtitle"/>
+        </VBox>
+
+    </HBox>
+
+    <!-- Add New Product Form (hidden by default) -->
+    <VBox fx:id="addProductForm" styleClass="section-card" visible="false" managed="false">
+        <VBox.margin><Insets bottom="20"/></VBox.margin>
+        <Label text="Add New Product" styleClass="section-title">
+            <VBox.margin><Insets bottom="15"/></VBox.margin>
+        </Label>
+        <HBox spacing="20">
+            <VBox.margin><Insets bottom="15"/></VBox.margin>
+            <TextField promptText="Product Name"   maxWidth="Infinity" HBox.hgrow="ALWAYS" styleClass="form-field"/>
+            <TextField promptText="Category"       maxWidth="Infinity" HBox.hgrow="ALWAYS" styleClass="form-field"/>
+        </HBox>
+        <HBox spacing="20">
+            <VBox.margin><Insets bottom="15"/></VBox.margin>
+            <TextField promptText="Stock Quantity" maxWidth="Infinity" HBox.hgrow="ALWAYS" styleClass="form-field"/>
+            <TextField promptText="Minimum Stock"  maxWidth="Infinity" HBox.hgrow="ALWAYS" styleClass="form-field"/>
+        </HBox>
+        <HBox spacing="20">
+            <VBox.margin><Insets bottom="20"/></VBox.margin>
+            <TextField promptText="Price"    maxWidth="Infinity" HBox.hgrow="ALWAYS" styleClass="form-field"/>
+            <TextField promptText="Supplier" maxWidth="Infinity" HBox.hgrow="ALWAYS" styleClass="form-field"/>
+        </HBox>
+        <HBox spacing="12">
+            <Button text="Save Product" styleClass="btn-primary"/>
+            <Button text="Cancel" styleClass="btn-secondary" onAction="#onCancelProduct"/>
+        </HBox>
+    </VBox>
+
+    <!-- Search Bar -->
+    <HBox styleClass="search-bar">
+        <VBox.margin><Insets bottom="15"/></VBox.margin>
+        <TextField promptText="Search products by name, category, or ID..."
+                   maxWidth="Infinity" HBox.hgrow="ALWAYS" styleClass="search-field"/>
+    </HBox>
+
+    <!-- Product Table -->
+    <VBox VBox.vgrow="ALWAYS" styleClass="section-card">
+        <HBox styleClass="table-header-row">
+            <Label text="Product ID" styleClass="table-header-cell" prefWidth="110"/>
+            <Label text="Name"       styleClass="table-header-cell" prefWidth="200"/>
+            <Label text="Category"   styleClass="table-header-cell" prefWidth="130"/>
+            <Label text="Stock"      styleClass="table-header-cell" prefWidth="100"/>
+            <Label text="Price"      styleClass="table-header-cell" prefWidth="100"/>
+            <Label text="Supplier"   styleClass="table-header-cell" prefWidth="150"/>
+            <Label text="Actions"    styleClass="table-header-cell" prefWidth="80"/>
+        </HBox>
+
+        <!-- Template row // Cloned by InventoryController for each product -->
+        <HBox fx:id="templateRow" styleClass="table-row" visible="false" managed="false">
+            <Label text="PRD-001"        styleClass="table-cell"     prefWidth="110"/>
+            <Label text="Sample Product" styleClass="table-cell"     prefWidth="200"/>
+            <Label text="Category"       styleClass="category-badge" prefWidth="130"/>
+            <Label text="0"              styleClass="table-cell"     prefWidth="100"/>
+            <Label text="0"              styleClass="table-cell"     prefWidth="100"/>
+            <Label text="Supplier"       styleClass="table-cell"     prefWidth="150"/>
+            <Label text="Actions"        styleClass="table-cell"     prefWidth="80"/>
+        </HBox>
+
+        <ScrollPane VBox.vgrow="ALWAYS" fitToWidth="true" styleClass="table-scroll">
+            <VBox fx:id="productRows"/>
+        </ScrollPane>
+    </VBox>
+
+</VBox>

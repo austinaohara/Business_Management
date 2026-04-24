@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="edu.farmingdale.MainController"
+            prefWidth="1200" prefHeight="750">
+
+    <!-- Left Sidebar -->
+    <left>
+        <VBox prefWidth="240" styleClass="sidebar">
+
+            <Label text="Business Management Application"
+                   wrapText="true" styleClass="sidebar-title">
+                <VBox.margin>
+                    <Insets top="20" right="15" bottom="25" left="15"/>
+                </VBox.margin>
+            </Label>
+
+            <HBox fx:id="navDashboard" alignment="CENTER_LEFT" spacing="12" styleClass="nav-item-active">
+                <VBox.margin><Insets top="0" right="12" bottom="0" left="12"/></VBox.margin>
+                <ImageView fitWidth="20" fitHeight="20" preserveRatio="true">
+                    <image><Image url="@/images/menu.png"/></image>
+                </ImageView>
+                <Label text="Dashboard" styleClass="nav-label"/>
+            </HBox>
+
+            <HBox fx:id="navInventory" alignment="CENTER_LEFT" spacing="12" styleClass="nav-item">
+                <VBox.margin><Insets top="8" right="12" bottom="0" left="12"/></VBox.margin>
+                <ImageView fitWidth="20" fitHeight="20" preserveRatio="true">
+                    <image><Image url="@/images/box.png"/></image>
+                </ImageView>
+                <Label text="Inventory Management" wrapText="true"
+                       styleClass="nav-label" prefWidth="160"/>
+            </HBox>
+
+            <HBox alignment="CENTER_LEFT" spacing="12" styleClass="nav-item">
+                <VBox.margin><Insets top="8" right="12" bottom="0" left="12"/></VBox.margin>
+                <ImageView fitWidth="20" fitHeight="20" preserveRatio="true">
+                    <image><Image url="@/images/delivery.png"/></image>
+                </ImageView>
+                <Label text="Supplier Management" wrapText="true"
+                       styleClass="nav-label" prefWidth="160"/>
+            </HBox>
+
+            <HBox alignment="CENTER_LEFT" spacing="12" styleClass="nav-item">
+                <VBox.margin><Insets top="8" right="12" bottom="0" left="12"/></VBox.margin>
+                <ImageView fitWidth="20" fitHeight="20" preserveRatio="true">
+                    <image><Image url="@/images/user.png"/></image>
+                </ImageView>
+                <Label text="Customer Management" wrapText="true"
+                       styleClass="nav-label" prefWidth="160"/>
+            </HBox>
+
+        </VBox>
+    </left>
+
+    <!-- Content area // Gets swapped when switching screens-->
+    <center>
+        <StackPane fx:id="contentArea"/>
+    </center>
+
+</BorderPane>
