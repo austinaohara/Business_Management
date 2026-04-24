@@ -9,6 +9,9 @@ public class Main extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
+        // Initializes derby database tables
+        DatabaseManager.initializeDatabase();
+
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/farmingdale/main_frame.fxml"));
         Scene scene = new Scene(loader.load());
         //use same styling for each frame
