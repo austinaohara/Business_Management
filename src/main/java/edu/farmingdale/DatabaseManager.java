@@ -25,6 +25,8 @@ public class DatabaseManager {
                     "unit_cost DOUBLE, " +
                     "sell_price DOUBLE, " +
                     "quantity_on_hand INT, " +
+                    "minimum_stock INT, " +
+                    "supplier VARCHAR(255), " +
                     "storage_location VARCHAR(100))");
 
             // Suppliers table
