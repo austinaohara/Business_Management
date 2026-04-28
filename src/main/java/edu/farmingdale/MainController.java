@@ -14,6 +14,7 @@ public class MainController {
     @FXML private StackPane contentArea;
     @FXML private HBox navDashboard;
     @FXML private HBox navInventory;
+    @FXML private HBox navSupplier;
 
     private final Map<String, Node> pageCache = new HashMap<>();
 
@@ -22,6 +23,7 @@ public class MainController {
         loadPage("/edu/farmingdale/dashboard.fxml");
         navDashboard.setOnMouseClicked(e -> loadPage("/edu/farmingdale/dashboard.fxml"));
         navInventory.setOnMouseClicked(e -> loadPage("/edu/farmingdale/inventory.fxml"));
+        navSupplier.setOnMouseClicked(e -> loadPage("/edu/farmingdale/supplier.fxml"));
     }
 
     private void loadPage(String path) {
