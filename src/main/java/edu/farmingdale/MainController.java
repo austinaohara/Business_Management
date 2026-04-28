@@ -20,13 +20,22 @@ public class MainController {
 
     @FXML
     public void initialize() {
-        loadPage("/edu/farmingdale/dashboard.fxml");
-        navDashboard.setOnMouseClicked(e -> loadPage("/edu/farmingdale/dashboard.fxml"));
-        navInventory.setOnMouseClicked(e -> loadPage("/edu/farmingdale/inventory.fxml"));
-        navSupplier.setOnMouseClicked(e -> loadPage("/edu/farmingdale/supplier.fxml"));
+        loadPage(navDashboard, "/edu/farmingdale/dashboard.fxml");
+        navDashboard.setOnMouseClicked(e -> loadPage(navDashboard, "/edu/farmingdale/dashboard.fxml"));
+        navInventory.setOnMouseClicked(e -> loadPage(navInventory, "/edu/farmingdale/inventory.fxml"));
+        navSupplier.setOnMouseClicked(e -> loadPage(navSupplier, "/edu/farmingdale/supplier.fxml"));
     }
 
-    private void loadPage(String path) {
+    private void loadPage(HBox selectedNav, String path) {
+        for (HBox nav : new HBox[]{navDashboard, navInventory, navSupplier}) {
+            nav.getStyleClass().remove("nav-item-active");
+            if (!nav.getStyleClass().contains("nav-item")) {
+                nav.getStyleClass().add("nav-item");
+            }
+        }
+        selectedNav.getStyleClass().remove("nav-item");
+        selectedNav.getStyleClass().add("nav-item-active");
+
         //cache pages instead of having to load everything on app startup -- lazy load
         pageCache.computeIfAbsent(path, p -> {
             try {
