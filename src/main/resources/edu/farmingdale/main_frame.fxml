@@ -28,7 +28,7 @@
             <HBox fx:id="navDashboard" alignment="CENTER_LEFT" spacing="12" styleClass="nav-item-active">
                 <VBox.margin><Insets top="0" right="12" bottom="0" left="12"/></VBox.margin>
                 <ImageView fitWidth="20" fitHeight="20" preserveRatio="true">
-                    <image><Image url="@/images/menu.png"/></image>
+                    <image><Image url="@/images/dashboard.png"/></image>
                 </ImageView>
                 <Label text="Dashboard" styleClass="nav-label"/>
             </HBox>
@@ -42,7 +42,7 @@
                        styleClass="nav-label" prefWidth="160"/>
             </HBox>
 
-            <HBox alignment="CENTER_LEFT" spacing="12" styleClass="nav-item">
+            <HBox fx:id="navSupplier" alignment="CENTER_LEFT" spacing="12" styleClass="nav-item">
                 <VBox.margin><Insets top="8" right="12" bottom="0" left="12"/></VBox.margin>
                 <ImageView fitWidth="20" fitHeight="20" preserveRatio="true">
                     <image><Image url="@/images/delivery.png"/></image>

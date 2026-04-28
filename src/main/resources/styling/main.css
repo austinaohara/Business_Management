@@ -1,4 +1,4 @@
-/* ===== SIDEBAR ===== */
+/* Sidebar */
 .sidebar {
     -fx-background-color: #E8E8E8;
 }
@@ -29,7 +29,7 @@
     -fx-font-weight: bold;
 }
 
-/* ===== MAIN CONTENT ===== */
+/* Main Content */
 .main-content {
     -fx-background-color: #F5F5F5;
     -fx-padding: 30;
@@ -40,7 +40,7 @@
     -fx-font-weight: bold;
 }
 
-/* ===== STAT CARDS ===== */
+/* Stat Cards */
 .stat-card {
     -fx-background-color: white;
     -fx-background-radius: 10;
@@ -71,7 +71,7 @@
     -fx-font-size: 13px;
 }
 
-/* ===== SECTION CARDS ===== */
+/* Section Cards */
 .section-card {
     -fx-background-color: white;
     -fx-background-radius: 10;
@@ -86,7 +86,7 @@
     -fx-font-weight: bold;
 }
 
-/* ===== TABLE ===== */
+/* Table */
 .table-header-row {
     -fx-padding: 10 0 10 0;
     -fx-border-color: transparent transparent #E0E0E0 transparent;
@@ -108,7 +108,7 @@
     -fx-font-size: 13px;
 }
 
-/* ===== STATUS BADGES ===== */
+/* Status Badges */
 .status-completed {
     -fx-background-color: #DCFCE7;
     -fx-text-fill: #16A34A;
@@ -133,7 +133,7 @@
     -fx-font-size: 12px;
 }
 
-/* ===== BUTTONS ===== */
+/* Buttons */
 .btn-primary {
     -fx-background-color: #111827;
     -fx-text-fill: white;
@@ -163,7 +163,7 @@
     -fx-background-color: #F9FAFB;
 }
 
-/* ===== FORM FIELDS ===== */
+/* Form Fields */
 .form-field {
     -fx-background-color: white;
     -fx-background-radius: 8;
@@ -178,7 +178,7 @@
     -fx-border-color: #6B7280;
 }
 
-/* ===== SEARCH BAR ===== */
+/* Search Bar */
 .search-bar {
     -fx-background-color: white;
     -fx-background-radius: 8;
@@ -196,7 +196,7 @@
     -fx-padding: 6 0 6 0;
 }
 
-/* ===== SCROLL PANE (table rows area) ===== */
+/* Scroll Pane (table rows area) */
 .table-scroll {
     -fx-background-color: transparent;
     -fx-border-color: transparent;
@@ -208,7 +208,7 @@
     -fx-background-color: transparent;
 }
 
-/* ===== INVENTORY-SPECIFIC ===== */
+/* Inventory */
 .stat-value-warning {
     -fx-font-size: 28px;
     -fx-font-weight: bold;
@@ -251,4 +251,36 @@
 
 .action-btn-delete:hover {
     -fx-background-color: #FECACA;
+}
+
+/* Supplier */
+.stat-date {
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+}
+
+.status-in-transit {
+    -fx-background-color: #DBEAFE;
+    -fx-text-fill: #1D4ED8;
+    -fx-background-radius: 20;
+    -fx-padding: 4 12 4 12;
+    -fx-font-size: 12px;
+}
+
+.form-textarea {
+    -fx-background-color: white;
+    -fx-background-radius: 8;
+    -fx-border-color: #D1D5DB;
+    -fx-border-radius: 8;
+    -fx-border-width: 1;
+    -fx-font-size: 13px;
+}
+
+.form-textarea:focused {
+    -fx-border-color: #6B7280;
+}
+
+.cell-secondary {
+    -fx-text-fill: #888888;
+    -fx-font-size: 11px;
 }

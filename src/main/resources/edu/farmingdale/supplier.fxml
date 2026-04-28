@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="edu.farmingdale.SupplierController"
+      styleClass="main-content">
+
+    <!-- Title Row -->
+    <HBox alignment="CENTER_LEFT">
+        <VBox.margin><Insets bottom="20"/></VBox.margin>
+        <Label text="Supplier Management" styleClass="page-title"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Button text="+ New Order Request" styleClass="btn-primary" onAction="#onNewOrderRequest"/>
+    </HBox>
+
+    <!-- Stat Cards Row -->
+    <HBox spacing="20">
+        <VBox.margin><Insets bottom="25"/></VBox.margin>
+
+        <VBox HBox.hgrow="ALWAYS" styleClass="stat-card">
+            <HBox alignment="CENTER_LEFT" spacing="8">
+                <ImageView fitWidth="20" fitHeight="20" preserveRatio="true">
+                    <image><Image url="@/images/delivery.png"/></image>
+                </ImageView>
+                <Label text="Active Suppliers" styleClass="stat-subtitle"/>
+            </HBox>
+            <Label text="1" styleClass="stat-value"/>
+        </VBox>
+
+        <VBox HBox.hgrow="ALWAYS" styleClass="stat-card">
+            <HBox alignment="CENTER_LEFT" spacing="8">
+                <ImageView fitWidth="20" fitHeight="20" preserveRatio="true">
+                    <image><Image url="@/images/shopping-cart.png"/></image>
+                </ImageView>
+                <Label text="Active Orders" styleClass="stat-subtitle"/>
+            </HBox>
+            <Label text="3" styleClass="stat-value"/>
+        </VBox>
+
+        <VBox HBox.hgrow="ALWAYS" styleClass="stat-card">
+            <HBox alignment="CENTER_LEFT" spacing="8">
+                <ImageView fitWidth="20" fitHeight="20" preserveRatio="true">
+                    <image><Image url="@/images/calendar.png"/></image>
+                </ImageView>
+                <Label text="Next Delivery" styleClass="stat-subtitle"/>
+            </HBox>
+            <Label text="Apr 30, 2026" styleClass="stat-date"/>
+        </VBox>
+
+        <VBox HBox.hgrow="ALWAYS" styleClass="stat-card">
+            <HBox alignment="CENTER_LEFT" spacing="8">
+                <ImageView fitWidth="20" fitHeight="20" preserveRatio="true">
+                    <image><Image url="@/images/clock.png"/></image>
+                </ImageView>
+                <Label text="In Transit" styleClass="stat-subtitle"/>
+            </HBox>
+            <Label text="1" styleClass="stat-value-warning"/>
+        </VBox>
+
+    </HBox>
+
+    <!-- New Order Request Form (hidden by default) -->
+    <VBox fx:id="newOrderForm" styleClass="section-card" visible="false" managed="false">
+        <VBox.margin><Insets bottom="20"/></VBox.margin>
+        <Label text="New Order Request" styleClass="section-title">
+            <VBox.margin><Insets bottom="15"/></VBox.margin>
+        </Label>
+
+        <HBox spacing="20">
+            <VBox.margin><Insets bottom="15"/></VBox.margin>
+            <TextField promptText="Supplier Name" maxWidth="Infinity" HBox.hgrow="ALWAYS" styleClass="form-field"/>
+            <TextField promptText="Product Name"  maxWidth="Infinity" HBox.hgrow="ALWAYS" styleClass="form-field"/>
+        </HBox>
+
+        <HBox spacing="20">
+            <VBox.margin><Insets bottom="15"/></VBox.margin>
+            <TextField promptText="Quantity"   maxWidth="Infinity" HBox.hgrow="ALWAYS" styleClass="form-field"/>
+            <TextField promptText="mm/dd/yyyy" maxWidth="Infinity" HBox.hgrow="ALWAYS" styleClass="form-field"/>
+        </HBox>
+
+        <HBox spacing="20">
+            <VBox.margin><Insets bottom="15"/></VBox.margin>
+            <TextField promptText="Priority (1-10, 10 = highest)" maxWidth="Infinity" HBox.hgrow="ALWAYS" styleClass="form-field"/>
+            <TextField promptText="Budget (optional)"             maxWidth="Infinity" HBox.hgrow="ALWAYS" styleClass="form-field"/>
+        </HBox>
+
+        <TextArea promptText="Additional notes or requirements..."
+                  styleClass="form-textarea" wrapText="true" prefHeight="100">
+            <VBox.margin><Insets bottom="20"/></VBox.margin>
+        </TextArea>
+
+        <HBox spacing="12">
+            <Button text="Submit Request" styleClass="btn-primary"/>
+            <Button text="Cancel"         styleClass="btn-secondary" onAction="#onCancelOrder"/>
+        </HBox>
+    </VBox>
+
+    <!-- Upcoming Deliveries -->
+    <VBox styleClass="section-card">
+        <VBox.margin><Insets bottom="20"/></VBox.margin>
+
+        <Label text="Upcoming Deliveries" styleClass="section-title">
+            <VBox.margin><Insets bottom="15"/></VBox.margin>
+        </Label>
+
+        <HBox styleClass="table-header-row">
+            <Label text="Supplier"      styleClass="table-header-cell" prefWidth="300"/>
+            <Label text="Delivery Date" styleClass="table-header-cell" prefWidth="200"/>
+            <Label text="Items"         styleClass="table-header-cell" prefWidth="300"/>
+            <Label text="Status"        styleClass="table-header-cell" prefWidth="150"/>
+        </HBox>
+
+        <!-- Template row — cloned and populated when data is inserted -->
+        <HBox fx:id="deliveryTemplateRow" styleClass="table-row" alignment="CENTER_LEFT"
+              visible="false" managed="false">
+            <Label text="TechCorp Solutions" styleClass="table-cell" prefWidth="300"/>
+            <HBox alignment="CENTER_LEFT" spacing="6" prefWidth="200">
+                <ImageView fitWidth="14" fitHeight="14" preserveRatio="true">
+                    <image><Image url="@/images/calendar.png"/></image>
+                </ImageView>
+                <Label text="May 1, 2026" styleClass="table-cell"/>
+            </HBox>
+            <Label text="Laptops (25), USB-C Hubs (60)" styleClass="table-cell" prefWidth="300"/>
+            <Label text="In Transit" styleClass="status-in-transit"/>
+        </HBox>
+
+        <VBox fx:id="deliveryRows"/>
+
+    </VBox>
+
+    <!-- Search Bar -->
+    <HBox styleClass="search-bar">
+        <VBox.margin><Insets bottom="15"/></VBox.margin>
+        <TextField promptText="Search suppliers by name, contact, or ID..."
+                   maxWidth="Infinity" HBox.hgrow="ALWAYS" styleClass="search-field"/>
+    </HBox>
+
+    <!-- All Suppliers -->
+    <VBox VBox.vgrow="ALWAYS" styleClass="section-card">
+
+        <Label text="All Suppliers" styleClass="section-title">
+            <VBox.margin><Insets bottom="15"/></VBox.margin>
+        </Label>
+
+        <HBox styleClass="table-header-row">
+            <Label text="Supplier ID"   styleClass="table-header-cell" prefWidth="110"/>
+            <Label text="Name"          styleClass="table-header-cell" prefWidth="180"/>
+            <Label text="Contact"       styleClass="table-header-cell" prefWidth="210"/>
+            <Label text="Next Delivery" styleClass="table-header-cell" prefWidth="130"/>
+            <Label text="Active Orders" styleClass="table-header-cell" prefWidth="130"/>
+            <Label text="Products"      styleClass="table-header-cell" prefWidth="180"/>
+            <Label text="Actions"       styleClass="table-header-cell" prefWidth="80"/>
+        </HBox>
+
+        <!-- Template row — cloned and populated when data is inserted -->
+        <HBox fx:id="supplierTemplateRow" styleClass="table-row" alignment="CENTER_LEFT"
+              visible="false" managed="false">
+
+            <Label text="SUP-001" styleClass="table-cell" prefWidth="110"/>
+
+            <VBox prefWidth="180">
+                <Label text="TechCorp Solutions" styleClass="table-cell"/>
+                <Label text="Rating: 4.8/5.0"   styleClass="cell-secondary"/>
+            </VBox>
+
+            <VBox prefWidth="210">
+                <Label text="John Smith" styleClass="table-cell"/>
+                <HBox alignment="CENTER_LEFT" spacing="4">
+                    <Label text="&#9993;" styleClass="cell-secondary"/>
+                    <Label text="john@techcorp.com" styleClass="cell-secondary"/>
+                </HBox>
+                <HBox alignment="CENTER_LEFT" spacing="4">
+                    <Label text="&#9742;" styleClass="cell-secondary"/>
+                    <Label text="+1 (555) 123-4567" styleClass="cell-secondary"/>
+                </HBox>
+            </VBox>
+
+            <HBox alignment="CENTER_LEFT" spacing="6" prefWidth="130">
+                <ImageView fitWidth="14" fitHeight="14" preserveRatio="true">
+                    <image><Image url="@/images/calendar.png"/></image>
+                </ImageView>
+                <Label text="May 1" styleClass="table-cell"/>
+            </HBox>
+
+            <Label text="3 active" styleClass="cell-secondary" prefWidth="130"/>
+
+            <Label text="Laptops, USB-C Hubs" styleClass="table-cell" prefWidth="180"/>
+
+            <HBox alignment="CENTER_LEFT" spacing="8" prefWidth="80">
+                <Button text="&#9999;" styleClass="action-btn-edit"/>
+                <Button text="&#9993;" styleClass="action-btn-edit"/>
+            </HBox>
+
+        </HBox>
+
+        <ScrollPane VBox.vgrow="ALWAYS" fitToWidth="true" styleClass="table-scroll">
+            <VBox fx:id="supplierRows"/>
+        </ScrollPane>
+
+    </VBox>
+
+</VBox>
