@@ -74,7 +74,7 @@
         <HBox spacing="20">
             <VBox.margin><Insets bottom="15"/></VBox.margin>
             <TextField promptText="Stock Quantity" maxWidth="Infinity" HBox.hgrow="ALWAYS" styleClass="form-field"/>
-            <TextField promptText="Minimum Stock"  maxWidth="Infinity" HBox.hgrow="ALWAYS" styleClass="form-field"/>
+            <TextField promptText="Unit Price"  maxWidth="Infinity" HBox.hgrow="ALWAYS" styleClass="form-field"/>
         </HBox>
         <HBox spacing="20">
             <VBox.margin><Insets bottom="20"/></VBox.margin>
@@ -101,6 +101,7 @@
             <Label text="Name"       styleClass="table-header-cell" prefWidth="200"/>
             <Label text="Category"   styleClass="table-header-cell" prefWidth="130"/>
             <Label text="Stock"      styleClass="table-header-cell" prefWidth="100"/>
+            <Label text="Unit Price" styleClass="table-header-cell" prefWidth="110"/>
             <Label text="Price"      styleClass="table-header-cell" prefWidth="100"/>
             <Label text="Supplier"   styleClass="table-header-cell" prefWidth="150"/>
             <Label text="Actions"    styleClass="table-header-cell" prefWidth="80"/>
@@ -108,13 +109,14 @@
 
         <!-- Template row // Cloned by InventoryController for each product -->
         <HBox fx:id="templateRow" styleClass="table-row" visible="false" managed="false">
-            <Label text="PRD-001"        styleClass="table-cell"     prefWidth="110"/>
-            <Label text="Sample Product" styleClass="table-cell"     prefWidth="200"/>
-            <Label text="Category"       styleClass="category-badge" prefWidth="130"/>
-            <Label text="0"              styleClass="table-cell"     prefWidth="100"/>
-            <Label text="0"              styleClass="table-cell"     prefWidth="100"/>
-            <Label text="Supplier"       styleClass="table-cell"     prefWidth="150"/>
-            <Label text="Actions"        styleClass="table-cell"     prefWidth="80"/>
+            <Label text="PRD-001"        styleClass="table-cell"     prefWidth="110"/> <!-- Product ID -->
+            <Label text="Sample Product" styleClass="table-cell"     prefWidth="200"/> <!-- Name -->
+            <Label text="Category"       styleClass="category-badge" prefWidth="130"/> <!-- Category -->
+            <Label text="0"              styleClass="table-cell"     prefWidth="100"/> <!-- Stock -->
+            <Label text="0"              styleClass="table-cell"     prefWidth="110"/> <!-- Unit Price -->
+            <Label text="0"              styleClass="table-cell"     prefWidth="100"/> <!-- Price -->
+            <Label text="Supplier"       styleClass="table-cell"     prefWidth="150"/> <!-- Supplier -->
+            <Label text="Actions"        styleClass="table-cell"     prefWidth="80"/>  <!-- Actions -->
         </HBox>
 
         <ScrollPane VBox.vgrow="ALWAYS" fitToWidth="true" styleClass="table-scroll">
