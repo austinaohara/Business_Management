@@ -80,29 +80,29 @@
 
         <HBox spacing="20">
             <VBox.margin><Insets bottom="15"/></VBox.margin>
-            <TextField promptText="Supplier Name" maxWidth="Infinity" HBox.hgrow="ALWAYS" styleClass="form-field"/>
-            <TextField promptText="Product Name"  maxWidth="Infinity" HBox.hgrow="ALWAYS" styleClass="form-field"/>
+            <TextField fx:id="supplierNameField" promptText="Supplier Name" maxWidth="Infinity" HBox.hgrow="ALWAYS" styleClass="form-field"/>
+            <TextField fx:id="productNameField"  promptText="Product Name"  maxWidth="Infinity" HBox.hgrow="ALWAYS" styleClass="form-field"/>
         </HBox>
 
         <HBox spacing="20">
             <VBox.margin><Insets bottom="15"/></VBox.margin>
-            <TextField promptText="Quantity"   maxWidth="Infinity" HBox.hgrow="ALWAYS" styleClass="form-field"/>
-            <TextField promptText="mm/dd/yyyy" maxWidth="Infinity" HBox.hgrow="ALWAYS" styleClass="form-field"/>
+            <TextField fx:id="quantityField" promptText="Quantity"   maxWidth="Infinity" HBox.hgrow="ALWAYS" styleClass="form-field"/>
+            <TextField fx:id="dueDateField"  promptText="mm/dd/yyyy" maxWidth="Infinity" HBox.hgrow="ALWAYS" styleClass="form-field"/>
         </HBox>
 
         <HBox spacing="20">
             <VBox.margin><Insets bottom="15"/></VBox.margin>
-            <TextField promptText="Priority (1-10, 10 = highest)" maxWidth="Infinity" HBox.hgrow="ALWAYS" styleClass="form-field"/>
-            <TextField promptText="Budget (optional)"             maxWidth="Infinity" HBox.hgrow="ALWAYS" styleClass="form-field"/>
+            <TextField fx:id="priorityField" promptText="Priority (1-10, 10 = highest)" maxWidth="Infinity" HBox.hgrow="ALWAYS" styleClass="form-field"/>
+            <TextField fx:id="budgetField"   promptText="Budget (optional)"             maxWidth="Infinity" HBox.hgrow="ALWAYS" styleClass="form-field"/>
         </HBox>
 
-        <TextArea promptText="Additional notes or requirements..."
+        <TextArea fx:id="notesArea" promptText="Additional notes or requirements..."
                   styleClass="form-textarea" wrapText="true" prefHeight="100">
             <VBox.margin><Insets bottom="20"/></VBox.margin>
         </TextArea>
 
         <HBox spacing="12">
-            <Button text="Submit Request" styleClass="btn-primary"/>
+            <Button text="Submit Request" styleClass="btn-primary" onAction="#onSubmitOrder"/>
             <Button text="Cancel"         styleClass="btn-secondary" onAction="#onCancelOrder"/>
         </HBox>
     </VBox>
