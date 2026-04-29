@@ -15,6 +15,7 @@ public class MainController {
     @FXML private HBox navDashboard;
     @FXML private HBox navInventory;
     @FXML private HBox navSupplier;
+    @FXML private HBox navCustomer;
 
     private final Map<String, Node> pageCache = new HashMap<>();
 
@@ -24,10 +25,11 @@ public class MainController {
         navDashboard.setOnMouseClicked(e -> loadPage(navDashboard, "/edu/farmingdale/dashboard.fxml"));
         navInventory.setOnMouseClicked(e -> loadPage(navInventory, "/edu/farmingdale/inventory.fxml"));
         navSupplier.setOnMouseClicked(e -> loadPage(navSupplier, "/edu/farmingdale/supplier.fxml"));
+        navCustomer.setOnMouseClicked(e -> loadPage(navCustomer, "/edu/farmingdale/customer.fxml"));
     }
 
     private void loadPage(HBox selectedNav, String path) {
-        for (HBox nav : new HBox[]{navDashboard, navInventory, navSupplier}) {
+        for (HBox nav : new HBox[]{navDashboard, navInventory, navSupplier, navCustomer}) {
             nav.getStyleClass().remove("nav-item-active");
             if (!nav.getStyleClass().contains("nav-item")) {
                 nav.getStyleClass().add("nav-item");

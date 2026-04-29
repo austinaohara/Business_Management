@@ -60,6 +60,17 @@ public class DatabaseManager {
                     "password_hash VARCHAR(255), " +
                     "theme_preference VARCHAR(20) DEFAULT 'LIGHT')");
 
+            stmt.execute("CREATE TABLE SupplierOrders (" +
+                    "order_id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY, " +
+                    "supplier_name VARCHAR(255), " +
+                    "product_name VARCHAR(255), " +
+                    "quantity INT, " +
+                    "due_date VARCHAR(50), " +
+                    "priority INT, " +
+                    "budget DOUBLE, " +
+                    "notes VARCHAR(500), " +
+                    "status VARCHAR(50) DEFAULT 'Pending')");
+
             System.out.println("Database tables created successfully.");
 
         } catch (SQLException e) {

@@ -34,7 +34,7 @@
                     <image><Image url="@/images/box.png"/></image>
                 </ImageView>
             </HBox>
-            <Label text="8" styleClass="stat-value"/>
+            <Label fx:id="totalProductsLabel" text="0" styleClass="stat-value"/>
             <Label text="Total Products" styleClass="stat-subtitle"/>
         </VBox>
 
@@ -44,7 +44,7 @@
                     <image><Image url="@/images/dollar.png"/></image>
                 </ImageView>
             </HBox>
-            <Label styleClass="stat-value"><text>$67,450</text></Label>
+            <Label fx:id="totalValueLabel" text="\$0" styleClass="stat-value"/>
             <Label text="Total Value" styleClass="stat-subtitle"/>
         </VBox>
 
@@ -54,7 +54,7 @@
                     <image><Image url="@/images/box.png"/></image>
                 </ImageView>
             </HBox>
-            <Label text="2" styleClass="stat-value-warning"/>
+            <Label fx:id="lowStockLabel" text="0" styleClass="stat-value-warning"/>
             <Label text="Low Stock Items" styleClass="stat-subtitle"/>
         </VBox>
 
@@ -68,21 +68,21 @@
         </Label>
         <HBox spacing="20">
             <VBox.margin><Insets bottom="15"/></VBox.margin>
-            <TextField promptText="Product Name"   maxWidth="Infinity" HBox.hgrow="ALWAYS" styleClass="form-field"/>
-            <TextField promptText="Category"       maxWidth="Infinity" HBox.hgrow="ALWAYS" styleClass="form-field"/>
+            <TextField fx:id="nameField"     promptText="Product Name"   maxWidth="Infinity" HBox.hgrow="ALWAYS" styleClass="form-field"/>
+            <TextField fx:id="categoryField" promptText="Category"       maxWidth="Infinity" HBox.hgrow="ALWAYS" styleClass="form-field"/>
         </HBox>
         <HBox spacing="20">
             <VBox.margin><Insets bottom="15"/></VBox.margin>
-            <TextField promptText="Stock Quantity" maxWidth="Infinity" HBox.hgrow="ALWAYS" styleClass="form-field"/>
-            <TextField promptText="Unit Price"  maxWidth="Infinity" HBox.hgrow="ALWAYS" styleClass="form-field"/>
+            <TextField fx:id="stockField"    promptText="Stock Quantity" maxWidth="Infinity" HBox.hgrow="ALWAYS" styleClass="form-field"/>
+            <TextField fx:id="unitPriceField" promptText="Unit Price"    maxWidth="Infinity" HBox.hgrow="ALWAYS" styleClass="form-field"/>
         </HBox>
         <HBox spacing="20">
             <VBox.margin><Insets bottom="20"/></VBox.margin>
-            <TextField promptText="Price"    maxWidth="Infinity" HBox.hgrow="ALWAYS" styleClass="form-field"/>
-            <TextField promptText="Supplier" maxWidth="Infinity" HBox.hgrow="ALWAYS" styleClass="form-field"/>
+            <TextField fx:id="priceField"    promptText="Price"    maxWidth="Infinity" HBox.hgrow="ALWAYS" styleClass="form-field"/>
+            <TextField fx:id="supplierField" promptText="Supplier" maxWidth="Infinity" HBox.hgrow="ALWAYS" styleClass="form-field"/>
         </HBox>
         <HBox spacing="12">
-            <Button text="Save Product" styleClass="btn-primary"/>
+            <Button text="Save Product" styleClass="btn-primary" onAction="#onSaveProduct"/>
             <Button text="Cancel" styleClass="btn-secondary" onAction="#onCancelProduct"/>
         </HBox>
     </VBox>
