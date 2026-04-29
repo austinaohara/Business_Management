@@ -44,7 +44,7 @@
                     <image><Image url="@/images/dollar.png"/></image>
                 </ImageView>
             </HBox>
-            <Label fx:id="totalValueLabel" text="$0" styleClass="stat-value"/>
+            <Label fx:id="totalValueLabel" text="\$0" styleClass="stat-value"/>
             <Label text="Total Value" styleClass="stat-subtitle"/>
         </VBox>
 
