@@ -4,71 +4,97 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public final class ModelValidation {
+    private static final String FIELD_LABEL_NAME = "fieldLabel";
 
     private ModelValidation() {
     }
 
-    public static String requireNonBlank(String value, String fieldName) {
-        requireNonBlank(fieldName, "fieldName");
+    public static String requireNonBlank(String value, String fieldLabel) {
+        String normalizedFieldLabel = requireFieldLabel(fieldLabel);
         if (value == null || value.isBlank()) {
-            throw new IllegalArgumentException(fieldName + " must not be blank.");
+            throw new IllegalArgumentException(normalizedFieldLabel + " must not be blank.");
         }
         return value;
     }
 
-    public static int requireNonNegative(int value, String fieldName) {
-        requireNonBlank(fieldName, "fieldName");
+    public static int requireNonNegative(int value, String fieldLabel) {
+        String normalizedFieldLabel = requireFieldLabel(fieldLabel);
         if (value < 0) {
-            throw new IllegalArgumentException(fieldName + " must not be negative.");
+            throw new IllegalArgumentException(normalizedFieldLabel + " must not be negative.");
         }
         return value;
     }
 
-    public static BigDecimal requireNonNegative(BigDecimal value, String fieldName) {
-        requireNotNull(value, fieldName);
-        requireNonBlank(fieldName, "fieldName");
+    public static BigDecimal requireNonNegative(BigDecimal value, String fieldLabel) {
+        String normalizedFieldLabel = requireFieldLabel(fieldLabel);
+        requireNotNull(value, normalizedFieldLabel);
         if (value.signum() < 0) {
-            throw new IllegalArgumentException(fieldName + " must not be negative.");
+            throw new IllegalArgumentException(normalizedFieldLabel + " must not be negative.");
         }
         return value;
     }
 
-    public static int requireRange(int value, int min, int max, String fieldName) {
-        requireNonBlank(fieldName, "fieldName");
-        if (min > max) {
+    public static <T extends Comparable<? super T>> T requireRange(
+            T value,
+            T min,
+            T max,
+            String fieldLabel
+    ) {
+        String normalizedFieldLabel = requireFieldLabel(fieldLabel);
+        requireNotNull(value, normalizedFieldLabel);
+        requireNotNull(min, "min");
+        requireNotNull(max, "max");
+
+        if (min.compareTo(max) > 0) {
             throw new IllegalArgumentException("min must not be greater than max.");
         }
-        if (value < min || value > max) {
+        if (value.compareTo(min) < 0 || value.compareTo(max) > 0) {
             throw new IllegalArgumentException(
-                    fieldName + " must be between " + min + " and " + max + "."
+                    normalizedFieldLabel + " must be between " + min + " and " + max + "."
             );
         }
         return value;
     }
 
-    public static <T> T requireNotNull(T value, String fieldName) {
-        requireNonBlank(fieldName, "fieldName");
+    public static <T> T requireNotNull(T value, String fieldLabel) {
+        String normalizedFieldLabel = requireFieldLabel(fieldLabel);
         if (value == null) {
-            throw new IllegalArgumentException(fieldName + " must not be null.");
+            throw new IllegalArgumentException(normalizedFieldLabel + " must not be null.");
         }
         return value;
+    }
+
+    public static <T extends Comparable<? super T>> void requireOrder(
+            T start,
+            T end,
+            String startFieldLabel,
+            String endFieldLabel
+    ) {
+        String normalizedStartFieldLabel = requireFieldLabel(startFieldLabel);
+        String normalizedEndFieldLabel = requireFieldLabel(endFieldLabel);
+        requireNotNull(start, normalizedStartFieldLabel);
+        requireNotNull(end, normalizedEndFieldLabel);
+
+        if (end.compareTo(start) < 0) {
+            throw new IllegalArgumentException(
+                    normalizedEndFieldLabel + " must not be before " + normalizedStartFieldLabel + "."
+            );
+        }
     }
 
     public static void requireDateOrder(
             LocalDate start,
             LocalDate end,
-            String startField,
-            String endField
+            String startFieldLabel,
+            String endFieldLabel
     ) {
-        requireNotNull(start, startField);
-        requireNotNull(end, endField);
-        requireNonBlank(startField, "startField");
-        requireNonBlank(endField, "endField");
+        requireOrder(start, end, startFieldLabel, endFieldLabel);
+    }
 
-        if (end.isBefore(start)) {
-            throw new IllegalArgumentException(
-                    endField + " must not be before " + startField + "."
-            );
+    private static String requireFieldLabel(String fieldLabel) {
+        if (fieldLabel == null || fieldLabel.isBlank()) {
+            throw new IllegalArgumentException(FIELD_LABEL_NAME + " must not be blank.");
         }
+        return fieldLabel.trim();
     }
 }

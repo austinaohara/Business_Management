@@ -125,11 +125,7 @@ public class Supplier {
             return null;
         }
 
-        ModelValidation.requireNonNegative(rating, "rating");
-        if (rating.compareTo(MAX_RATING) > 0 || rating.compareTo(MIN_RATING) < 0) {
-            throw new IllegalArgumentException("rating must be between 0 and 5.");
-        }
-        return rating;
+        return ModelValidation.requireRange(rating, MIN_RATING, MAX_RATING, "rating");
     }
 
     private static String normalizeOptionalText(String value) {
