@@ -16,7 +16,10 @@ public class CustomerController {
     @FXML private Label totalCustomersLabel;
 
     @FXML
-    public void initialize() { loadCustomers(); }
+    public void initialize() {
+        TextFieldFormatter.applyPhoneFormatter(phoneField);
+        loadCustomers();
+    }
 
     @FXML
     private void onAddCustomer() {

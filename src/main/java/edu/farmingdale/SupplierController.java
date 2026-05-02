@@ -18,7 +18,13 @@ public class SupplierController {
     @FXML private HBox deliveryTemplateRow;
 
     @FXML
-    public void initialize() { loadDeliveries(); }
+    public void initialize() {
+        TextFieldFormatter.applyIntegerFilter(quantityField);
+        TextFieldFormatter.applyIntegerFilter(priorityField);
+        TextFieldFormatter.applyDecimalFilter(budgetField);
+        TextFieldFormatter.applyDateFormatter(dueDateField);
+        loadDeliveries();
+    }
 
     @FXML
     private void onNewOrderRequest() {

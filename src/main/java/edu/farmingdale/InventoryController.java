@@ -1,6 +1,7 @@
 package edu.farmingdale;
 
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
@@ -10,13 +11,18 @@ import java.sql.*;
 public class InventoryController {
 
     @FXML private VBox addProductForm;
-    @FXML private TextField nameField, categoryField, stockField, minStockField, priceField, supplierField;
+    @FXML private TextField nameField, categoryField, stockField, unitPriceField, priceField, supplierField;
     @FXML private VBox productRows;
     @FXML private HBox templateRow;
     @FXML private Label totalProductsLabel, totalValueLabel, lowStockLabel;
 
     @FXML
-    public void initialize() { loadProducts(); }
+    public void initialize() {
+        TextFieldFormatter.applyIntegerFilter(stockField);
+        TextFieldFormatter.applyDecimalFilter(unitPriceField);
+        TextFieldFormatter.applyDecimalFilter(priceField);
+        loadProducts();
+    }
 
     @FXML
     private void onAddProduct() {
@@ -29,7 +35,7 @@ public class InventoryController {
         addProductForm.setVisible(false);
         addProductForm.setManaged(false);
         nameField.clear(); categoryField.clear(); stockField.clear();
-        minStockField.clear(); priceField.clear(); supplierField.clear();
+        unitPriceField.clear(); priceField.clear(); supplierField.clear();
     }
 
     @FXML
@@ -41,7 +47,7 @@ public class InventoryController {
             ps.setString(1, nameField.getText().trim());
             ps.setString(2, categoryField.getText().trim());
             ps.setInt(3, parseIntSafe(stockField.getText()));
-            ps.setInt(4, parseIntSafe(minStockField.getText()));
+            ps.setDouble(4, parseDoubleSafe(unitPriceField.getText()));
             ps.setDouble(5, parseDoubleSafe(priceField.getText()));
             ps.setString(6, supplierField.getText().trim());
             ps.executeUpdate();
@@ -66,11 +72,13 @@ public class InventoryController {
                 double price = rs.getDouble("sell_price");
                 totalValue += qty * price;
                 if (qty < min) lowStock++;
+                double unitPrice = rs.getDouble("minimum_stock");
                 HBox row = buildRow(
                     "PRD-" + String.format("%03d", rs.getInt("id")),
                     rs.getString("name"),
                     rs.getString("category"),
                     String.valueOf(qty),
+                    String.format("$%.2f", unitPrice),
                     String.format("$%.2f", price),
                     rs.getString("supplier") != null ? rs.getString("supplier") : ""
                 );
@@ -82,17 +90,27 @@ public class InventoryController {
         if (lowStockLabel != null) lowStockLabel.setText(String.valueOf(lowStock));
     }
 
-    private HBox buildRow(String id, String name, String category, String stock, String price, String supplier) {
+    private HBox buildRow(String id, String name, String category, String stock, String unitPrice, String price, String supplier) {
         HBox row = new HBox();
         row.getStyleClass().add("table-row");
-        double[] widths = {110, 200, 130, 100, 100, 150, 80};
-        String[] values = {id, name, category, stock, price, supplier, ""};
-        String[] styles = {"table-cell", "table-cell", "category-badge", "table-cell", "table-cell", "table-cell", "table-cell"};
+        double[] widths = {110, 200, 130, 100, 110, 100, 150, 80};
+        String[] values = {id, name, category, stock, unitPrice, price, supplier, ""};
+        String[] styles = {"table-cell", "table-cell", "category-badge", "table-cell", "table-cell", "table-cell", "table-cell", "table-cell"};
         for (int i = 0; i < values.length; i++) {
-            Label lbl = new Label(values[i]);
-            lbl.getStyleClass().add(styles[i]);
-            lbl.setPrefWidth(widths[i]);
-            row.getChildren().add(lbl);
+            if (i == 2) {
+                // wrap the badge so the gray background doesn't stretch across the whole column
+                Label badge = new Label(values[i]);
+                badge.getStyleClass().add("category-badge");
+                HBox cell = new HBox(badge);
+                cell.setPrefWidth(widths[i]);
+                cell.setAlignment(Pos.CENTER_LEFT);
+                row.getChildren().add(cell);
+            } else {
+                Label lbl = new Label(values[i]);
+                lbl.getStyleClass().add(styles[i]);
+                lbl.setPrefWidth(widths[i]);
+                row.getChildren().add(lbl);
+            }
         }
         return row;
     }
