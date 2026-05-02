@@ -6,17 +6,26 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CustomerController {
 
     @FXML private VBox addCustomerForm;
     @FXML private TextField firstNameField, lastNameField, emailField, phoneField;
+    @FXML private TextField searchField;
     @FXML private VBox customerRows;
     @FXML private HBox templateRow;
     @FXML private Label totalCustomersLabel;
+    private final List<RowData> allRows = new ArrayList<>();
 
     @FXML
-    public void initialize() { loadCustomers(); }
+    public void initialize() {
+        if (searchField != null) {
+            searchField.textProperty().addListener((obs, oldValue, newValue) -> applyFilter());
+        }
+        loadCustomers();
+    }
 
     @FXML
     private void onAddCustomer() {
@@ -48,7 +57,7 @@ public class CustomerController {
     }
 
     private void loadCustomers() {
-        customerRows.getChildren().clear();
+        allRows.clear();
         int count = 0;
         try (Connection conn = DatabaseManager.getConnection();
              Statement st = conn.createStatement();
@@ -62,10 +71,18 @@ public class CustomerController {
                     rs.getString("email") != null ? rs.getString("email") : "",
                     rs.getString("phone") != null ? rs.getString("phone") : ""
                 );
-                customerRows.getChildren().add(row);
+                String searchable = String.join(" ",
+                        "CST-" + String.format("%03d", rs.getInt("profile_id")),
+                        safeText(rs.getString("first_name")),
+                        safeText(rs.getString("last_name")),
+                        safeText(rs.getString("email")),
+                        safeText(rs.getString("phone"))
+                ).toLowerCase();
+                allRows.add(new RowData(searchable, row));
             }
         } catch (SQLException e) { e.printStackTrace(); }
         if (totalCustomersLabel != null) totalCustomersLabel.setText(String.valueOf(count));
+        applyFilter();
     }
 
     private HBox buildRow(String id, String fullName, String email, String phone) {
@@ -80,5 +97,29 @@ public class CustomerController {
             row.getChildren().add(lbl);
         }
         return row;
+    }
+
+    private void applyFilter() {
+        customerRows.getChildren().clear();
+        String query = searchField == null ? "" : searchField.getText().trim().toLowerCase();
+        for (RowData rowData : allRows) {
+            if (query.isEmpty() || rowData.searchableText.contains(query)) {
+                customerRows.getChildren().add(rowData.row);
+            }
+        }
+    }
+
+    private String safeText(String value) {
+        return value == null ? "" : value;
+    }
+
+    private static class RowData {
+        private final String searchableText;
+        private final HBox row;
+
+        private RowData(String searchableText, HBox row) {
+            this.searchableText = searchableText;
+            this.row = row;
+        }
     }
 }

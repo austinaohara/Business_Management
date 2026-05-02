@@ -6,17 +6,26 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class InventoryController {
 
     @FXML private VBox addProductForm;
     @FXML private TextField nameField, categoryField, stockField, minStockField, priceField, supplierField;
+    @FXML private TextField searchField;
     @FXML private VBox productRows;
     @FXML private HBox templateRow;
     @FXML private Label totalProductsLabel, totalValueLabel, lowStockLabel;
+    private final List<RowData> allRows = new ArrayList<>();
 
     @FXML
-    public void initialize() { loadProducts(); }
+    public void initialize() {
+        if (searchField != null) {
+            searchField.textProperty().addListener((obs, oldValue, newValue) -> applyFilter());
+        }
+        loadProducts();
+    }
 
     @FXML
     private void onAddProduct() {
@@ -51,7 +60,7 @@ public class InventoryController {
     }
 
     private void loadProducts() {
-        productRows.getChildren().clear();
+        allRows.clear();
         int count = 0;
         double totalValue = 0;
         int lowStock = 0;
@@ -74,12 +83,19 @@ public class InventoryController {
                     String.format("$%.2f", price),
                     rs.getString("supplier") != null ? rs.getString("supplier") : ""
                 );
-                productRows.getChildren().add(row);
+                String searchable = String.join(" ",
+                        idFromDb(rs.getInt("id")),
+                        safeText(rs.getString("name")),
+                        safeText(rs.getString("category")),
+                        safeText(rs.getString("supplier"))
+                ).toLowerCase();
+                allRows.add(new RowData(searchable, row));
             }
         } catch (SQLException e) { e.printStackTrace(); }
         if (totalProductsLabel != null) totalProductsLabel.setText(String.valueOf(count));
         if (totalValueLabel != null) totalValueLabel.setText(String.format("$%,.0f", totalValue));
         if (lowStockLabel != null) lowStockLabel.setText(String.valueOf(lowStock));
+        applyFilter();
     }
 
     private HBox buildRow(String id, String name, String category, String stock, String price, String supplier) {
@@ -103,5 +119,33 @@ public class InventoryController {
 
     private double parseDoubleSafe(String s) {
         try { return Double.parseDouble(s.trim()); } catch (Exception e) { return 0.0; }
+    }
+
+    private void applyFilter() {
+        productRows.getChildren().clear();
+        String query = searchField == null ? "" : searchField.getText().trim().toLowerCase();
+        for (RowData rowData : allRows) {
+            if (query.isEmpty() || rowData.searchableText.contains(query)) {
+                productRows.getChildren().add(rowData.row);
+            }
+        }
+    }
+
+    private String idFromDb(int id) {
+        return "PRD-" + String.format("%03d", id);
+    }
+
+    private String safeText(String value) {
+        return value == null ? "" : value;
+    }
+
+    private static class RowData {
+        private final String searchableText;
+        private final HBox row;
+
+        private RowData(String searchableText, HBox row) {
+            this.searchableText = searchableText;
+            this.row = row;
+        }
     }
 }
