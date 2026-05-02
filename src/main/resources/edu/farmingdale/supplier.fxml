@@ -116,14 +116,15 @@
         </Label>
 
         <HBox styleClass="table-header-row">
-            <Label text="Supplier"     styleClass="table-header-cell" prefWidth="150"/>
-            <Label text="Product"      styleClass="table-header-cell" prefWidth="150"/>
-            <Label text="Qty"          styleClass="table-header-cell" prefWidth="70"/>
-            <Label text="Due Date"     styleClass="table-header-cell" prefWidth="110"/>
-            <Label text="Priority"     styleClass="table-header-cell" prefWidth="80"/>
-            <Label text="Budget"       styleClass="table-header-cell" prefWidth="100"/>
-            <Label text="Notes"        styleClass="table-header-cell" prefWidth="170"/>
-            <Label text="Status"       styleClass="table-header-cell" prefWidth="110"/>
+            <Label text="Supplier"     styleClass="table-header-cell" prefWidth="120"/>
+            <Label text="Product"      styleClass="table-header-cell" prefWidth="120"/>
+            <Label text="Qty"          styleClass="table-header-cell" prefWidth="50"/>
+            <Label text="Due Date"     styleClass="table-header-cell" prefWidth="95"/>
+            <Label text="Priority"     styleClass="table-header-cell" prefWidth="55"/>
+            <Label text="Budget"       styleClass="table-header-cell" prefWidth="80"/>
+            <Label text="Notes"        styleClass="table-header-cell" prefWidth="120"/>
+            <Label text="Status"       styleClass="table-header-cell" prefWidth="90"/>
+            <Label text="Confirm"      styleClass="table-header-cell" prefWidth="95"/>
         </HBox>
 
         <!-- Template row — cloned and populated when data is inserted -->
