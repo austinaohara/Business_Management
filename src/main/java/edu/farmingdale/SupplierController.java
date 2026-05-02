@@ -64,35 +64,40 @@ public class SupplierController {
         try (Connection conn = DatabaseManager.getConnection();
              Statement st = conn.createStatement();
              ResultSet rs = st.executeQuery(
-                "SELECT supplier_name,due_date,product_name,quantity,status FROM SupplierOrders ORDER BY due_date")) {
+                "SELECT supplier_name,product_name,quantity,due_date,priority,budget,notes,status FROM SupplierOrders ORDER BY due_date")) {
             while (rs.next()) {
                 HBox row = new HBox();
                 row.getStyleClass().add("table-row");
                 row.setAlignment(Pos.CENTER_LEFT);
 
-                Label supplier = new Label(rs.getString("supplier_name"));
-                supplier.getStyleClass().add("table-cell");
-                supplier.setPrefWidth(300);
+                row.getChildren().add(cell(rs.getString("supplier_name"), 150));
+                row.getChildren().add(cell(rs.getString("product_name"), 150));
+                row.getChildren().add(cell(String.valueOf(rs.getInt("quantity")), 70));
+                row.getChildren().add(cell(rs.getString("due_date") != null ? rs.getString("due_date") : "", 110));
+                row.getChildren().add(cell(String.valueOf(rs.getInt("priority")), 80));
 
-                String dateStr = rs.getString("due_date");
-                Label date = new Label(dateStr != null ? dateStr : "");
-                date.getStyleClass().add("table-cell");
-                date.setPrefWidth(200);
+                double budget = rs.getDouble("budget");
+                row.getChildren().add(cell(budget > 0 ? String.format("$%.2f", budget) : "—", 100));
 
-                int qty = rs.getInt("quantity");
-                Label items = new Label(rs.getString("product_name") + " (" + qty + ")");
-                items.getStyleClass().add("table-cell");
-                items.setPrefWidth(300);
+                String notes = rs.getString("notes");
+                row.getChildren().add(cell(notes != null && !notes.isEmpty() ? notes : "—", 170));
 
                 String status = rs.getString("status");
-                Label statusLabel = new Label(status != null ? status : "Pending");
-                statusLabel.getStyleClass().add(
-                    "Pending".equals(status) ? "status-pending" : "status-in-transit");
+                String statusText = status != null ? status : "Pending";
+                Label statusLabel = new Label(statusText);
+                statusLabel.getStyleClass().add("Pending".equals(statusText) ? "status-pending" : "status-in-transit");
+                row.getChildren().add(statusLabel);
 
-                row.getChildren().addAll(supplier, date, items, statusLabel);
                 deliveryRows.getChildren().add(row);
             }
         } catch (SQLException e) { e.printStackTrace(); }
+    }
+
+    private Label cell(String text, double width) {
+        Label lbl = new Label(text);
+        lbl.getStyleClass().add("table-cell");
+        lbl.setPrefWidth(width);
+        return lbl;
     }
 
     private int parseIntSafe(String s) {
