@@ -67,7 +67,6 @@ public class DatabaseManager {
                     "quantity INT, " +
                     "due_date VARCHAR(50), " +
                     "priority INT, " +
-                    "budget DOUBLE, " +
                     "notes VARCHAR(500), " +
                     "status VARCHAR(50) DEFAULT 'Pending')");
 

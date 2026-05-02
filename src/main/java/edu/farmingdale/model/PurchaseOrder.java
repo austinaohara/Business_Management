@@ -21,7 +21,6 @@ public class PurchaseOrder {
     private LocalDate expectedDeliveryDate;
     private PurchaseOrderStatus status;
     private int priority;
-    private BigDecimal budget;
     private String notes;
     private final List<PurchaseOrderItem> items;
 
@@ -31,10 +30,9 @@ public class PurchaseOrder {
             LocalDate expectedDeliveryDate,
             PurchaseOrderStatus status,
             int priority,
-            BigDecimal budget,
             String notes
     ) {
-        this(null, supplierId, requestedDate, expectedDeliveryDate, status, priority, budget, notes, List.of());
+        this(null, supplierId, requestedDate, expectedDeliveryDate, status, priority, notes, List.of());
     }
 
     public PurchaseOrder(
@@ -43,11 +41,10 @@ public class PurchaseOrder {
             LocalDate expectedDeliveryDate,
             PurchaseOrderStatus status,
             int priority,
-            BigDecimal budget,
             String notes,
             List<PurchaseOrderItem> items
     ) {
-        this(null, supplierId, requestedDate, expectedDeliveryDate, status, priority, budget, notes, items);
+        this(null, supplierId, requestedDate, expectedDeliveryDate, status, priority, notes, items);
     }
 
     public PurchaseOrder(
@@ -57,7 +54,6 @@ public class PurchaseOrder {
             LocalDate expectedDeliveryDate,
             PurchaseOrderStatus status,
             int priority,
-            BigDecimal budget,
             String notes,
             List<PurchaseOrderItem> items
     ) {
@@ -79,7 +75,6 @@ public class PurchaseOrder {
         this.expectedDeliveryDate = validatedExpectedDeliveryDate;
         this.status = ModelValidation.requireNotNull(status, "status");
         this.priority = validatePriority(priority);
-        this.budget = validateBudget(budget);
         this.notes = normalizeOptionalText(notes);
         this.items = validateItems(items);
         validateFulfillmentRequirements(this.status, this.items);
@@ -107,10 +102,6 @@ public class PurchaseOrder {
 
     public int getPriority() {
         return priority;
-    }
-
-    public BigDecimal getBudget() {
-        return budget;
     }
 
     public String getNotes() {
@@ -142,11 +133,6 @@ public class PurchaseOrder {
     public void setPriority(int priority) {
         ensureOpenForStructuralChanges();
         this.priority = validatePriority(priority);
-    }
-
-    public void setBudget(BigDecimal budget) {
-        ensureOpenForStructuralChanges();
-        this.budget = validateBudget(budget);
     }
 
     public void setNotes(String notes) {
@@ -217,13 +203,6 @@ public class PurchaseOrder {
 
     private static int validatePriority(int priority) {
         return ModelValidation.requireRange(priority, MIN_PRIORITY, MAX_PRIORITY, "priority");
-    }
-
-    private static BigDecimal validateBudget(BigDecimal budget) {
-        if (budget == null) {
-            return null;
-        }
-        return ModelValidation.requireNonNegative(budget, "budget");
     }
 
     private static List<PurchaseOrderItem> validateItems(List<PurchaseOrderItem> items) {

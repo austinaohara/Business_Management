@@ -13,7 +13,7 @@ import java.sql.*;
 public class SupplierController {
 
     @FXML private VBox newOrderForm;
-    @FXML private TextField supplierNameField, productNameField, quantityField, dueDateField, priorityField, budgetField;
+    @FXML private TextField supplierNameField, productNameField, quantityField, dueDateField, priorityField;
     @FXML private TextArea notesArea;
     @FXML private VBox deliveryRows;
     @FXML private HBox deliveryTemplateRow;
@@ -22,8 +22,7 @@ public class SupplierController {
     public void initialize() {
         TextFieldFormatter.applyIntegerFilter(quantityField);
         TextFieldFormatter.applyIntegerFilter(priorityField);
-        TextFieldFormatter.applyDecimalFilter(budgetField);
-        TextFieldFormatter.applyDateFormatter(dueDateField);
+TextFieldFormatter.applyDateFormatter(dueDateField);
         loadDeliveries();
     }
 
@@ -38,7 +37,7 @@ public class SupplierController {
         newOrderForm.setVisible(false);
         newOrderForm.setManaged(false);
         supplierNameField.clear(); productNameField.clear(); quantityField.clear();
-        dueDateField.clear(); priorityField.clear(); budgetField.clear(); notesArea.clear();
+        dueDateField.clear(); priorityField.clear(); notesArea.clear();
     }
 
     @FXML
@@ -46,14 +45,13 @@ public class SupplierController {
         if (supplierNameField.getText().trim().isEmpty() || productNameField.getText().trim().isEmpty()) return;
         try (Connection conn = DatabaseManager.getConnection();
              PreparedStatement ps = conn.prepareStatement(
-                "INSERT INTO SupplierOrders(supplier_name,product_name,quantity,due_date,priority,budget,notes) VALUES(?,?,?,?,?,?,?)")) {
+                "INSERT INTO SupplierOrders(supplier_name,product_name,quantity,due_date,priority,notes) VALUES(?,?,?,?,?,?)")) {
             ps.setString(1, supplierNameField.getText().trim());
             ps.setString(2, productNameField.getText().trim());
             ps.setInt(3, parseIntSafe(quantityField.getText()));
             ps.setString(4, dueDateField.getText().trim());
             ps.setInt(5, parseIntSafe(priorityField.getText()));
-            ps.setDouble(6, parseDoubleSafe(budgetField.getText()));
-            ps.setString(7, notesArea.getText().trim());
+            ps.setString(6, notesArea.getText().trim());
             ps.executeUpdate();
         } catch (SQLException e) { e.printStackTrace(); }
         onCancelOrder();
@@ -102,7 +100,7 @@ public class SupplierController {
         try (Connection conn = DatabaseManager.getConnection();
              Statement st = conn.createStatement();
              ResultSet rs = st.executeQuery(
-                "SELECT order_id,supplier_name,product_name,quantity,due_date,priority,budget,notes,status FROM SupplierOrders ORDER BY due_date")) {
+                "SELECT order_id,supplier_name,product_name,quantity,due_date,priority,notes,status FROM SupplierOrders ORDER BY due_date")) {
             while (rs.next()) {
                 int orderId      = rs.getInt("order_id");
                 String supplier  = rs.getString("supplier_name");
@@ -120,9 +118,6 @@ public class SupplierController {
                 row.getChildren().add(cell(String.valueOf(qty), 50));
                 row.getChildren().add(cell(rs.getString("due_date") != null ? rs.getString("due_date") : "", 95));
                 row.getChildren().add(cell(String.valueOf(rs.getInt("priority")), 55));
-
-                double budget = rs.getDouble("budget");
-                row.getChildren().add(cell(budget > 0 ? String.format("$%.2f", budget) : "—", 80));
 
                 String notes = rs.getString("notes");
                 row.getChildren().add(cell(notes != null && !notes.isEmpty() ? notes : "—", 120));
@@ -162,7 +157,4 @@ public class SupplierController {
         try { return Integer.parseInt(s.trim()); } catch (Exception e) { return 0; }
     }
 
-    private double parseDoubleSafe(String s) {
-        try { return Double.parseDouble(s.trim()); } catch (Exception e) { return 0.0; }
-    }
 }
