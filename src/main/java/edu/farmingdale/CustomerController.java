@@ -9,7 +9,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CustomerController {
+public class CustomerController implements Refreshable {
 
     @FXML private VBox addCustomerForm;
     @FXML private TextField firstNameField, lastNameField, emailField, phoneField;
@@ -25,6 +25,11 @@ public class CustomerController {
         if (searchField != null) {
             searchField.textProperty().addListener((obs, oldValue, newValue) -> applyFilter());
         }
+        loadCustomers();
+    }
+
+    @Override
+    public void refresh() {
         loadCustomers();
     }
 

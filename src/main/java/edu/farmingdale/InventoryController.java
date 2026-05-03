@@ -11,7 +11,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class InventoryController {
+public class InventoryController implements Refreshable {
 
     @FXML private VBox addProductForm;
     @FXML private Label formTitleLabel;
@@ -32,6 +32,11 @@ public class InventoryController {
         if (searchField != null) {
             searchField.textProperty().addListener((obs, oldValue, newValue) -> applyFilter());
         }
+        loadProducts();
+    }
+
+    @Override
+    public void refresh() {
         loadProducts();
     }
 

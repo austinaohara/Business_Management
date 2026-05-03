@@ -60,6 +60,15 @@
                        styleClass="nav-label" prefWidth="160"/>
             </HBox>
 
+            <HBox fx:id="navSales" alignment="CENTER_LEFT" spacing="12" styleClass="nav-item">
+                <VBox.margin><Insets top="8" right="12" bottom="0" left="12"/></VBox.margin>
+                <ImageView fitWidth="20" fitHeight="20" preserveRatio="true">
+                    <image><Image url="@/images/shopping-cart.png"/></image>
+                </ImageView>
+                <Label text="Sales" wrapText="true"
+                       styleClass="nav-label" prefWidth="160"/>
+            </HBox>
+
         </VBox>
     </left>
 

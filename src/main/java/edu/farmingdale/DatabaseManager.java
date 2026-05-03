@@ -16,8 +16,7 @@ public class DatabaseManager {
         try (Connection conn = getConnection();
              Statement stmt = conn.createStatement()) {
 
-            // Inventory table
-            stmt.execute("CREATE TABLE Inventory (" +
+            createTable(stmt, "CREATE TABLE Inventory (" +
                     "id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY, " +
                     "name VARCHAR(255), " +
                     "category VARCHAR(100), " +
@@ -29,38 +28,41 @@ public class DatabaseManager {
                     "supplier VARCHAR(255), " +
                     "storage_location VARCHAR(100))");
 
-            // Suppliers table
-            stmt.execute("CREATE TABLE Suppliers (" +
+            createTable(stmt, "CREATE TABLE Suppliers (" +
                     "id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY, " +
                     "name VARCHAR(255), " +
                     "contact_info VARCHAR(255), " +
                     "lead_time INT, " +
                     "payment_info VARCHAR(255))");
 
-            // Customers table
-            stmt.execute("CREATE TABLE Customers (" +
+            createTable(stmt, "CREATE TABLE Customers (" +
                     "profile_id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY, " +
                     "first_name VARCHAR(100), " +
                     "last_name VARCHAR(100), " +
                     "email VARCHAR(255), " +
                     "phone VARCHAR(20))");
 
-            // Orders table
-            stmt.execute("CREATE TABLE Orders (" +
+            createTable(stmt, "CREATE TABLE Orders (" +
                     "order_id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY, " +
                     "customer_id INT, " +
                     "amount DOUBLE, " +
                     "status VARCHAR(50), " +
                     "order_date DATE)");
 
-            // Staff profiles
-            stmt.execute("CREATE TABLE StaffProfiles (" +
+            createTable(stmt, "CREATE TABLE OrderItems (" +
+                    "item_id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY, " +
+                    "order_id INT, " +
+                    "product_name VARCHAR(255), " +
+                    "quantity INT, " +
+                    "unit_price DOUBLE)");
+
+            createTable(stmt, "CREATE TABLE StaffProfiles (" +
                     "staff_id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY, " +
                     "username VARCHAR(50) UNIQUE, " +
                     "password_hash VARCHAR(255), " +
                     "theme_preference VARCHAR(20) DEFAULT 'LIGHT')");
 
-            stmt.execute("CREATE TABLE SupplierOrders (" +
+            createTable(stmt, "CREATE TABLE SupplierOrders (" +
                     "order_id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY, " +
                     "supplier_name VARCHAR(255), " +
                     "product_name VARCHAR(255), " +
@@ -70,11 +72,17 @@ public class DatabaseManager {
                     "notes VARCHAR(500), " +
                     "status VARCHAR(50) DEFAULT 'Pending')");
 
-            System.out.println("Database tables created successfully.");
+        } catch (SQLException e) {
+            System.err.println("Database initialization error: " + e.getMessage());
+        }
+    }
 
+    private static void createTable(Statement stmt, String sql) {
+        try {
+            stmt.execute(sql);
         } catch (SQLException e) {
             if (!"X0Y32".equals(e.getSQLState())) {
-                System.err.println("Database initialization error: " + e.getMessage());
+                System.err.println("Error creating table: " + e.getMessage());
             }
         }
     }

@@ -16,8 +16,10 @@ public class MainController {
     @FXML private HBox navInventory;
     @FXML private HBox navSupplier;
     @FXML private HBox navCustomer;
+    @FXML private HBox navSales;
 
     private final Map<String, Node> pageCache = new HashMap<>();
+    private final Map<String, Refreshable> controllerCache = new HashMap<>();
 
     @FXML
     public void initialize() {
@@ -26,10 +28,11 @@ public class MainController {
         navInventory.setOnMouseClicked(e -> loadPage(navInventory, "/edu/farmingdale/inventory.fxml"));
         navSupplier.setOnMouseClicked(e -> loadPage(navSupplier, "/edu/farmingdale/supplier.fxml"));
         navCustomer.setOnMouseClicked(e -> loadPage(navCustomer, "/edu/farmingdale/customer.fxml"));
+        navSales.setOnMouseClicked(e -> loadPage(navSales, "/edu/farmingdale/sales.fxml"));
     }
 
     private void loadPage(HBox selectedNav, String path) {
-        for (HBox nav : new HBox[]{navDashboard, navInventory, navSupplier, navCustomer}) {
+        for (HBox nav : new HBox[]{navDashboard, navInventory, navSupplier, navCustomer, navSales}) {
             nav.getStyleClass().remove("nav-item-active");
             if (!nav.getStyleClass().contains("nav-item")) {
                 nav.getStyleClass().add("nav-item");
@@ -38,15 +41,26 @@ public class MainController {
         selectedNav.getStyleClass().remove("nav-item");
         selectedNav.getStyleClass().add("nav-item-active");
 
-        //cache pages instead of having to load everything on app startup -- lazy load
-        pageCache.computeIfAbsent(path, p -> {
+        if (!pageCache.containsKey(path)) {
             try {
-                return FXMLLoader.load(getClass().getResource(p));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource(path));
+                Node page = loader.load();
+                pageCache.put(path, page);
+                Object controller = loader.getController();
+                if (controller instanceof Refreshable) {
+                    controllerCache.put(path, (Refreshable) controller);
+                }
             } catch (IOException e) {
                 e.printStackTrace();
-                return null;
+                return;
             }
-        });
-        contentArea.getChildren().setAll((Node) pageCache.get(path));
+        } else {
+            Refreshable controller = controllerCache.get(path);
+            if (controller != null) {
+                controller.refresh();
+            }
+        }
+
+        contentArea.getChildren().setAll(pageCache.get(path));
     }
 }

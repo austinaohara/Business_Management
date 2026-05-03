@@ -12,7 +12,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SupplierController {
+public class SupplierController implements Refreshable {
 
     @FXML private VBox newOrderForm;
     @FXML private TextField supplierNameField, productNameField, quantityField, dueDateField, priorityField;
@@ -21,19 +21,57 @@ public class SupplierController {
     @FXML private VBox deliveryRows;
     @FXML private VBox supplierRows;
     @FXML private HBox deliveryTemplateRow;
+    @FXML private Label activeSuppliersLabel, activeOrdersLabel, nextDeliveryLabel, deliveredLabel;
     private final List<RowData> allSupplierRows = new ArrayList<>();
 
     @FXML
     public void initialize() {
         TextFieldFormatter.applyIntegerFilter(quantityField);
         TextFieldFormatter.applyIntegerFilter(priorityField);
-TextFieldFormatter.applyDateFormatter(dueDateField);
-        loadDeliveries();
+        TextFieldFormatter.applyDateFormatter(dueDateField);
         if (searchField != null) {
             searchField.textProperty().addListener((obs, oldValue, newValue) -> applySupplierFilter());
         }
+        loadStats();
         loadDeliveries();
         loadSuppliers();
+    }
+
+    @Override
+    public void refresh() {
+        loadStats();
+        loadDeliveries();
+        loadSuppliers();
+    }
+
+    private void loadStats() {
+        try (Connection conn = DatabaseManager.getConnection()) {
+            try (Statement st = conn.createStatement();
+                 ResultSet rs = st.executeQuery("SELECT COUNT(*) FROM Suppliers")) {
+                if (rs.next() && activeSuppliersLabel != null)
+                    activeSuppliersLabel.setText(String.valueOf(rs.getInt(1)));
+            }
+            try (Statement st = conn.createStatement();
+                 ResultSet rs = st.executeQuery(
+                     "SELECT COUNT(*) FROM SupplierOrders WHERE status='Pending'")) {
+                if (rs.next() && activeOrdersLabel != null)
+                    activeOrdersLabel.setText(String.valueOf(rs.getInt(1)));
+            }
+            try (Statement st = conn.createStatement();
+                 ResultSet rs = st.executeQuery(
+                     "SELECT due_date FROM SupplierOrders WHERE status='Pending' " +
+                     "AND due_date IS NOT NULL AND due_date <> '' " +
+                     "ORDER BY order_id ASC FETCH FIRST 1 ROW ONLY")) {
+                if (nextDeliveryLabel != null)
+                    nextDeliveryLabel.setText(rs.next() ? rs.getString("due_date") : "—");
+            }
+            try (Statement st = conn.createStatement();
+                 ResultSet rs = st.executeQuery(
+                     "SELECT COUNT(*) FROM SupplierOrders WHERE status='Delivered'")) {
+                if (rs.next() && deliveredLabel != null)
+                    deliveredLabel.setText(String.valueOf(rs.getInt(1)));
+            }
+        } catch (SQLException e) { e.printStackTrace(); }
     }
 
     @FXML
@@ -65,6 +103,7 @@ TextFieldFormatter.applyDateFormatter(dueDateField);
             ps.executeUpdate();
         } catch (SQLException e) { e.printStackTrace(); }
         onCancelOrder();
+        loadStats();
         loadDeliveries();
     }
 
@@ -102,6 +141,7 @@ TextFieldFormatter.applyDateFormatter(dueDateField);
             markDone.executeUpdate();
 
         } catch (SQLException e) { e.printStackTrace(); }
+        loadStats();
         loadDeliveries();
     }
 

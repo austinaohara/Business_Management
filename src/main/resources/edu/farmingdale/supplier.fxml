@@ -36,7 +36,7 @@
                 </ImageView>
                 <Label text="Active Suppliers" styleClass="stat-subtitle"/>
             </HBox>
-            <Label text="1" styleClass="stat-value"/>
+            <Label fx:id="activeSuppliersLabel" text="0" styleClass="stat-value"/>
         </VBox>
 
         <VBox HBox.hgrow="ALWAYS" styleClass="stat-card">
@@ -46,7 +46,7 @@
                 </ImageView>
                 <Label text="Active Orders" styleClass="stat-subtitle"/>
             </HBox>
-            <Label text="3" styleClass="stat-value"/>
+            <Label fx:id="activeOrdersLabel" text="0" styleClass="stat-value"/>
         </VBox>
 
         <VBox HBox.hgrow="ALWAYS" styleClass="stat-card">
@@ -56,7 +56,7 @@
                 </ImageView>
                 <Label text="Next Delivery" styleClass="stat-subtitle"/>
             </HBox>
-            <Label text="Apr 30, 2026" styleClass="stat-date"/>
+            <Label fx:id="nextDeliveryLabel" text="—" styleClass="stat-date"/>
         </VBox>
 
         <VBox HBox.hgrow="ALWAYS" styleClass="stat-card">
@@ -64,9 +64,9 @@
                 <ImageView fitWidth="20" fitHeight="20" preserveRatio="true">
                     <image><Image url="@/images/clock.png"/></image>
                 </ImageView>
-                <Label text="In Transit" styleClass="stat-subtitle"/>
+                <Label text="Delivered" styleClass="stat-subtitle"/>
             </HBox>
-            <Label text="1" styleClass="stat-value-warning"/>
+            <Label fx:id="deliveredLabel" text="0" styleClass="stat-value"/>
         </VBox>
 
     </HBox>
