@@ -90,7 +90,8 @@
     <!-- Search Bar -->
     <HBox styleClass="search-bar">
         <VBox.margin><Insets bottom="15"/></VBox.margin>
-        <TextField promptText="Search products by name, category, or ID..."
+        <TextField fx:id="searchField"
+                   promptText="Search products by name, category, or ID..."
                    maxWidth="Infinity" HBox.hgrow="ALWAYS" styleClass="search-field"/>
     </HBox>
 
