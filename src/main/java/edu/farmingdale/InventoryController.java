@@ -16,7 +16,6 @@ public class InventoryController {
     @FXML private VBox addProductForm;
     @FXML private Label formTitleLabel;
     @FXML private TextField nameField, categoryField, stockField, unitPriceField, priceField, supplierField;
-    @FXML private TextField nameField, categoryField, stockField, minStockField, priceField, supplierField;
     @FXML private TextField searchField;
     @FXML private VBox productRows;
     @FXML private HBox templateRow;

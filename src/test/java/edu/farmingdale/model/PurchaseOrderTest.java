@@ -22,7 +22,6 @@ class PurchaseOrderTest {
                         LocalDate.of(2026, 5, 1),
                         PurchaseOrderStatus.DRAFT,
                         5,
-                        new BigDecimal("100.00"),
                         null
                 )
         );
@@ -40,7 +39,6 @@ class PurchaseOrderTest {
                         LocalDate.of(2026, 5, 3),
                         PurchaseOrderStatus.ORDERED,
                         5,
-                        new BigDecimal("100.00"),
                         null,
                         List.of()
                 )
@@ -60,7 +58,6 @@ class PurchaseOrderTest {
                 LocalDate.of(2026, 5, 3),
                 PurchaseOrderStatus.ORDERED,
                 5,
-                new BigDecimal("100.00"),
                 null,
                 List.of(
                         new PurchaseOrderItem(1, 2, new BigDecimal("7.50")),
@@ -79,7 +76,6 @@ class PurchaseOrderTest {
                 LocalDate.of(2026, 5, 3),
                 PurchaseOrderStatus.ORDERED,
                 5,
-                new BigDecimal("100.00"),
                 null,
                 List.of(new PurchaseOrderItem(1, 2, new BigDecimal("7.50")))
         );
