@@ -63,7 +63,7 @@
     <!-- Add New Product Form (hidden by default) -->
     <VBox fx:id="addProductForm" styleClass="section-card" visible="false" managed="false">
         <VBox.margin><Insets bottom="20"/></VBox.margin>
-        <Label text="Add New Product" styleClass="section-title">
+        <Label fx:id="formTitleLabel" text="Add New Product" styleClass="section-title">
             <VBox.margin><Insets bottom="15"/></VBox.margin>
         </Label>
         <HBox spacing="20">

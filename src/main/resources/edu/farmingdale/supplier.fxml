@@ -93,7 +93,6 @@
         <HBox spacing="20">
             <VBox.margin><Insets bottom="15"/></VBox.margin>
             <TextField fx:id="priorityField" promptText="Priority (1-10, 10 = highest)" maxWidth="Infinity" HBox.hgrow="ALWAYS" styleClass="form-field"/>
-            <TextField fx:id="budgetField"   promptText="Budget (optional)"             maxWidth="Infinity" HBox.hgrow="ALWAYS" styleClass="form-field"/>
         </HBox>
 
         <TextArea fx:id="notesArea" promptText="Additional notes or requirements..."
@@ -107,8 +106,17 @@
         </HBox>
     </VBox>
 
+    <!-- Search Bar -->
+    <HBox styleClass="search-bar">
+        <VBox.margin><Insets bottom="15"/></VBox.margin>
+        <TextField promptText="Search orders by supplier, product, or status..."
+        <TextField fx:id="searchField"
+                   promptText="Search suppliers by name, contact, or ID..."
+                   maxWidth="Infinity" HBox.hgrow="ALWAYS" styleClass="search-field"/>
+    </HBox>
+
     <!-- Upcoming Deliveries -->
-    <VBox styleClass="section-card">
+    <VBox VBox.vgrow="ALWAYS" styleClass="section-card">
         <VBox.margin><Insets bottom="20"/></VBox.margin>
 
         <Label text="Upcoming Deliveries" styleClass="section-title">
@@ -116,98 +124,30 @@
         </Label>
 
         <HBox styleClass="table-header-row">
-            <Label text="Supplier"      styleClass="table-header-cell" prefWidth="300"/>
-            <Label text="Delivery Date" styleClass="table-header-cell" prefWidth="200"/>
-            <Label text="Items"         styleClass="table-header-cell" prefWidth="300"/>
-            <Label text="Status"        styleClass="table-header-cell" prefWidth="150"/>
+            <Label text="Supplier"     styleClass="table-header-cell" prefWidth="120"/>
+            <Label text="Product"      styleClass="table-header-cell" prefWidth="120"/>
+            <Label text="Qty"          styleClass="table-header-cell" prefWidth="50"/>
+            <Label text="Due Date"     styleClass="table-header-cell" prefWidth="95"/>
+            <Label text="Priority"     styleClass="table-header-cell" prefWidth="55"/>
+            <Label text="Notes"        styleClass="table-header-cell" prefWidth="120"/>
+            <Label text="Status"       styleClass="table-header-cell" prefWidth="90"/>
+            <Label text="Confirm"      styleClass="table-header-cell" prefWidth="95"/>
         </HBox>
 
         <!-- Template row — cloned and populated when data is inserted -->
         <HBox fx:id="deliveryTemplateRow" styleClass="table-row" alignment="CENTER_LEFT"
               visible="false" managed="false">
-            <Label text="TechCorp Solutions" styleClass="table-cell" prefWidth="300"/>
-            <HBox alignment="CENTER_LEFT" spacing="6" prefWidth="200">
-                <ImageView fitWidth="14" fitHeight="14" preserveRatio="true">
-                    <image><Image url="@/images/calendar.png"/></image>
-                </ImageView>
-                <Label text="May 1, 2026" styleClass="table-cell"/>
-            </HBox>
-            <Label text="Laptops (25), USB-C Hubs (60)" styleClass="table-cell" prefWidth="300"/>
-            <Label text="In Transit" styleClass="status-in-transit"/>
+            <Label text="TechCorp"     styleClass="table-cell" prefWidth="150"/>
+            <Label text="Laptops"      styleClass="table-cell" prefWidth="150"/>
+            <Label text="25"           styleClass="table-cell" prefWidth="70"/>
+            <Label text="05/01/2026"   styleClass="table-cell" prefWidth="110"/>
+            <Label text="8"            styleClass="table-cell" prefWidth="80"/>
+            <Label text="—"            styleClass="table-cell" prefWidth="170"/>
+            <Label text="In Transit"   styleClass="status-in-transit"/>
         </HBox>
 
-        <VBox fx:id="deliveryRows"/>
-
-    </VBox>
-
-    <!-- Search Bar -->
-    <HBox styleClass="search-bar">
-        <VBox.margin><Insets bottom="15"/></VBox.margin>
-        <TextField fx:id="searchField"
-                   promptText="Search suppliers by name, contact, or ID..."
-                   maxWidth="Infinity" HBox.hgrow="ALWAYS" styleClass="search-field"/>
-    </HBox>
-
-    <!-- All Suppliers -->
-    <VBox VBox.vgrow="ALWAYS" styleClass="section-card">
-
-        <Label text="All Suppliers" styleClass="section-title">
-            <VBox.margin><Insets bottom="15"/></VBox.margin>
-        </Label>
-
-        <HBox styleClass="table-header-row">
-            <Label text="Supplier ID"   styleClass="table-header-cell" prefWidth="110"/>
-            <Label text="Name"          styleClass="table-header-cell" prefWidth="180"/>
-            <Label text="Contact"       styleClass="table-header-cell" prefWidth="210"/>
-            <Label text="Next Delivery" styleClass="table-header-cell" prefWidth="130"/>
-            <Label text="Active Orders" styleClass="table-header-cell" prefWidth="130"/>
-            <Label text="Products"      styleClass="table-header-cell" prefWidth="180"/>
-            <Label text="Actions"       styleClass="table-header-cell" prefWidth="80"/>
-        </HBox>
-
-        <!-- Template row — cloned and populated when data is inserted -->
-        <HBox fx:id="supplierTemplateRow" styleClass="table-row" alignment="CENTER_LEFT"
-              visible="false" managed="false">
-
-            <Label text="SUP-001" styleClass="table-cell" prefWidth="110"/>
-
-            <VBox prefWidth="180">
-                <Label text="TechCorp Solutions" styleClass="table-cell"/>
-                <Label text="Rating: 4.8/5.0"   styleClass="cell-secondary"/>
-            </VBox>
-
-            <VBox prefWidth="210">
-                <Label text="John Smith" styleClass="table-cell"/>
-                <HBox alignment="CENTER_LEFT" spacing="4">
-                    <Label text="&#9993;" styleClass="cell-secondary"/>
-                    <Label text="john@techcorp.com" styleClass="cell-secondary"/>
-                </HBox>
-                <HBox alignment="CENTER_LEFT" spacing="4">
-                    <Label text="&#9742;" styleClass="cell-secondary"/>
-                    <Label text="+1 (555) 123-4567" styleClass="cell-secondary"/>
-                </HBox>
-            </VBox>
-
-            <HBox alignment="CENTER_LEFT" spacing="6" prefWidth="130">
-                <ImageView fitWidth="14" fitHeight="14" preserveRatio="true">
-                    <image><Image url="@/images/calendar.png"/></image>
-                </ImageView>
-                <Label text="May 1" styleClass="table-cell"/>
-            </HBox>
-
-            <Label text="3 active" styleClass="cell-secondary" prefWidth="130"/>
-
-            <Label text="Laptops, USB-C Hubs" styleClass="table-cell" prefWidth="180"/>
-
-            <HBox alignment="CENTER_LEFT" spacing="8" prefWidth="80">
-                <Button text="&#9999;" styleClass="action-btn-edit"/>
-                <Button text="&#9993;" styleClass="action-btn-edit"/>
-            </HBox>
-
-        </HBox>
-
-        <ScrollPane VBox.vgrow="ALWAYS" fitToWidth="true" styleClass="table-scroll">
-            <VBox fx:id="supplierRows"/>
+        <ScrollPane VBox.vgrow="ALWAYS" fitToWidth="true" maxHeight="220" styleClass="table-scroll">
+            <VBox fx:id="deliveryRows"/>
         </ScrollPane>
 
     </VBox>

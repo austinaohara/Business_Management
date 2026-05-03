@@ -21,6 +21,7 @@ public class CustomerController {
 
     @FXML
     public void initialize() {
+        TextFieldFormatter.applyPhoneFormatter(phoneField);
         if (searchField != null) {
             searchField.textProperty().addListener((obs, oldValue, newValue) -> applyFilter());
         }
