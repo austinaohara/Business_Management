@@ -16,7 +16,6 @@ public class SupplierController {
 
     @FXML private VBox newOrderForm;
     @FXML private TextField supplierNameField, productNameField, quantityField, dueDateField, priorityField;
-    @FXML private TextField supplierNameField, productNameField, quantityField, dueDateField, priorityField, budgetField;
     @FXML private TextField searchField;
     @FXML private TextArea notesArea;
     @FXML private VBox deliveryRows;
@@ -162,6 +161,8 @@ TextFieldFormatter.applyDateFormatter(dueDateField);
         lbl.getStyleClass().add("table-cell");
         lbl.setPrefWidth(width);
         return lbl;
+    }
+
     private void loadSuppliers() {
         allSupplierRows.clear();
         try (Connection conn = DatabaseManager.getConnection();
