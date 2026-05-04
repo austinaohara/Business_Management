@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="edu.farmingdale.SalesController"
+      styleClass="main-content">
+
+    <!-- Title Row -->
+    <HBox alignment="CENTER_LEFT">
+        <VBox.margin><Insets bottom="20"/></VBox.margin>
+        <Label text="Sales" styleClass="page-title"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Button text="+ Record Sale" styleClass="btn-primary" onAction="#onRecordSale"/>
+    </HBox>
+
+    <!-- Stat Cards -->
+    <HBox spacing="20">
+        <VBox.margin><Insets bottom="25"/></VBox.margin>
+
+        <VBox HBox.hgrow="ALWAYS" styleClass="stat-card">
+            <HBox alignment="CENTER_LEFT">
+                <ImageView fitWidth="28" fitHeight="28" preserveRatio="true">
+                    <image><Image url="@/images/dollar.png"/></image>
+                </ImageView>
+            </HBox>
+            <Label fx:id="totalRevenueLabel" text="\$0.00" styleClass="stat-value"/>
+            <Label text="Total Revenue" styleClass="stat-subtitle"/>
+        </VBox>
+
+        <VBox HBox.hgrow="ALWAYS" styleClass="stat-card">
+            <HBox alignment="CENTER_LEFT">
+                <ImageView fitWidth="28" fitHeight="28" preserveRatio="true">
+                    <image><Image url="@/images/shopping-cart.png"/></image>
+                </ImageView>
+            </HBox>
+            <Label fx:id="totalSalesLabel" text="0" styleClass="stat-value"/>
+            <Label text="Total Sales" styleClass="stat-subtitle"/>
+        </VBox>
+
+        <VBox HBox.hgrow="ALWAYS" styleClass="stat-card">
+            <HBox alignment="CENTER_LEFT">
+                <ImageView fitWidth="28" fitHeight="28" preserveRatio="true">
+                    <image><Image url="@/images/box.png"/></image>
+                </ImageView>
+            </HBox>
+            <Label fx:id="itemsSoldLabel" text="0" styleClass="stat-value"/>
+            <Label text="Items Sold" styleClass="stat-subtitle"/>
+        </VBox>
+
+    </HBox>
+
+    <!-- Record Sale Form (hidden by default) -->
+    <VBox fx:id="recordSaleForm" styleClass="section-card" visible="false" managed="false">
+        <VBox.margin><Insets bottom="20"/></VBox.margin>
+        <Label text="Record Sale" styleClass="section-title">
+            <VBox.margin><Insets bottom="15"/></VBox.margin>
+        </Label>
+        <HBox spacing="20">
+            <VBox.margin><Insets bottom="10"/></VBox.margin>
+            <ComboBox fx:id="saleProductCombo" promptText="Select Product" maxWidth="Infinity" HBox.hgrow="ALWAYS" styleClass="form-field"/>
+            <TextField fx:id="saleQuantityField" promptText="Quantity" maxWidth="Infinity" HBox.hgrow="ALWAYS" styleClass="form-field"/>
+        </HBox>
+        <Label fx:id="availableLabel" text="">
+            <VBox.margin><Insets bottom="12"/></VBox.margin>
+        </Label>
+        <HBox spacing="20">
+            <VBox.margin><Insets bottom="20"/></VBox.margin>
+            <TextField fx:id="salePriceField" promptText="Price" maxWidth="Infinity" HBox.hgrow="ALWAYS" styleClass="form-field"/>
+            <Region HBox.hgrow="ALWAYS"/>
+        </HBox>
+        <HBox spacing="12">
+            <Button text="Save Sale"  styleClass="btn-primary"   onAction="#onSaveSale"/>
+            <Button text="Cancel"     styleClass="btn-secondary" onAction="#onCancelSale"/>
+        </HBox>
+    </VBox>
+
+    <!-- Search Bar -->
+    <HBox styleClass="search-bar">
+        <VBox.margin><Insets bottom="15"/></VBox.margin>
+        <TextField fx:id="searchField"
+                   promptText="Search sales by product or sale ID..."
+                   maxWidth="Infinity" HBox.hgrow="ALWAYS" styleClass="search-field"/>
+    </HBox>
+
+    <!-- Sales Table -->
+    <VBox VBox.vgrow="ALWAYS" styleClass="section-card">
+        <HBox styleClass="table-header-row">
+            <Label text="Sale ID"    styleClass="table-header-cell" prefWidth="110"/>
+            <Label text="Product"    styleClass="table-header-cell" prefWidth="200"/>
+            <Label text="Qty"        styleClass="table-header-cell" prefWidth="70"/>
+            <Label text="Unit Price" styleClass="table-header-cell" prefWidth="110"/>
+            <Label text="Total"      styleClass="table-header-cell" prefWidth="110"/>
+            <Label text="Date"       styleClass="table-header-cell" prefWidth="110"/>
+            <Label text="Status"     styleClass="table-header-cell" prefWidth="110"/>
+        </HBox>
+
+        <!-- Template row cloned by SalesController -->
+        <HBox fx:id="templateRow" styleClass="table-row" visible="false" managed="false">
+            <Label text="ORD-001"    styleClass="table-cell" prefWidth="110"/>
+            <Label text="Product"    styleClass="table-cell" prefWidth="200"/>
+            <Label text="1"          styleClass="table-cell" prefWidth="70"/>
+            <Label text="\$0.00"     styleClass="table-cell" prefWidth="110"/>
+            <Label text="\$0.00"     styleClass="table-cell" prefWidth="110"/>
+            <Label text="2026-01-01" styleClass="table-cell" prefWidth="110"/>
+            <Label text="Completed"  styleClass="status-completed"/>
+        </HBox>
+
+        <ScrollPane VBox.vgrow="ALWAYS" fitToWidth="true" styleClass="table-scroll">
+            <VBox fx:id="saleRows"/>
+        </ScrollPane>
+    </VBox>
+
+</VBox>
