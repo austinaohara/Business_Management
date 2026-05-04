@@ -91,7 +91,7 @@ A dedicated dashboard to maintain customer relations. Staff can view detailed pr
 ### Sales Page
 ![Sales Page](https://github.com/user-attachments/assets/924cdf8d-9bc9-4e41-ade8-c35bd7abb19b)
 
-The Sales module is the point-of-sale and order processing center of the application. Staff can use this dashboard to process new retail orders and link transactions directly to existing customer profiles. 
+The Sales page is the point of sale and order processing center of the application. Staff can use this dashboard to process new retail orders and link transactions directly to existing customer profiles. 
 
 When a new `SalesOrder` is processed and marked as completed, the system automatically communicates with the `InventoryDataRepository` to deduct the purchased quantities from the active stock, ensuring the dashboard statistics and low-stock alerts are always running on real-time data.
 
