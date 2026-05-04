@@ -1,0 +1,104 @@
+package edu.farmingdale;
+
+import edu.farmingdale.model.enums.ThemePreference;
+import edu.farmingdale.repository.StaffProfileDataRepository;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleButton;
+import javafx.scene.layout.BorderPane;
+import javafx.stage.Stage;
+
+import java.io.IOException;
+
+public class LoginController {
+
+    @FXML private BorderPane rootPane;
+    @FXML private TextField usernameField;
+    @FXML private PasswordField passwordField;
+    @FXML private Label statusLabel;
+    @FXML private ToggleButton themeToggleSwitch;
+    @FXML private Label themeModeLabel;
+    private final StaffProfileDataRepository staffProfileRepository = new StaffProfileDataRepository();
+    private ThemePreference themePreference = ThemePreference.LIGHT;
+
+    @FXML
+    public void initialize() {
+        clearStatus();
+        applyTheme();
+    }
+
+    @FXML
+    private void onSignIn() {
+        String username = usernameField.getText() == null ? "" : usernameField.getText().trim();
+        String password = passwordField.getText() == null ? "" : passwordField.getText().trim();
+
+        if (username.isEmpty() || password.isEmpty()) {
+            showStatus("Please enter a username and password.");
+            return;
+        }
+
+        if (!staffProfileRepository.isValidCredentials(username, password)) {
+            showStatus("Invalid username or password.");
+            return;
+        }
+
+        openMainApp();
+    }
+
+    @FXML
+    private void onToggleTheme() {
+        themePreference = themeToggleSwitch.isSelected()
+                ? ThemePreference.DARK
+                : ThemePreference.LIGHT;
+        applyTheme();
+    }
+
+    private void openMainApp() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/farmingdale/main_frame.fxml"));
+            Scene scene = new Scene(loader.load());
+            scene.getStylesheets().add(getClass().getResource("/styling/main.css").toExternalForm());
+
+            MainController mainController = loader.getController();
+            if (mainController != null) {
+                mainController.setThemePreference(themePreference);
+            }
+
+            Stage stage = (Stage) usernameField.getScene().getWindow();
+            stage.setScene(scene);
+            stage.setWidth(1200);
+            stage.setHeight(750);
+            stage.centerOnScreen();
+            stage.show();
+        } catch (IOException e) {
+            showStatus("Unable to open the main application.");
+            e.printStackTrace();
+        }
+    }
+
+    private void applyTheme() {
+        rootPane.getStyleClass().remove("dark-mode");
+        boolean darkModeEnabled = themePreference == ThemePreference.DARK;
+        if (darkModeEnabled) {
+            rootPane.getStyleClass().add("dark-mode");
+        }
+        themeToggleSwitch.setSelected(darkModeEnabled);
+        themeModeLabel.setText(darkModeEnabled ? "Dark" : "Light");
+    }
+
+    private void clearStatus() {
+        statusLabel.setText("");
+        statusLabel.setVisible(false);
+        statusLabel.setManaged(false);
+    }
+
+    private void showStatus(String message) {
+        statusLabel.setText(message);
+        statusLabel.setVisible(true);
+        statusLabel.setManaged(true);
+    }
+}

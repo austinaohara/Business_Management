@@ -56,7 +56,7 @@
                 </ImageView>
                 <Label text="Next Delivery" styleClass="stat-subtitle"/>
             </HBox>
-            <Label fx:id="nextDeliveryLabel" text="—" styleClass="stat-date"/>
+            <Label fx:id="nextDeliveryLabel" text="-" styleClass="stat-date"/>
         </VBox>
 
         <VBox HBox.hgrow="ALWAYS" styleClass="stat-card">
@@ -133,7 +133,7 @@
             <Label text="Confirm"      styleClass="table-header-cell" prefWidth="95"/>
         </HBox>
 
-        <!-- Template row — cloned and populated when data is inserted -->
+        <!-- Template row - cloned and populated when data is inserted -->
         <HBox fx:id="deliveryTemplateRow" styleClass="table-row" alignment="CENTER_LEFT"
               visible="false" managed="false">
             <Label text="TechCorp"     styleClass="table-cell" prefWidth="150"/>
@@ -141,7 +141,7 @@
             <Label text="25"           styleClass="table-cell" prefWidth="70"/>
             <Label text="05/01/2026"   styleClass="table-cell" prefWidth="110"/>
             <Label text="8"            styleClass="table-cell" prefWidth="80"/>
-            <Label text="—"            styleClass="table-cell" prefWidth="170"/>
+            <Label text="-"            styleClass="table-cell" prefWidth="170"/>
             <Label text="In Transit"   styleClass="status-in-transit"/>
         </HBox>
 

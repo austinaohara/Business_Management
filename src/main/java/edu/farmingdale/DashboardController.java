@@ -76,7 +76,7 @@ public class DashboardController implements Refreshable {
             row.setAlignment(Pos.CENTER_LEFT);
             row.getChildren().add(cell(shipment.supplierName(), 160));
             row.getChildren().add(cell(shipment.productName(), 160));
-            row.getChildren().add(cell(shipment.dueDate() != null ? shipment.dueDate() : "â€”", 100));
+            row.getChildren().add(cell(shipment.dueDate() != null ? shipment.dueDate() : "-", 100));
             shipmentRows.getChildren().add(row);
         }
         if (shipmentRows.getChildren().isEmpty()) {
@@ -95,7 +95,7 @@ public class DashboardController implements Refreshable {
     }
 
     private Label cell(String text, double width) {
-        Label lbl = new Label(text != null ? text : "â€”");
+        Label lbl = new Label(text != null ? text : "-");
         lbl.getStyleClass().add("table-cell");
         lbl.setPrefWidth(width);
         return lbl;

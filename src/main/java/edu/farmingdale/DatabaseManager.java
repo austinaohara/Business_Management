@@ -2,6 +2,7 @@ package edu.farmingdale;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -72,6 +73,8 @@ public class DatabaseManager {
                     "notes VARCHAR(500), " +
                     "status VARCHAR(50) DEFAULT 'Pending')");
 
+            ensureDefaultStaffProfile(conn);
+
         } catch (SQLException e) {
             System.err.println("Database initialization error: " + e.getMessage());
         }
@@ -84,6 +87,31 @@ public class DatabaseManager {
             if (!"X0Y32".equals(e.getSQLState())) {
                 System.err.println("Error creating table: " + e.getMessage());
             }
+        }
+    }
+
+    private static void ensureDefaultStaffProfile(Connection conn) {
+        try (PreparedStatement update = conn.prepareStatement(
+                "UPDATE StaffProfiles SET password_hash = ?, theme_preference = ? WHERE username = ?")) {
+            update.setString(1, "password");
+            update.setString(2, "LIGHT");
+            update.setString(3, "employee");
+            if (update.executeUpdate() > 0) {
+                return;
+            }
+        } catch (SQLException e) {
+            System.err.println("Error updating default staff profile: " + e.getMessage());
+            return;
+        }
+
+        try (PreparedStatement insert = conn.prepareStatement(
+                "INSERT INTO StaffProfiles(username, password_hash, theme_preference) VALUES(?,?,?)")) {
+            insert.setString(1, "employee");
+            insert.setString(2, "password");
+            insert.setString(3, "LIGHT");
+            insert.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println("Error creating default staff profile: " + e.getMessage());
         }
     }
 }

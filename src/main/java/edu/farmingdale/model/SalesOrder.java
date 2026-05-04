@@ -120,7 +120,7 @@ public class SalesOrder {
 
     private void ensureNotCompleted() {
         if (status == SalesOrderStatus.COMPLETED || status == SalesOrderStatus.CANCELLED) {
-            throw new IllegalStateException("Finalized sales orders cannot be modified.");
+            throw new IllegalStateException("Completed sales orders cannot be modified.");
         }
     }
 
