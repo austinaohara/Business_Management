@@ -5,7 +5,6 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
@@ -15,23 +14,23 @@
 <BorderPane fx:id="rootPane"
             xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="edu.farmingdale.LoginController"
+            fx:controller="edu.farmingdale.RegistrationController"
             prefWidth="1200"
             prefHeight="750"
             styleClass="auth-root">
 
     <center>
-        <StackPane maxWidth="1040" maxHeight="620" styleClass="auth-stage">
+        <StackPane maxWidth="1040" maxHeight="680" styleClass="auth-stage">
             <Region styleClass="auth-glow-one"/>
             <Region styleClass="auth-glow-two"/>
 
             <HBox maxWidth="960" styleClass="auth-shell">
                 <VBox prefWidth="330" styleClass="auth-side">
                     <Label text="Business Management" styleClass="auth-side-brand"/>
-                    <Label text="Control center for day-to-day operations." wrapText="true" styleClass="auth-side-title">
+                    <Label text="Join the workspace today." wrapText="true" styleClass="auth-side-title">
                         <VBox.margin><Insets top="18"/></VBox.margin>
                     </Label>
-                    <Label text="Access inventory, suppliers, customers, and sales from one clean operational workspace." wrapText="true" styleClass="auth-side-subtitle">
+                    <Label text="Create your account to access inventory, suppliers, customers, and sales from one clean operational workspace." wrapText="true" styleClass="auth-side-subtitle">
                         <VBox.margin><Insets top="10" bottom="24"/></VBox.margin>
                     </Label>
 
@@ -47,39 +46,38 @@
                 <VBox HBox.hgrow="ALWAYS" styleClass="auth-form-panel">
                     <BorderPane>
                         <left>
-                            <Label text="Secure Sign In" styleClass="auth-badge"/>
+                            <Label text="New Account" styleClass="auth-badge"/>
                         </left>
                         <right>
-                            <HBox alignment="CENTER_RIGHT" spacing="8" styleClass="auth-theme-switch-wrap">
-                                <Label text="Staff Portal" styleClass="auth-caption"/>
-                                <Label fx:id="themeModeLabel" text="Light" styleClass="auth-theme-mode-label"/>
-                                <ToggleButton fx:id="themeToggleSwitch"
-                                        text=""
-                                        onAction="#onToggleTheme"
-                                        styleClass="auth-theme-switch"/>
-                            </HBox>
+                            <Label text="Staff Portal" styleClass="auth-caption"/>
                         </right>
                     </BorderPane>
 
-                    <Label text="Welcome Back" styleClass="auth-title">
+                    <Label text="Create Account" styleClass="auth-title">
                         <VBox.margin><Insets top="12"/></VBox.margin>
                     </Label>
-                    <Label text="Use your credentials to enter the workspace." styleClass="auth-subtitle">
+                    <Label text="Set up your credentials to access the workspace." styleClass="auth-subtitle">
                         <VBox.margin><Insets bottom="20"/></VBox.margin>
                     </Label>
 
                     <VBox styleClass="auth-field-wrap">
                         <Label text="Username" styleClass="auth-label"/>
                         <TextField fx:id="usernameField"
-                                   promptText="Enter username"
+                                   promptText="Choose a username"
                                    styleClass="auth-field">
                             <VBox.margin><Insets bottom="12"/></VBox.margin>
                         </TextField>
 
                         <Label text="Password" styleClass="auth-label"/>
                         <PasswordField fx:id="passwordField"
-                                       promptText="Enter password"
-                                       onAction="#onSignIn"
+                                       promptText="Create a password"
+                                       styleClass="auth-field">
+                            <VBox.margin><Insets bottom="12"/></VBox.margin>
+                        </PasswordField>
+
+                        <Label text="Confirm Password" styleClass="auth-label"/>
+                        <PasswordField fx:id="confirmPasswordField"
+                                       promptText="Confirm your password"
                                        styleClass="auth-field">
                             <VBox.margin><Insets bottom="12"/></VBox.margin>
                         </PasswordField>
@@ -89,12 +87,12 @@
                         <VBox.margin><Insets top="4" bottom="12"/></VBox.margin>
                     </Label>
 
-                    <Button text="Sign In" onAction="#onSignIn" styleClass="auth-submit"/>
+                    <Button text="Create Account" styleClass="auth-submit"/>
 
                     <HBox alignment="CENTER" spacing="4">
                         <VBox.margin><Insets top="16"/></VBox.margin>
-                        <Label text="New here?" styleClass="auth-caption"/>
-                        <Button text="Sign up" styleClass="auth-link"/>
+                        <Label text="Already have an account?" styleClass="auth-caption"/>
+                        <Button text="Sign in" styleClass="auth-link"/>
                     </HBox>
 
                     <Region VBox.vgrow="ALWAYS"/>

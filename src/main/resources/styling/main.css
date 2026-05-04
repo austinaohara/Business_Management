@@ -203,6 +203,22 @@
     -fx-background-color: linear-gradient(to right, #4B5563, #1F2937);
 }
 
+.auth-link {
+    -fx-background-color: transparent;
+    -fx-text-fill: #374151;
+    -fx-font-size: 13px;
+    -fx-font-weight: 700;
+    -fx-cursor: hand;
+    -fx-padding: 0;
+    -fx-border-color: transparent;
+    -fx-border-width: 0;
+}
+
+.auth-link:hover {
+    -fx-text-fill: #111827;
+    -fx-underline: true;
+}
+
 .auth-theme-switch-wrap {
     -fx-padding: 2 0 2 0;
 }
@@ -323,6 +339,14 @@
     -fx-background-color: #0EA5E9, #FFFFFF;
     -fx-background-insets: 0, 2 2 2 28;
     -fx-border-color: #0EA5E9;
+}
+
+.dark-mode .auth-link {
+    -fx-text-fill: #93C5FD;
+}
+
+.dark-mode .auth-link:hover {
+    -fx-text-fill: #BFDBFE;
 }
 
 .page-title {
