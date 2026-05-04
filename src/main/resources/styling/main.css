@@ -3,6 +3,19 @@
     -fx-background-color: #E8E8E8;
 }
 
+.theme-toggle {
+    -fx-background-color: #D1D5DB;
+    -fx-text-fill: #111827;
+    -fx-background-radius: 6;
+    -fx-padding: 6 10 6 10;
+    -fx-font-size: 12px;
+    -fx-cursor: hand;
+}
+
+.theme-toggle:hover {
+    -fx-background-color: #C4C9D2;
+}
+
 .sidebar-title {
     -fx-font-size: 15px;
     -fx-font-weight: bold;
@@ -283,4 +296,106 @@
 .cell-secondary {
     -fx-text-fill: #888888;
     -fx-font-size: 11px;
+}
+
+/* Dark mode */
+.dark-mode {
+    -fx-background-color: #111827;
+}
+
+.dark-mode .sidebar {
+    -fx-background-color: #1F2937;
+}
+
+.dark-mode .sidebar-title,
+.dark-mode .nav-label,
+.dark-mode .page-title,
+.dark-mode .section-title,
+.dark-mode .table-header-cell,
+.dark-mode .table-cell,
+.dark-mode .stat-value,
+.dark-mode .stat-date,
+.dark-mode .search-field,
+.dark-mode #topProductLabel,
+.dark-mode #availableLabel {
+    -fx-text-fill: #F9FAFB;
+}
+
+.dark-mode .main-content {
+    -fx-background-color: #111827;
+}
+
+.dark-mode .nav-item-active {
+    -fx-background-color: #374151;
+}
+
+.dark-mode .stat-card,
+.dark-mode .section-card,
+.dark-mode .search-bar,
+.dark-mode .form-field,
+.dark-mode .form-textarea,
+.dark-mode .combo-box {
+    -fx-background-color: #1F2937;
+    -fx-border-color: #374151;
+}
+
+.dark-mode .btn-secondary {
+    -fx-background-color: #1F2937;
+    -fx-text-fill: #F9FAFB;
+    -fx-border-color: #4B5563;
+}
+
+.dark-mode .btn-secondary:hover {
+    -fx-background-color: #374151;
+}
+
+.dark-mode .theme-toggle {
+    -fx-background-color: #374151;
+    -fx-text-fill: #F9FAFB;
+}
+
+.dark-mode .theme-toggle:hover {
+    -fx-background-color: #4B5563;
+}
+
+.dark-mode .search-field,
+.dark-mode .form-field,
+.dark-mode .form-textarea,
+.dark-mode .combo-box,
+.dark-mode .combo-box .list-cell {
+    -fx-text-fill: #F9FAFB;
+}
+
+.dark-mode .search-field,
+.dark-mode .form-field,
+.dark-mode .form-textarea {
+    -fx-prompt-text-fill: #9CA3AF;
+}
+
+.dark-mode .table-header-row {
+    -fx-border-color: transparent transparent #374151 transparent;
+}
+
+.dark-mode .table-row {
+    -fx-border-color: transparent transparent #1F2937 transparent;
+}
+
+.dark-mode .table-scroll,
+.dark-mode .table-scroll > .viewport {
+    -fx-background-color: transparent;
+}
+
+.dark-mode .category-badge,
+.dark-mode .action-btn-edit {
+    -fx-background-color: #374151;
+    -fx-text-fill: #F9FAFB;
+}
+
+.dark-mode .action-btn-edit:hover {
+    -fx-background-color: #4B5563;
+}
+
+.dark-mode .cell-secondary,
+.dark-mode .stat-subtitle {
+    -fx-text-fill: #9CA3AF;
 }
