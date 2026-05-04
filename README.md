@@ -65,9 +65,9 @@ Developed collaboratively as a team project for CSC311, this system encapsulates
 ### Program UI/UX & Main Dashboard
 ![Main Dashboard](https://github.com/user-attachments/assets/fa7302c4-66b0-4096-bfd5-65cb020b10e3)
 
-Upon launching the application, users are greeted by the Main Dashboard. The application uses a `BorderPane` layout with a persistent left-hand navigation menu. The menu is controlled by the `MainController.java`, which lazy-loads the FXML files to keep memory usage low and dynamically updates the active CSS styling based on the user's current view.
+Upon launching the application, users are greeted by the Main Dashboard. The application uses a `BorderPane` layout with a persistent left-hand navigation menu. The menu is controlled by the `MainController.java`, which loads the FXML files to keep memory usage low and dynamically updates the active CSS styling based on the user's current view.
 
-The Dashboard provides immediate business intelligence, including total revenue, total orders, active products, and a table of recent customer orders dynamically fetched from the database.
+The Dashboard provides immediate business intelligence, including total revenue, total orders, active products, and a table of recent customer orders fetched from the database.
 
 ### Inventory Page
 ![Inventory Page](https://github.com/user-attachments/assets/8e310b2a-3a34-41d8-8e9f-9adf18aaac74)
@@ -87,6 +87,13 @@ Users can view "Upcoming Deliveries" to see exactly when items will arrive and u
 ![Customer Page](https://github.com/user-attachments/assets/8bd1bbc8-4670-4a35-8572-1e10590d5d32)
 
 A dedicated dashboard to maintain customer relations. Staff can view detailed profiles containing contact information, making it easier to follow up on orders, respond to reviews, and track purchasing history.
+
+### Sales Page
+![Sales Page](https://github.com/user-attachments/assets/924cdf8d-9bc9-4e41-ade8-c35bd7abb19b)
+
+The Sales module is the point-of-sale and order processing center of the application. Staff can use this dashboard to process new retail orders and link transactions directly to existing customer profiles. 
+
+When a new `SalesOrder` is processed and marked as completed, the system automatically communicates with the `InventoryDataRepository` to deduct the purchased quantities from the active stock, ensuring the dashboard statistics and low-stock alerts are always running on real-time data.
 
 ### Database & Repository Architecture
 
