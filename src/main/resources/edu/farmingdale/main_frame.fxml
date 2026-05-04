@@ -74,14 +74,21 @@
 
             <Region VBox.vgrow="ALWAYS"/>
 
-            <Button fx:id="themeToggleButton"
-                    text="light"
-                    onAction="#onToggleTheme"
-                    styleClass="theme-toggle">
+            <HBox alignment="CENTER_LEFT" spacing="8">
                 <VBox.margin>
                     <Insets top="12" right="12" bottom="16" left="12"/>
                 </VBox.margin>
-            </Button>
+                <Button fx:id="themeToggleButton"
+                        text="light"
+                        onAction="#onToggleTheme"
+                        styleClass="theme-toggle"
+                        HBox.hgrow="ALWAYS"
+                        maxWidth="Infinity"/>
+                <Button fx:id="logoutButton"
+                        text="Log out"
+                        onAction="#onLogout"
+                        styleClass="theme-toggle sidebar-footer-button"/>
+            </HBox>
 
         </VBox>
     </left>
