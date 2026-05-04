@@ -349,6 +349,14 @@
     -fx-background-color: #374151;
 }
 
+.dark-mode .header-action-button {
+    -fx-background-color: #1F2937;
+}
+
+.dark-mode .header-action-button:hover {
+    -fx-background-color: #374151;
+}
+
 .dark-mode .theme-toggle {
     -fx-background-color: #374151;
     -fx-text-fill: #F9FAFB;

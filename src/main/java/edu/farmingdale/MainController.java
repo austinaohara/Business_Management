@@ -51,7 +51,7 @@ public class MainController {
         if (themePreference == ThemePreference.DARK) {
             rootPane.getStyleClass().add("dark-mode");
         }
-        themeToggleButton.setText(themePreference == ThemePreference.DARK ? "dark" : "light");
+        themeToggleButton.setText(themePreference == ThemePreference.DARK ? "💡On" : "Lights Off");
     }
 
     private void loadPage(HBox selectedNav, String path) {
