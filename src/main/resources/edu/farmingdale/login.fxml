@@ -94,7 +94,7 @@
                     <HBox alignment="CENTER" spacing="4">
                         <VBox.margin><Insets top="16"/></VBox.margin>
                         <Label text="New here?" styleClass="auth-caption"/>
-                        <Button text="Sign up" styleClass="auth-link"/>
+                        <Button text="Sign up" onAction="#onSignUp" styleClass="auth-link"/>
                     </HBox>
 
                     <Region VBox.vgrow="ALWAYS"/>
