@@ -80,6 +80,11 @@ public class LoginController {
         }
     }
 
+    public void setThemePreference(ThemePreference themePreference) {
+        this.themePreference = themePreference == null ? ThemePreference.LIGHT : themePreference;
+        applyTheme();
+    }
+
     private void applyTheme() {
         rootPane.getStyleClass().remove("dark-mode");
         boolean darkModeEnabled = themePreference == ThemePreference.DARK;

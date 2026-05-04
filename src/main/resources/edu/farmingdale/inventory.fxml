@@ -14,6 +14,7 @@
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="edu.farmingdale.InventoryController"
+      minHeight="0.0"
       styleClass="main-content">
 
     <!-- Title Row -->

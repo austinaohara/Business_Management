@@ -12,6 +12,11 @@
     -fx-cursor: hand;
 }
 
+.sidebar-footer-button {
+    -fx-padding: 6 12 6 12;
+    -fx-font-size: 12px;
+}
+
 .theme-toggle:hover {
     -fx-background-color: #C4C9D2;
 }

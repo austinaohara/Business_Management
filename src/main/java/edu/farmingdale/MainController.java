@@ -4,10 +4,12 @@ import edu.farmingdale.model.enums.ThemePreference;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -22,6 +24,7 @@ public class MainController {
     @FXML private HBox navCustomer;
     @FXML private HBox navSales;
     @FXML private Button themeToggleButton;
+    @FXML private Button logoutButton;
 
     private final Map<String, Node> pageCache = new HashMap<>();
     private final Map<String, Refreshable> controllerCache = new HashMap<>();
@@ -46,6 +49,29 @@ public class MainController {
         applyTheme();
     }
 
+    @FXML
+    private void onLogout() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/farmingdale/login.fxml"));
+            Scene scene = new Scene(loader.load());
+            scene.getStylesheets().add(getClass().getResource("/styling/main.css").toExternalForm());
+
+            LoginController loginController = loader.getController();
+            if (loginController != null) {
+                loginController.setThemePreference(themePreference);
+            }
+
+            Stage stage = (Stage) rootPane.getScene().getWindow();
+            stage.setScene(scene);
+            stage.setWidth(1200);
+            stage.setHeight(750);
+            stage.centerOnScreen();
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void setThemePreference(ThemePreference themePreference) {
         this.themePreference = themePreference == null ? ThemePreference.LIGHT : themePreference;
         applyTheme();
@@ -57,6 +83,9 @@ public class MainController {
             rootPane.getStyleClass().add("dark-mode");
         }
         themeToggleButton.setText(themePreference == ThemePreference.DARK ? "💡On" : "Lights Off");
+        if (logoutButton != null && !logoutButton.getStyleClass().contains("sidebar-footer-button")) {
+            logoutButton.getStyleClass().add("sidebar-footer-button");
+        }
     }
 
     private void loadPage(HBox selectedNav, String path) {
