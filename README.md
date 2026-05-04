@@ -13,11 +13,14 @@ Advanced Programming Capstone
 - [Features](#features)
 - [Intended Users](#intended-users)
 - [How it Works](#how-it-works)
-  - [Program UI/UX & Main Dashboard](#program-uiux--main-dashboard)
+  - [Welcome Window (Login)](#login)
+  - [Program UI/UX & Main Dashboard](#main-dashboard)
   - [Inventory Page](#inventory-page)
   - [Supplier Page](#supplier-page)
   - [Customer Page](#customer-page)
+  - [Sales Page](#sales-page)
   - [Database & Repository Architecture](#database--repository-architecture)
+  - [Testing & Quality Assurance](#testing--quality-assurance)
 - [Status](#status)
 - [Credits](#credits)
 
@@ -54,6 +57,9 @@ Developed collaboratively as a team project for CSC311, this system encapsulates
 - **Supplier Coordination**: Manage active vendors, view upcoming deliveries, and submit new purchase order requests.
 - **Customer Profiles**: Store client contact details and track order history.
 - **Dynamic Theming**: (Upcoming) Support for light and dark mode staff preferences.
+- **Dynamic UI Updates**: Implements a custom `Refreshable` interface across controllers to ensure table views and dashboard statistics instantly reflect database changes without requiring a hard reload.
+- **Input Sanitization**: Utilizes a custom `TextFieldFormatter` to enforce strict formatting rules (e.g., currency, phone numbers) on the frontend, preventing bad data from reaching the repository layer.
+- **Secure Authentication**: A dedicated login portal to verify staff credentials against the database and ensure sensitive business data remains protected.
 
 ## Intended Users
 - **Retail Staff**: Can process customer orders, look up product locations, and view contact info.
@@ -62,10 +68,17 @@ Developed collaboratively as a team project for CSC311, this system encapsulates
 
 ## How it Works
 
-### Program UI/UX & Main Dashboard
+### Login 
+![Login Window](https://github.com/user-attachments/assets/83274e17-3f03-4c24-ac3c-6fd9f85918a4)
+
+Upon launching the application, users are presented with a secure login screen. This authentication layer ensures that only authorized retail staff and system admins can access the business's sensitive data. 
+
+The system utilizes `LoginController.java` to validate user credentials directly against the `StaffProfiles` table within the embedded Apache Derby database. Upon successful authentication, the user is granted access and seamlessly transitioned to the Main Dashboard.
+
+### Main Dashboard
 ![Main Dashboard](https://github.com/user-attachments/assets/fa7302c4-66b0-4096-bfd5-65cb020b10e3)
 
-Upon launching the application, users are greeted by the Main Dashboard. The application uses a `BorderPane` layout with a persistent left-hand navigation menu. The menu is controlled by the `MainController.java`, which loads the FXML files to keep memory usage low and dynamically updates the active CSS styling based on the user's current view.
+Once logged in, users are greeted by the Main Dashboard. The application uses a `BorderPane` layout with a persistent left-hand navigation menu. The menu is controlled by the `MainController.java`, which loads the FXML files to keep memory usage low and dynamically updates the active CSS styling based on the user's current view.
 
 The Dashboard provides immediate business intelligence, including total revenue, total orders, active products, and a table of recent customer orders fetched from the database.
 
@@ -77,7 +90,7 @@ The Inventory Management page displays the current stock of the business. Manage
 Through the `InventoryController.java`, users can open a hidden form to add new products to the catalog. The system automatically highlights items that have dropped below their minimum stock threshold, alerting staff that a reorder is necessary.
 
 ### Supplier Page
-![Supplier Page](https://github.com/user-attachments/assets/b1cabff3-96b8-4620-943a-91bd3d8f6aa1)
+![Supplier Page](https://github.com/user-attachments/assets/72197f59-5a95-415e-bb48-3488082f2345)
 
 Instead of relying on disorganized email threads for vendor communication, the Supplier Page offers a dedicated interface to maintain contact info, lead times, and active purchase orders. 
 
@@ -98,9 +111,15 @@ When a new `SalesOrder` is processed and marked as completed, the system automat
 ### Database & Repository Architecture
 
 The backend relies on an embedded **Apache Derby** SQL database. To ensure clean, maintainable code, the application uses the **Repository Pattern**. 
-- Interfaces (e.g., `ProductRepository`, `SupplierRepository`) define the required database operations.
-- Data classes (e.g., `InventoryDataRepository`) handle the actual JDBC SQL queries.
-- Model classes (e.g., `Product`, `Supplier`, `PurchaseOrder`) are strictly validated using a custom `ModelValidation` class and Enums (`DeliveryStatus`, `ThemePreference`) to ensure data integrity before it ever reaches the database.
+- **Interfaces & Implementations:** Interfaces (e.g., `ProductRepository`) define the required operations, while data classes (e.g., `InventoryDataRepository`) handle the JDBC SQL queries.
+- **Data Integrity:** Model classes are strictly validated using a custom `ModelValidation` utility, Enums (`DeliveryStatus`, `ThemePreference`), and a `TextFieldFormatter` to ensure data integrity before executing SQL inserts.
+- **Decoupled Architecture:** The system fully separates the UI layer (JavaFX Controllers) from the Database layer, allowing for highly modular, testable, and scalable code.
+
+### Testing & Quality Assurance
+
+To maintain a high standard of code reliability, the system is backed by a robust suite of JUnit tests. 
+- **Model Validation:** Every entity (Product, Customer, PurchaseOrder, SalesOrder) is strictly tested to ensure constraints (like negative stock values, invalid emails, or missing names) are caught immediately.
+- **State Verification:** Tests ensure that state changes, such as moving a `PurchaseOrderStatus` from `PENDING` to `DELIVERED`, behave exactly as expected before interacting with the database.
 
 ## Status
 **Active Development** - The project is currently in the implementation phase. The frontend UI shell, database schema, and core repository models are complete. Current development is focused on wiring the JavaFX controllers to the database repositories using data-binding.
