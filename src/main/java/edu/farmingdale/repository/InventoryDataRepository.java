@@ -21,14 +21,14 @@ public class InventoryDataRepository {
         try (Connection conn = DatabaseManager.getConnection();
              Statement st = conn.createStatement();
              ResultSet rs = st.executeQuery(
-                     "SELECT id, name, category, quantity_on_hand, minimum_stock, sell_price, supplier FROM Inventory")) {
+                     "SELECT id, name, category, quantity_on_hand, minimum_stock, unit_cost, sell_price, supplier FROM Inventory")) {
             while (rs.next()) {
                 totalProducts++;
 
                 int id = rs.getInt("id");
                 int quantityOnHand = rs.getInt("quantity_on_hand");
                 int minimumStock = rs.getInt("minimum_stock");
-                double displayedUnitPrice = rs.getDouble("minimum_stock");
+                double displayedUnitPrice = rs.getDouble("unit_cost");
                 double sellPrice = rs.getDouble("sell_price");
 
                 totalValue += quantityOnHand * sellPrice;
@@ -59,11 +59,11 @@ public class InventoryDataRepository {
         try (Connection conn = DatabaseManager.getConnection()) {
             if (input.id() != null) {
                 try (PreparedStatement ps = conn.prepareStatement(
-                        "UPDATE Inventory SET name=?,category=?,quantity_on_hand=?,minimum_stock=?,sell_price=?,supplier=? WHERE id=?")) {
+                        "UPDATE Inventory SET name=?,category=?,quantity_on_hand=?,unit_cost=?,sell_price=?,supplier=? WHERE id=?")) {
                     ps.setString(1, input.name());
                     ps.setString(2, input.category());
                     ps.setInt(3, input.quantityOnHand());
-                    ps.setDouble(4, input.minimumStock());
+                    ps.setDouble(4, input.unitCost());
                     ps.setDouble(5, input.sellPrice());
                     ps.setString(6, input.supplier());
                     ps.setInt(7, input.id());
@@ -71,13 +71,14 @@ public class InventoryDataRepository {
                 }
             } else {
                 try (PreparedStatement ps = conn.prepareStatement(
-                        "INSERT INTO Inventory(name,category,quantity_on_hand,minimum_stock,sell_price,supplier) VALUES(?,?,?,?,?,?)")) {
+                        "INSERT INTO Inventory(name,category,quantity_on_hand,minimum_stock,unit_cost,sell_price,supplier) VALUES(?,?,?,?,?,?,?)")) {
                     ps.setString(1, input.name());
                     ps.setString(2, input.category());
                     ps.setInt(3, input.quantityOnHand());
-                    ps.setDouble(4, input.minimumStock());
-                    ps.setDouble(5, input.sellPrice());
-                    ps.setString(6, input.supplier());
+                    ps.setInt(4, 0);
+                    ps.setDouble(5, input.unitCost());
+                    ps.setDouble(6, input.sellPrice());
+                    ps.setString(7, input.supplier());
                     ps.executeUpdate();
                 }
             }
@@ -99,7 +100,7 @@ public class InventoryDataRepository {
             String name,
             String category,
             int quantityOnHand,
-            double minimumStock,
+            double unitCost,
             double sellPrice,
             String supplier
     ) {

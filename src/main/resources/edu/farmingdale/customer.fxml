@@ -80,7 +80,7 @@
             <Label text="Actions"    styleClass="table-header-cell" prefWidth="80"/>
         </HBox>
 
-        <!-- Template row — cloned by CustomerController for each customer -->
+        <!-- Template row - cloned by CustomerController for each customer -->
         <HBox fx:id="templateRow" styleClass="table-row" visible="false" managed="false">
             <Label text="CST-001"      styleClass="table-cell" prefWidth="100"/>
             <Label text="Sample Name"  styleClass="table-cell" prefWidth="200"/>

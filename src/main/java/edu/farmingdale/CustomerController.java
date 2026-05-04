@@ -2,6 +2,7 @@ package edu.farmingdale;
 
 import edu.farmingdale.repository.CustomerDataRepository;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
@@ -51,7 +52,10 @@ public class CustomerController implements Refreshable {
 
     @FXML
     private void onSaveCustomer() {
-        if (firstNameField.getText().trim().isEmpty()) return;
+        if (firstNameField.getText().trim().isEmpty()) {
+            showWarning("Please enter a first name.");
+            return;
+        }
         customerRepository.saveCustomer(new CustomerDataRepository.CustomerInput(
                 firstNameField.getText().trim(),
                 lastNameField.getText().trim(),
@@ -112,6 +116,14 @@ public class CustomerController implements Refreshable {
 
     private String safeText(String value) {
         return value == null ? "" : value;
+    }
+
+    private void showWarning(String message) {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("Missing Information");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 
     private static class RowData {

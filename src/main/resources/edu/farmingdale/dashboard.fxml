@@ -105,7 +105,7 @@
             <Label text="Top Selling Product" styleClass="section-title">
                 <VBox.margin><Insets bottom="12"/></VBox.margin>
             </Label>
-            <Label fx:id="topProductLabel" text="—" style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
+            <Label fx:id="topProductLabel" text="-" style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
             <Label fx:id="topProductSalesLabel" text="" styleClass="stat-subtitle"/>
         </VBox>
 

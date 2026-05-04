@@ -3,6 +3,7 @@ package edu.farmingdale;
 import edu.farmingdale.repository.InventoryDataRepository;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -63,7 +64,10 @@ public class InventoryController implements Refreshable {
 
     @FXML
     private void onSaveProduct() {
-        if (nameField.getText().trim().isEmpty()) return;
+        if (nameField.getText().trim().isEmpty()) {
+            showWarning("Please enter a product name.");
+            return;
+        }
         inventoryRepository.saveProduct(new InventoryDataRepository.InventoryProductInput(
                 editingId >= 0 ? editingId : null,
                 nameField.getText().trim(),
@@ -171,6 +175,14 @@ public class InventoryController implements Refreshable {
 
     private String safeText(String value) {
         return value == null ? "" : value;
+    }
+
+    private void showWarning(String message) {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("Missing Information");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 
     private static class RowData {

@@ -2,6 +2,7 @@ package edu.farmingdale;
 
 import edu.farmingdale.repository.SalesDataRepository;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -94,10 +95,26 @@ public class SalesController implements Refreshable {
         String product = saleProductCombo.getValue();
         int qty = parseIntSafe(saleQuantityField.getText());
         double unitPrice = parseDoubleSafe(salePriceField.getText());
-        if (product == null || product.isEmpty() || qty <= 0 || salePriceField.getText().trim().isEmpty()) return;
+
+        if (product == null || product.isEmpty()) {
+            showWarning("Please select a product.");
+            return;
+        }
+        if (qty <= 0) {
+            showWarning("Please enter a quantity greater than zero.");
+            return;
+        }
+        if (salePriceField.getText().trim().isEmpty()) {
+            showWarning("Please provide a sale price.");
+            return;
+        }
+
         SalesDataRepository.AvailableProduct availableProduct = availableProducts.get(product);
         int available = availableProduct != null ? availableProduct.quantityOnHand() : 0;
-        if (qty > available) return;
+        if (qty > available) {
+            showWarning("Quantity exceeds available stock.");
+            return;
+        }
         salesRepository.recordSale(new SalesDataRepository.SaleInput(product, qty, unitPrice));
 
         onCancelSale();
@@ -166,6 +183,14 @@ public class SalesController implements Refreshable {
 
     private double parseDoubleSafe(String s) {
         try { return Double.parseDouble(s.trim()); } catch (Exception e) { return 0.0; }
+    }
+
+    private void showWarning(String message) {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("Invalid Sale");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 
     private static class RowData {

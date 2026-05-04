@@ -3,6 +3,7 @@ package edu.farmingdale;
 import edu.farmingdale.repository.SupplierDataRepository;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
@@ -45,7 +46,7 @@ public class SupplierController implements Refreshable {
         }
         if (nextDeliveryLabel != null) {
             nextDeliveryLabel.setText(
-                    stats.nextDelivery() == null || stats.nextDelivery().isBlank() ? "â€”" : stats.nextDelivery()
+                    stats.nextDelivery() == null || stats.nextDelivery().isBlank() ? "-" : stats.nextDelivery()
             );
         }
         if (deliveredLabel != null) {
@@ -69,7 +70,10 @@ public class SupplierController implements Refreshable {
 
     @FXML
     private void onSubmitOrder() {
-        if (supplierNameField.getText().trim().isEmpty() || productNameField.getText().trim().isEmpty()) return;
+        if (supplierNameField.getText().trim().isEmpty() || productNameField.getText().trim().isEmpty()) {
+            showWarning("Please provide both supplier name and product name.");
+            return;
+        }
         supplierRepository.createOrder(new SupplierDataRepository.SupplierOrderInput(
                 supplierNameField.getText().trim(),
                 productNameField.getText().trim(),
@@ -107,7 +111,7 @@ public class SupplierController implements Refreshable {
             row.getChildren().add(cell(String.valueOf(delivery.priority()), 55));
 
             String notes = delivery.notes();
-            row.getChildren().add(cell(notes != null && !notes.isEmpty() ? notes : "â€”", 120));
+            row.getChildren().add(cell(notes != null && !notes.isEmpty() ? notes : "-", 120));
 
             Label statusLabel = new Label(statusText);
             statusLabel.setPrefWidth(90);
@@ -140,5 +144,13 @@ public class SupplierController implements Refreshable {
 
     private int parseIntSafe(String s) {
         try { return Integer.parseInt(s.trim()); } catch (Exception e) { return 0; }
+    }
+
+    private void showWarning(String message) {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("Missing Information");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }
