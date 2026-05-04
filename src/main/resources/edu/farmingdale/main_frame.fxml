@@ -1,15 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane xmlns="http://javafx.com/javafx"
+<BorderPane fx:id="rootPane"
+            xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="edu.farmingdale.MainController"
             prefWidth="1200" prefHeight="750">
@@ -68,6 +71,17 @@
                 <Label text="Sales" wrapText="true"
                        styleClass="nav-label" prefWidth="160"/>
             </HBox>
+
+            <Region VBox.vgrow="ALWAYS"/>
+
+            <Button fx:id="themeToggleButton"
+                    text="light"
+                    onAction="#onToggleTheme"
+                    styleClass="theme-toggle">
+                <VBox.margin>
+                    <Insets top="12" right="12" bottom="16" left="12"/>
+                </VBox.margin>
+            </Button>
 
         </VBox>
     </left>

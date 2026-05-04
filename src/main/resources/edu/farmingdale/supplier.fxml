@@ -22,7 +22,7 @@
         <VBox.margin><Insets bottom="20"/></VBox.margin>
         <Label text="Supplier Management" styleClass="page-title"/>
         <Region HBox.hgrow="ALWAYS"/>
-        <Button text="+ New Order Request" styleClass="btn-primary" onAction="#onNewOrderRequest"/>
+        <Button text="+ New Order Request" styleClass="btn-primary header-action-button" onAction="#onNewOrderRequest"/>
     </HBox>
 
     <!-- Stat Cards Row -->
