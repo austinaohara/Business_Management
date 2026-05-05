@@ -1,15 +1,20 @@
 package edu.farmingdale;
 
 import edu.farmingdale.repository.CustomerDataRepository;
+import edu.farmingdale.util.ExportUtils;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.Node;
+import javafx.event.ActionEvent;
+import javafx.stage.Window;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class CustomerController implements Refreshable {
 
@@ -64,6 +69,24 @@ public class CustomerController implements Refreshable {
         ));
         onCancelCustomer();
         loadCustomers();
+    }
+
+    @FXML
+    private void handleExportCustomers(ActionEvent event) {
+        CustomerDataRepository.CustomerViewData customerData = customerRepository.loadCustomers();
+
+        String[] headers = {"Customer Code", "First Name", "Last Name", "Email", "Phone"};
+
+        List<String[]> data = customerData.customers().stream().map(c -> new String[]{
+                safeText(c.customerCode()),
+                safeText(c.firstName()),
+                safeText(c.lastName()),
+                safeText(c.email()),
+                safeText(c.phone())
+        }).collect(Collectors.toList());
+
+        Window window = ((Node) event.getSource()).getScene().getWindow();
+        ExportUtils.exportToCSV(window, "Customer_Contact_List.csv", headers, data);
     }
 
     private void loadCustomers() {

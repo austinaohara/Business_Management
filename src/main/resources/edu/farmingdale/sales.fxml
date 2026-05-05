@@ -21,8 +21,18 @@
     <HBox alignment="CENTER_LEFT">
         <VBox.margin><Insets bottom="20"/></VBox.margin>
         <Label text="Sales" styleClass="page-title"/>
+
         <Region HBox.hgrow="ALWAYS"/>
-        <Button text="+ Record Sale" styleClass="btn-primary" onAction="#onRecordSale"/>
+
+        <HBox spacing="15">
+            <Button text="+ Record Sale" onAction="#onRecordSale"
+                    styleClass="btn-primary"
+                    prefHeight="36"/>
+
+            <Button text="Export Ledger" onAction="#handleExportSales"
+                    styleClass="btn-primary" style="-fx-background-color: #10B981; -fx-text-fill: #111827;"
+                    prefHeight="36"/>
+        </HBox>
     </HBox>
 
     <!-- Stat Cards -->
