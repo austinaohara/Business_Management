@@ -51,6 +51,7 @@ public class MainController {
 
     @FXML
     private void onLogout() {
+        UserSession.getInstance().clear();
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/farmingdale/login.fxml"));
             Scene scene = new Scene(loader.load());

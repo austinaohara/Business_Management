@@ -1,5 +1,6 @@
 package edu.farmingdale;
 
+import edu.farmingdale.model.User;
 import edu.farmingdale.model.enums.ThemePreference;
 import edu.farmingdale.repository.StaffProfileDataRepository;
 import javafx.fxml.FXML;
@@ -46,6 +47,8 @@ public class LoginController {
             return;
         }
 
+        UserSession.getInstance().setCurrentUser(new User(username));
+        DatabaseManager.initializeUserDatabase(username);
         openMainApp();
     }
 

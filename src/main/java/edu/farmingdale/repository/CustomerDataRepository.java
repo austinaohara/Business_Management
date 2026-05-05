@@ -16,7 +16,7 @@ public class CustomerDataRepository {
         List<CustomerRow> customers = new ArrayList<>();
         int totalCustomers = 0;
 
-        try (Connection conn = DatabaseManager.getConnection();
+        try (Connection conn = DatabaseManager.getUserConnection();
              Statement st = conn.createStatement();
              ResultSet rs = st.executeQuery(
                      "SELECT profile_id, first_name, last_name, email, phone FROM Customers")) {
@@ -44,7 +44,7 @@ public class CustomerDataRepository {
     }
 
     public void saveCustomer(CustomerInput input) {
-        try (Connection conn = DatabaseManager.getConnection();
+        try (Connection conn = DatabaseManager.getUserConnection();
              PreparedStatement ps = conn.prepareStatement(
                      "INSERT INTO Customers(first_name,last_name,email,phone) VALUES(?,?,?,?)")) {
             ps.setString(1, input.firstName());
