@@ -1,6 +1,7 @@
 package edu.farmingdale;
 
 import edu.farmingdale.repository.InventoryDataRepository;
+import edu.farmingdale.util.ExportUtils;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
@@ -9,9 +10,13 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.Node;
+import javafx.event.ActionEvent;
+import javafx.stage.Window;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class InventoryController implements Refreshable {
 
@@ -79,6 +84,26 @@ public class InventoryController implements Refreshable {
         ));
         onCancelProduct();
         loadProducts();
+    }
+
+    @FXML
+    private void handleExportInventory(ActionEvent event) {
+        InventoryDataRepository.InventoryViewData inventoryData = inventoryRepository.loadInventory();
+
+        String[] headers = {"Product Code", "Name", "Category", "Quantity on Hand", "Unit Price", "Sell Price", "Supplier"};
+
+        List<String[]> data = inventoryData.products().stream().map(p -> new String[]{
+                safeText(p.productCode()),
+                safeText(p.name()),
+                safeText(p.category()),
+                String.valueOf(p.quantityOnHand()),
+                String.format("%.2f", p.displayedUnitPrice()),
+                String.format("%.2f", p.sellPrice()),
+                safeText(p.supplier())
+        }).collect(Collectors.toList());
+
+        Window window = ((Node) event.getSource()).getScene().getWindow();
+        ExportUtils.exportToCSV(window, "Inventory_Stock_Report.csv", headers, data);
     }
 
     private void loadProducts() {

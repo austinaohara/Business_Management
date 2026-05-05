@@ -21,8 +21,18 @@
     <HBox alignment="CENTER_LEFT">
         <VBox.margin><Insets bottom="20"/></VBox.margin>
         <Label text="Inventory Management" styleClass="page-title"/>
+
         <Region HBox.hgrow="ALWAYS"/>
-        <Button text="+ Add Product" styleClass="btn-primary" onAction="#onAddProduct"/>
+
+        <HBox spacing="15">
+            <Button text="+ Add Product" onAction="#onAddProduct"
+                    styleClass="action-button"
+                    prefHeight="36"/>
+
+            <Button text="Export Stock Report" onAction="#handleExportInventory"
+                    styleClass="action-button" style="-fx-background-color: #10B981;"
+                    prefHeight="36"/>
+        </HBox>
     </HBox>
 
     <!-- Stat Cards Row -->

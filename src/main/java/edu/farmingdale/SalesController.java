@@ -1,6 +1,7 @@
 package edu.farmingdale;
 
 import edu.farmingdale.repository.SalesDataRepository;
+import edu.farmingdale.util.ExportUtils;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
@@ -8,6 +9,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.Node;
+import javafx.event.ActionEvent;
+import javafx.stage.Window;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -15,6 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class SalesController implements Refreshable {
 
@@ -63,6 +68,26 @@ public class SalesController implements Refreshable {
         saleQuantityField.clear();
         salePriceField.clear();
         availableLabel.setText("");
+    }
+
+    @FXML
+    private void handleExportSales(ActionEvent event) {
+        SalesDataRepository.SalesViewData salesData = salesRepository.loadSales();
+
+        String[] headers = {"Sale Code", "Product Name", "Quantity", "Unit Price", "Total Amount", "Order Date", "Status"};
+
+        List<String[]> data = salesData.sales().stream().map(s -> new String[]{
+                s.saleCode() != null ? s.saleCode() : "",
+                s.productName() != null ? s.productName() : "",
+                String.valueOf(s.quantity()),
+                String.format("%.2f", s.unitPrice()),
+                String.format("%.2f", s.amount()),
+                s.orderDate() != null ? s.orderDate() : "",
+                s.status() != null ? s.status() : ""
+        }).collect(Collectors.toList());
+
+        Window window = ((Node) event.getSource()).getScene().getWindow();
+        ExportUtils.exportToCSV(window, "Sales_Ledger.csv", headers, data);
     }
 
     private void loadProductsIntoCombo() {
