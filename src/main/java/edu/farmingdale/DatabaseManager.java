@@ -7,14 +7,45 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class DatabaseManager {
-    private static final String DB_URL = "jdbc:derby:BusinessManagementDB;create=true";
 
+    private static final String MASTER_DB_URL = "jdbc:derby:BusinessManagementDB;create=true";
+
+    /** Master DB — StaffProfiles auth only. */
     public static Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(DB_URL);
+        return DriverManager.getConnection(MASTER_DB_URL);
     }
 
+    /** Per-user DB — all operational tables. */
+    public static Connection getUserConnection() throws SQLException {
+        var user = UserSession.getInstance().getCurrentUser();
+        if (user == null) {
+            throw new SQLException("No user is currently logged in.");
+        }
+        return DriverManager.getConnection(user.getDbUrl());
+    }
+
+    /** Called once at startup — creates the master StaffProfiles table only. */
     public static void initializeDatabase() {
         try (Connection conn = getConnection();
+             Statement stmt = conn.createStatement()) {
+
+            createTable(stmt, "CREATE TABLE StaffProfiles (" +
+                    "staff_id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY, " +
+                    "username VARCHAR(50) UNIQUE, " +
+                    "password_hash VARCHAR(255), " +
+                    "theme_preference VARCHAR(20) DEFAULT 'LIGHT')");
+
+            ensureDefaultStaffProfile(conn);
+
+        } catch (SQLException e) {
+            System.err.println("Database initialization error: " + e.getMessage());
+        }
+    }
+
+    /** Called on registration and on first login — creates all operational tables in the user's own DB. */
+    public static void initializeUserDatabase(String username) {
+        String userDbUrl = "jdbc:derby:BusinessManagementDB_" + username + ";create=true";
+        try (Connection conn = DriverManager.getConnection(userDbUrl);
              Statement stmt = conn.createStatement()) {
 
             createTable(stmt, "CREATE TABLE Inventory (" +
@@ -57,12 +88,6 @@ public class DatabaseManager {
                     "quantity INT, " +
                     "unit_price DOUBLE)");
 
-            createTable(stmt, "CREATE TABLE StaffProfiles (" +
-                    "staff_id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY, " +
-                    "username VARCHAR(50) UNIQUE, " +
-                    "password_hash VARCHAR(255), " +
-                    "theme_preference VARCHAR(20) DEFAULT 'LIGHT')");
-
             createTable(stmt, "CREATE TABLE SupplierOrders (" +
                     "order_id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY, " +
                     "supplier_name VARCHAR(255), " +
@@ -73,10 +98,8 @@ public class DatabaseManager {
                     "notes VARCHAR(500), " +
                     "status VARCHAR(50) DEFAULT 'Pending')");
 
-            ensureDefaultStaffProfile(conn);
-
         } catch (SQLException e) {
-            System.err.println("Database initialization error: " + e.getMessage());
+            System.err.println("User database initialization error: " + e.getMessage());
         }
     }
 

@@ -26,7 +26,7 @@ public class DashboardDataRepository {
         int upcomingShipments = 0;
         int lowStockCount = 0;
 
-        try (Connection conn = DatabaseManager.getConnection()) {
+        try (Connection conn = DatabaseManager.getUserConnection()) {
             try (Statement st = conn.createStatement();
                  ResultSet rs = st.executeQuery("SELECT COALESCE(SUM(amount), 0) FROM Orders")) {
                 if (rs.next()) {
@@ -67,7 +67,7 @@ public class DashboardDataRepository {
     private List<LowStockItem> loadLowStockItems() {
         List<LowStockItem> items = new ArrayList<>();
 
-        try (Connection conn = DatabaseManager.getConnection();
+        try (Connection conn = DatabaseManager.getUserConnection();
              Statement st = conn.createStatement();
              ResultSet rs = st.executeQuery(
                      "SELECT name, quantity_on_hand, minimum_stock FROM Inventory " +
@@ -90,7 +90,7 @@ public class DashboardDataRepository {
     private List<UpcomingShipment> loadUpcomingShipments() {
         List<UpcomingShipment> shipments = new ArrayList<>();
 
-        try (Connection conn = DatabaseManager.getConnection();
+        try (Connection conn = DatabaseManager.getUserConnection();
              Statement st = conn.createStatement();
              ResultSet rs = st.executeQuery(
                      "SELECT supplier_name, product_name, due_date FROM SupplierOrders " +
@@ -110,7 +110,7 @@ public class DashboardDataRepository {
     }
 
     private TopSellingProduct loadTopSellingProduct() {
-        try (Connection conn = DatabaseManager.getConnection();
+        try (Connection conn = DatabaseManager.getUserConnection();
              Statement st = conn.createStatement();
              ResultSet rs = st.executeQuery(
                      "SELECT product_name, SUM(quantity) AS total_sold FROM OrderItems " +

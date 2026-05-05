@@ -17,7 +17,7 @@ public class SupplierDataRepository {
     }
 
     public void createOrder(SupplierOrderInput input) {
-        try (Connection conn = DatabaseManager.getConnection();
+        try (Connection conn = DatabaseManager.getUserConnection();
              PreparedStatement ps = conn.prepareStatement(
                      "INSERT INTO SupplierOrders(supplier_name,product_name,quantity,due_date,priority,notes) VALUES(?,?,?,?,?,?)")) {
             ps.setString(1, input.supplierName());
@@ -33,7 +33,7 @@ public class SupplierDataRepository {
     }
 
     public void confirmDelivery(int orderId, String productName, String supplierName, int quantity) {
-        try (Connection conn = DatabaseManager.getConnection()) {
+        try (Connection conn = DatabaseManager.getUserConnection()) {
             Integer existingId = null;
             Integer existingQuantity = null;
 
@@ -85,7 +85,7 @@ public class SupplierDataRepository {
         String nextDelivery = null;
         int deliveredCount = 0;
 
-        try (Connection conn = DatabaseManager.getConnection()) {
+        try (Connection conn = DatabaseManager.getUserConnection()) {
             try (Statement st = conn.createStatement();
                  ResultSet rs = st.executeQuery("SELECT COUNT(*) FROM Suppliers")) {
                 if (rs.next()) {
@@ -128,7 +128,7 @@ public class SupplierDataRepository {
     private List<SupplierDeliveryRow> loadDeliveries() {
         List<SupplierDeliveryRow> deliveries = new ArrayList<>();
 
-        try (Connection conn = DatabaseManager.getConnection();
+        try (Connection conn = DatabaseManager.getUserConnection();
              Statement st = conn.createStatement();
              ResultSet rs = st.executeQuery(
                      "SELECT order_id,supplier_name,product_name,quantity,due_date,priority,notes,status FROM SupplierOrders ORDER BY due_date")) {

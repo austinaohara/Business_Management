@@ -18,7 +18,7 @@ public class InventoryDataRepository {
         double totalValue = 0;
         int lowStockCount = 0;
 
-        try (Connection conn = DatabaseManager.getConnection();
+        try (Connection conn = DatabaseManager.getUserConnection();
              Statement st = conn.createStatement();
              ResultSet rs = st.executeQuery(
                      "SELECT id, name, category, quantity_on_hand, minimum_stock, unit_cost, sell_price, supplier FROM Inventory")) {
@@ -56,7 +56,7 @@ public class InventoryDataRepository {
     }
 
     public void saveProduct(InventoryProductInput input) {
-        try (Connection conn = DatabaseManager.getConnection()) {
+        try (Connection conn = DatabaseManager.getUserConnection()) {
             if (input.id() != null) {
                 try (PreparedStatement ps = conn.prepareStatement(
                         "UPDATE Inventory SET name=?,category=?,quantity_on_hand=?,unit_cost=?,sell_price=?,supplier=? WHERE id=?")) {

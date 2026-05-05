@@ -15,7 +15,7 @@ public class SalesDataRepository {
     public List<AvailableProduct> findAvailableProducts() {
         List<AvailableProduct> products = new ArrayList<>();
 
-        try (Connection conn = DatabaseManager.getConnection();
+        try (Connection conn = DatabaseManager.getUserConnection();
              Statement st = conn.createStatement();
              ResultSet rs = st.executeQuery(
                      "SELECT name, sell_price, quantity_on_hand FROM Inventory " +
@@ -35,7 +35,7 @@ public class SalesDataRepository {
     }
 
     public void recordSale(SaleInput input) {
-        try (Connection conn = DatabaseManager.getConnection()) {
+        try (Connection conn = DatabaseManager.getUserConnection()) {
             int orderId;
 
             try (PreparedStatement orderPs = conn.prepareStatement(
@@ -79,7 +79,7 @@ public class SalesDataRepository {
         int itemsSold = 0;
         double totalRevenue = 0;
 
-        try (Connection conn = DatabaseManager.getConnection();
+        try (Connection conn = DatabaseManager.getUserConnection();
              Statement st = conn.createStatement();
              ResultSet rs = st.executeQuery(
                      "SELECT o.order_id, oi.product_name, oi.quantity AS qty, oi.unit_price, " +

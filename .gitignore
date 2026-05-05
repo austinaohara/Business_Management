@@ -40,6 +40,7 @@ build/
 
 ### Apache Derby ###
 BusinessManagementDB/
+BusinessManagementDB_*/
 derby.log
 
 ### Claude ###

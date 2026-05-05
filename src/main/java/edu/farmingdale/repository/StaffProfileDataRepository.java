@@ -31,6 +31,7 @@ public class StaffProfileDataRepository {
             ps.setString(2, password);
             ps.setString(3, "LIGHT");
             ps.executeUpdate();
+            DatabaseManager.initializeUserDatabase(username);
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
