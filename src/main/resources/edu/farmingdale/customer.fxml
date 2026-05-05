@@ -25,11 +25,11 @@
 
         <HBox spacing="15">
             <Button text="+ Add Customer" onAction="#onAddCustomer"
-                    styleClass="action-button"
+                    styleClass="btn-primary"
                     prefHeight="36"/>
 
             <Button text="Export Contact List" onAction="#handleExportCustomers"
-                    styleClass="action-button" style="-fx-background-color: #10B981;"
+                    styleClass="btn-primary" style="-fx-background-color: #10B981; -fx-text-fill: #111827;"
                     prefHeight="36"/>
         </HBox>
     </HBox>
