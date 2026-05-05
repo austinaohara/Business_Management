@@ -78,6 +78,7 @@
                         <Label text="Confirm Password" styleClass="auth-label"/>
                         <PasswordField fx:id="confirmPasswordField"
                                        promptText="Confirm your password"
+                                       onAction="#onCreateAccount"
                                        styleClass="auth-field">
                             <VBox.margin><Insets bottom="12"/></VBox.margin>
                         </PasswordField>
@@ -87,7 +88,7 @@
                         <VBox.margin><Insets top="4" bottom="12"/></VBox.margin>
                     </Label>
 
-                    <Button text="Create Account" styleClass="auth-submit"/>
+                    <Button text="Create Account" onAction="#onCreateAccount" styleClass="auth-submit"/>
 
                     <HBox alignment="CENTER" spacing="4">
                         <VBox.margin><Insets top="16"/></VBox.margin>
