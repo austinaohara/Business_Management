@@ -57,6 +57,35 @@ public class LoginController {
         applyTheme();
     }
 
+    @FXML
+    private void onSignUp() {
+        try {
+            var url = getClass().getResource("/edu/farmingdale/registration.fxml");
+            if (url == null) {
+                showStatus("Registration page resource not found.");
+                return;
+            }
+            FXMLLoader loader = new FXMLLoader(url);
+            Scene scene = new Scene(loader.load());
+            scene.getStylesheets().add(getClass().getResource("/styling/main.css").toExternalForm());
+
+            RegistrationController registrationController = loader.getController();
+            if (registrationController != null) {
+                registrationController.setThemePreference(themePreference);
+            }
+
+            Stage stage = (Stage) usernameField.getScene().getWindow();
+            stage.setScene(scene);
+            stage.setWidth(1200);
+            stage.setHeight(750);
+            stage.centerOnScreen();
+            stage.show();
+        } catch (Exception e) {
+            showStatus("Unable to open the registration page.");
+            e.printStackTrace();
+        }
+    }
+
     private void openMainApp() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/farmingdale/main_frame.fxml"));
