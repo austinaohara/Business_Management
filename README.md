@@ -13,7 +13,9 @@ Advanced Programming Capstone
 - [Features](#features)
 - [Intended Users](#intended-users)
 - [How it Works](#how-it-works)
-  - [Login Page](#login)
+  - [Authentication & Registration](#authentication--registration)
+    - [Login](#login)
+    - [Registration](#registration)
   - [Main Dashboard](#main-dashboard)
   - [Inventory Page](#inventory-page)
   - [Supplier Page](#supplier-page)
@@ -52,14 +54,15 @@ Developed collaboratively as a team project for CSC311, this system encapsulates
 4. **Database Configuration (Automatic):** You do not need to install an external database server. On the first launch, the `DatabaseManager.java` class will automatically execute and generate a local `BusinessManagementDB` folder in your project directory containing the complete SQL schema.
 
 ## Features
+- **Secure Authentication**: A dedicated login portal to verify staff credentials against the database and ensure sensitive business data remains protected.
+- **Staff Registration**: New employees can register their own accounts, securely set passwords, and define their preferred UI theme.
 - **Centralized Dashboard**: Live statistics for total revenue, active orders, and low-stock alerts.
 - **Inventory Tracking**: Add products, track storage locations, and monitor minimum stock thresholds.
 - **Supplier Coordination**: Manage active vendors, view upcoming deliveries, and submit new purchase order requests.
 - **Customer Profiles**: Store client contact details and track order history.
-- **Dynamic Theming**: (Upcoming) Support for light and dark mode staff preferences.
+- **Dynamic Theming**: Support for light and dark mode staff preferences, automatically loaded upon login.
 - **Dynamic UI Updates**: Implements a custom `Refreshable` interface across controllers to ensure table views and dashboard statistics instantly reflect database changes without requiring a hard reload.
 - **Input Sanitization**: Utilizes a custom `TextFieldFormatter` to enforce strict formatting rules (e.g., currency, phone numbers) on the frontend, preventing bad data from reaching the repository layer.
-- **Secure Authentication**: A dedicated login portal to verify staff credentials against the database and ensure sensitive business data remains protected.
 
 ## Intended Users
 - **Retail Staff**: Can process customer orders, look up product locations, and view contact info.
@@ -68,12 +71,20 @@ Developed collaboratively as a team project for CSC311, this system encapsulates
 
 ## How it Works
 
+### Authentication & Registration
+![Welcome Window](https://github.com/user-attachments/assets/e088bc34-3a83-4326-a823-d2be4c43b75d)
+
+Upon launching the application, users are presented with a secure authentication portal. This layer ensures that only authorized retail staff and system admins can access the business's sensitive data. The portal consists of two main views seamlessly linked together.
+
 ### Login 
-![Login Window](https://github.com/user-attachments/assets/83274e17-3f03-4c24-ac3c-6fd9f85918a4)
+![Login Window](https://github.com/user-attachments/assets/13b5a173-4b47-47d3-9168-ed80ef7e7788)
 
-Upon launching the application, users are presented with a secure login screen. This authentication layer ensures that only authorized retail staff and system admins can access the business's sensitive data. 
+The primary entry point for existing users. Staff members securely enter their credentials, which the `LoginController.java` validates directly against the `StaffProfiles` table within the embedded Apache Derby database. Upon successful authentication, the user is transitioned to the Main Dashboard, and their saved theme preference is automatically applied.
 
-The system utilizes `LoginController.java` to validate user credentials directly against the `StaffProfiles` table within the embedded Apache Derby database. Upon successful authentication, the user is granted access and seamlessly transitioned to the Main Dashboard.
+#### Registration
+![Registration Window](https://github.com/user-attachments/assets/becc2823-7e43-4e0d-a0f5-de3703c3db35)
+
+New employees can access the Registration view to create their own accounts. The `RegistrationController.java` handles capturing their details, assigning a secure password, and allowing the user to define their preferred application theme (Light or Dark mode). Once registered, their profile is instantly validated and saved to the database, granting them immediate login access.
 
 ### Main Dashboard
 ![Main Dashboard](https://github.com/user-attachments/assets/fa7302c4-66b0-4096-bfd5-65cb020b10e3)
