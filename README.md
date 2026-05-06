@@ -13,7 +13,9 @@ Advanced Programming Capstone
 - [Features](#features)
 - [Intended Users](#intended-users)
 - [How it Works](#how-it-works)
-  - [Login Page](#login)
+  - [Authentication & Registration](#authentication--registration)
+    - [Login](#login)
+    - [Registration](#registration)
   - [Main Dashboard](#main-dashboard)
   - [Inventory Page](#inventory-page)
   - [Supplier Page](#supplier-page)
@@ -56,10 +58,12 @@ Developed collaboratively as a team project for CSC311, this system encapsulates
 - **Inventory Tracking**: Add products, track storage locations, and monitor minimum stock thresholds.
 - **Supplier Coordination**: Manage active vendors, view upcoming deliveries, and submit new purchase order requests.
 - **Customer Profiles**: Store client contact details and track order history.
-- **Dynamic Theming**: (Upcoming) Support for light and dark mode staff preferences.
+- **CSV Data Export**: Generate formatted `.csv` reports for inventory stock, sales ledgers, and customer contact lists directly from the UI.
+- **Secure Authentication & Registration**: A dedicated login portal to verify staff credentials, allowing new employees to securely register their own accounts.
+- **Dynamic Theming**: Support for light and dark mode staff preferences, automatically saved to the database and applied upon login.
+- **Global Session Management**: Utilizes a `UserSession` singleton to securely track the active employee navigating the application.
 - **Dynamic UI Updates**: Implements a custom `Refreshable` interface across controllers to ensure table views and dashboard statistics instantly reflect database changes without requiring a hard reload.
-- **Input Sanitization**: Utilizes a custom `TextFieldFormatter` to enforce strict formatting rules (e.g., currency, phone numbers) on the frontend, preventing bad data from reaching the repository layer.
-- **Secure Authentication**: A dedicated login portal to verify staff credentials against the database and ensure sensitive business data remains protected.
+- **Input Sanitization**: Utilizes a custom `TextFieldFormatter` to enforce strict formatting rules (e.g., currency, phone numbers) on the frontend.
 
 ## Intended Users
 - **Retail Staff**: Can process customer orders, look up product locations, and view contact info.
@@ -68,12 +72,22 @@ Developed collaboratively as a team project for CSC311, this system encapsulates
 
 ## How it Works
 
+### Authentication & Registration
+![Welcome Window](https://github.com/user-attachments/assets/e088bc34-3a83-4326-a823-d2be4c43b75d)
+
+Upon launching the application, users are presented with a secure authentication portal. This layer ensures that only authorized retail staff and system admins can access the business's sensitive data. 
+
+Existing staff members can securely enter their credentials, which the `LoginController.java` validates directly against the embedded Apache Derby database. New employees can seamlessly toggle to the Registration view to create their own accounts, assign a secure password, and define their preferred application theme (Light or Dark mode). Once registered, their profile is instantly validated, granting them immediate access to the Main Dashboard with their custom theme automatically applied.
+
 ### Login 
-![Login Window](https://github.com/user-attachments/assets/83274e17-3f03-4c24-ac3c-6fd9f85918a4)
+![Login Window](https://github.com/user-attachments/assets/13b5a173-4b47-47d3-9168-ed80ef7e7788)
 
-Upon launching the application, users are presented with a secure login screen. This authentication layer ensures that only authorized retail staff and system admins can access the business's sensitive data. 
+The primary entry point for existing users. Staff members securely enter their credentials, which the `LoginController.java` validates directly against the `StaffProfiles` table within the embedded Apache Derby database. Upon successful authentication, the user is transitioned to the Main Dashboard, and their saved theme preference is automatically applied.
 
-The system utilizes `LoginController.java` to validate user credentials directly against the `StaffProfiles` table within the embedded Apache Derby database. Upon successful authentication, the user is granted access and seamlessly transitioned to the Main Dashboard.
+#### Registration
+![Registration Window](https://github.com/user-attachments/assets/becc2823-7e43-4e0d-a0f5-de3703c3db35)
+
+New employees can access the Registration view to create their own accounts. The `RegistrationController.java` handles capturing their details, assigning a secure password, and allowing the user to define their preferred application theme (Light or Dark mode). Once registered, their profile is instantly validated and saved to the database, granting them immediate login access.
 
 ### Main Dashboard
 ![Main Dashboard](https://github.com/user-attachments/assets/fa7302c4-66b0-4096-bfd5-65cb020b10e3)
@@ -110,8 +124,9 @@ When a new `SalesOrder` is processed and marked as completed, the system automat
 
 ### Database & Repository Architecture
 
-The backend relies on an embedded **Apache Derby** SQL database. To ensure clean, maintainable code, the application uses the **Repository Pattern**. 
-- **Interfaces & Implementations:** Interfaces (e.g., `ProductRepository`) define the required operations, while data classes (e.g., `InventoryDataRepository`) handle the JDBC SQL queries.
+The backend relies on an embedded **Apache Derby** SQL database, utilizing a multi-tenant architecture to ensure data isolation and security.
+- **Master & Per-User Databases:** The `DatabaseManager` maintains a central Master DB exclusively for secure `StaffProfiles` authentication. Upon login, the system dynamically routes the user to their own dedicated, isolated database for all operational tables (Inventory, Customers, Sales).
+- **Interfaces & Implementations:** The application uses the **Repository Pattern**. Interfaces define the required operations, while data classes (e.g., `InventoryDataRepository`) handle the JDBC SQL queries using the active `UserSession` connection.
 - **Data Integrity:** Model classes are strictly validated using a custom `ModelValidation` utility, Enums (`DeliveryStatus`, `ThemePreference`), and a `TextFieldFormatter` to ensure data integrity before executing SQL inserts.
 - **Decoupled Architecture:** The system fully separates the UI layer (JavaFX Controllers) from the Database layer, allowing for highly modular, testable, and scalable code.
 
