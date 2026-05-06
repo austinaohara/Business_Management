@@ -54,15 +54,16 @@ Developed collaboratively as a team project for CSC311, this system encapsulates
 4. **Database Configuration (Automatic):** You do not need to install an external database server. On the first launch, the `DatabaseManager.java` class will automatically execute and generate a local `BusinessManagementDB` folder in your project directory containing the complete SQL schema.
 
 ## Features
-- **Secure Authentication**: A dedicated login portal to verify staff credentials against the database and ensure sensitive business data remains protected.
-- **Staff Registration**: New employees can register their own accounts, securely set passwords, and define their preferred UI theme.
 - **Centralized Dashboard**: Live statistics for total revenue, active orders, and low-stock alerts.
 - **Inventory Tracking**: Add products, track storage locations, and monitor minimum stock thresholds.
 - **Supplier Coordination**: Manage active vendors, view upcoming deliveries, and submit new purchase order requests.
 - **Customer Profiles**: Store client contact details and track order history.
-- **Dynamic Theming**: Support for light and dark mode staff preferences, automatically loaded upon login.
+- **CSV Data Export**: Generate formatted `.csv` reports for inventory stock, sales ledgers, and customer contact lists directly from the UI.
+- **Secure Authentication & Registration**: A dedicated login portal to verify staff credentials, allowing new employees to securely register their own accounts.
+- **Dynamic Theming**: Support for light and dark mode staff preferences, automatically saved to the database and applied upon login.
+- **Global Session Management**: Utilizes a `UserSession` singleton to securely track the active employee navigating the application.
 - **Dynamic UI Updates**: Implements a custom `Refreshable` interface across controllers to ensure table views and dashboard statistics instantly reflect database changes without requiring a hard reload.
-- **Input Sanitization**: Utilizes a custom `TextFieldFormatter` to enforce strict formatting rules (e.g., currency, phone numbers) on the frontend, preventing bad data from reaching the repository layer.
+- **Input Sanitization**: Utilizes a custom `TextFieldFormatter` to enforce strict formatting rules (e.g., currency, phone numbers) on the frontend.
 
 ## Intended Users
 - **Retail Staff**: Can process customer orders, look up product locations, and view contact info.
@@ -74,7 +75,9 @@ Developed collaboratively as a team project for CSC311, this system encapsulates
 ### Authentication & Registration
 ![Welcome Window](https://github.com/user-attachments/assets/e088bc34-3a83-4326-a823-d2be4c43b75d)
 
-Upon launching the application, users are presented with a secure authentication portal. This layer ensures that only authorized retail staff and system admins can access the business's sensitive data. The portal consists of two main views seamlessly linked together.
+Upon launching the application, users are presented with a secure authentication portal. This layer ensures that only authorized retail staff and system admins can access the business's sensitive data. 
+
+Existing staff members can securely enter their credentials, which the `LoginController.java` validates directly against the embedded Apache Derby database. New employees can seamlessly toggle to the Registration view to create their own accounts, assign a secure password, and define their preferred application theme (Light or Dark mode). Once registered, their profile is instantly validated, granting them immediate access to the Main Dashboard with their custom theme automatically applied.
 
 ### Login 
 ![Login Window](https://github.com/user-attachments/assets/13b5a173-4b47-47d3-9168-ed80ef7e7788)
@@ -121,8 +124,9 @@ When a new `SalesOrder` is processed and marked as completed, the system automat
 
 ### Database & Repository Architecture
 
-The backend relies on an embedded **Apache Derby** SQL database. To ensure clean, maintainable code, the application uses the **Repository Pattern**. 
-- **Interfaces & Implementations:** Interfaces (e.g., `ProductRepository`) define the required operations, while data classes (e.g., `InventoryDataRepository`) handle the JDBC SQL queries.
+The backend relies on an embedded **Apache Derby** SQL database, utilizing a multi-tenant architecture to ensure data isolation and security.
+- **Master & Per-User Databases:** The `DatabaseManager` maintains a central Master DB exclusively for secure `StaffProfiles` authentication. Upon login, the system dynamically routes the user to their own dedicated, isolated database for all operational tables (Inventory, Customers, Sales).
+- **Interfaces & Implementations:** The application uses the **Repository Pattern**. Interfaces define the required operations, while data classes (e.g., `InventoryDataRepository`) handle the JDBC SQL queries using the active `UserSession` connection.
 - **Data Integrity:** Model classes are strictly validated using a custom `ModelValidation` utility, Enums (`DeliveryStatus`, `ThemePreference`), and a `TextFieldFormatter` to ensure data integrity before executing SQL inserts.
 - **Decoupled Architecture:** The system fully separates the UI layer (JavaFX Controllers) from the Database layer, allowing for highly modular, testable, and scalable code.
 
