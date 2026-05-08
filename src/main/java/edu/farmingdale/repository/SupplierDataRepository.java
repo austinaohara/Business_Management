@@ -38,6 +38,19 @@ public class SupplierDataRepository {
 
     public void confirmDelivery(int orderId, String productName, String supplierName, int quantity) {
         try (Connection conn = DatabaseManager.getUserConnection()) {
+            conn.setAutoCommit(false);
+
+            try (PreparedStatement markDone = conn.prepareStatement(
+                    "UPDATE SupplierOrders SET status='Delivered' " +
+                            "WHERE order_id=? AND (status IS NULL OR status <> 'Delivered')")) {
+                markDone.setInt(1, orderId);
+                if (markDone.executeUpdate() == 0) {
+                    conn.rollback();
+                    throw new IllegalStateException("Delivery has already been confirmed.");
+                }
+            }
+
+            try {
             Integer existingId = null;
             Integer existingQuantity = null;
 
@@ -72,11 +85,12 @@ public class SupplierDataRepository {
                     insert.executeUpdate();
                 }
             }
-
-            try (PreparedStatement markDone = conn.prepareStatement(
-                    "UPDATE SupplierOrders SET status='Delivered' WHERE order_id=?")) {
-                markDone.setInt(1, orderId);
-                markDone.executeUpdate();
+                conn.commit();
+            } catch (Exception e) {
+                conn.rollback();
+                throw e;
+            } finally {
+                conn.setAutoCommit(true);
             }
         } catch (SQLException e) {
             e.printStackTrace();
