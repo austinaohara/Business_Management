@@ -105,7 +105,7 @@ public class SupplierDataRepository {
                  ResultSet rs = st.executeQuery(
                          "SELECT due_date FROM SupplierOrders WHERE status='Pending' " +
                                  "AND due_date IS NOT NULL AND due_date <> '' " +
-                                 "ORDER BY order_id ASC FETCH FIRST 1 ROW ONLY")) {
+                                 "ORDER BY due_date ASC, order_id ASC FETCH FIRST 1 ROW ONLY")) {
                 if (rs.next()) {
                     nextDelivery = rs.getString("due_date");
                 }
