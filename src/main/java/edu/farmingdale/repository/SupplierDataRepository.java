@@ -17,6 +17,10 @@ public class SupplierDataRepository {
     }
 
     public void createOrder(SupplierOrderInput input) {
+        if (input.quantity() <= 0) {
+            throw new IllegalArgumentException("Order quantity must be greater than zero.");
+        }
+
         try (Connection conn = DatabaseManager.getUserConnection();
              PreparedStatement ps = conn.prepareStatement(
                      "INSERT INTO SupplierOrders(supplier_name,product_name,quantity,due_date,priority,notes) VALUES(?,?,?,?,?,?)")) {
