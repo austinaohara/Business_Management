@@ -52,7 +52,7 @@ public class DashboardDataRepository {
 
             try (Statement st = conn.createStatement();
                  ResultSet rs = st.executeQuery(
-                         "SELECT COUNT(*) FROM Inventory WHERE quantity_on_hand < minimum_stock")) {
+                         "SELECT COUNT(*) FROM Inventory WHERE quantity_on_hand <= minimum_stock")) {
                 if (rs.next()) {
                     lowStockCount = rs.getInt(1);
                 }
@@ -71,7 +71,7 @@ public class DashboardDataRepository {
              Statement st = conn.createStatement();
              ResultSet rs = st.executeQuery(
                      "SELECT name, quantity_on_hand, minimum_stock FROM Inventory " +
-                             "WHERE quantity_on_hand < minimum_stock " +
+                             "WHERE quantity_on_hand <= minimum_stock " +
                              "ORDER BY quantity_on_hand FETCH FIRST 5 ROWS ONLY")) {
             while (rs.next()) {
                 items.add(new LowStockItem(

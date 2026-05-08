@@ -32,7 +32,7 @@ public class InventoryDataRepository {
                 double sellPrice = rs.getDouble("sell_price");
 
                 totalValue += quantityOnHand * displayedUnitPrice;
-                if (quantityOnHand < minimumStock) {
+                if (quantityOnHand <= minimumStock) {
                     lowStockCount++;
                 }
 
