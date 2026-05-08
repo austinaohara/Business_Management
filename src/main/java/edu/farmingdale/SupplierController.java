@@ -74,14 +74,19 @@ public class SupplierController implements Refreshable {
             showWarning("Please provide both supplier name and product name.");
             return;
         }
-        supplierRepository.createOrder(new SupplierDataRepository.SupplierOrderInput(
-                supplierNameField.getText().trim(),
-                productNameField.getText().trim(),
-                parseIntSafe(quantityField.getText()),
-                dueDateField.getText().trim(),
-                parseIntSafe(priorityField.getText()),
-                notesArea.getText().trim()
-        ));
+        try {
+            supplierRepository.createOrder(new SupplierDataRepository.SupplierOrderInput(
+                    supplierNameField.getText().trim(),
+                    productNameField.getText().trim(),
+                    parseIntSafe(quantityField.getText()),
+                    dueDateField.getText().trim(),
+                    parseIntSafe(priorityField.getText()),
+                    notesArea.getText().trim()
+            ));
+        } catch (IllegalArgumentException e) {
+            showWarning(e.getMessage());
+            return;
+        }
         onCancelOrder();
         refresh();
     }
