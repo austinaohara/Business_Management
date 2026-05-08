@@ -1,6 +1,7 @@
 package edu.farmingdale.repository;
 
 import edu.farmingdale.DatabaseManager;
+import edu.farmingdale.util.PasswordHasher;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -28,7 +29,7 @@ public class StaffProfileDataRepository {
              PreparedStatement ps = conn.prepareStatement(
                      "INSERT INTO StaffProfiles(username, password_hash, theme_preference) VALUES(?,?,?)")) {
             ps.setString(1, username);
-            ps.setString(2, password);
+            ps.setString(2, PasswordHasher.hash(password));
             ps.setString(3, "LIGHT");
             ps.executeUpdate();
             DatabaseManager.initializeUserDatabase(username);
@@ -50,11 +51,34 @@ public class StaffProfileDataRepository {
                     return false;
                 }
                 String storedPassword = rs.getString("password_hash");
-                return storedPassword != null && storedPassword.equals(password);
+                if (storedPassword == null) {
+                    return false;
+                }
+
+                if (PasswordHasher.isHashFormat(storedPassword)) {
+                    return PasswordHasher.matches(password, storedPassword);
+                }
+
+                boolean matched = storedPassword.equals(password);
+                if (matched) {
+                    upgradeLegacyPassword(conn, username, password);
+                }
+                return matched;
             }
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
+        }
+    }
+
+    private void upgradeLegacyPassword(Connection conn, String username, String password) {
+        try (PreparedStatement update = conn.prepareStatement(
+                "UPDATE StaffProfiles SET password_hash = ? WHERE username = ?")) {
+            update.setString(1, PasswordHasher.hash(password));
+            update.setString(2, username);
+            update.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 }

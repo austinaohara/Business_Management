@@ -36,6 +36,24 @@ public class SalesDataRepository {
 
     public void recordSale(SaleInput input) {
         try (Connection conn = DatabaseManager.getUserConnection()) {
+            conn.setAutoCommit(false);
+
+            try {
+                if (input.quantity() <= 0) {
+                    throw new IllegalArgumentException("Sale quantity must be greater than zero.");
+                }
+
+                try (PreparedStatement inventoryPs = conn.prepareStatement(
+                        "UPDATE Inventory SET quantity_on_hand = quantity_on_hand - ? " +
+                                "WHERE UPPER(name) = UPPER(?) AND quantity_on_hand >= ?")) {
+                    inventoryPs.setInt(1, input.quantity());
+                    inventoryPs.setString(2, input.productName());
+                    inventoryPs.setInt(3, input.quantity());
+                    if (inventoryPs.executeUpdate() == 0) {
+                        throw buildSaleValidationException(conn, input.productName());
+                    }
+                }
+
             int orderId;
 
             try (PreparedStatement orderPs = conn.prepareStatement(
@@ -47,7 +65,7 @@ public class SalesDataRepository {
 
                 try (ResultSet keys = orderPs.getGeneratedKeys()) {
                     if (!keys.next()) {
-                        return;
+                        throw new SQLException("Unable to create sale order.");
                     }
                     orderId = keys.getInt(1);
                 }
@@ -61,15 +79,17 @@ public class SalesDataRepository {
                 itemPs.setDouble(4, input.unitPrice());
                 itemPs.executeUpdate();
             }
-
-            try (PreparedStatement inventoryPs = conn.prepareStatement(
-                    "UPDATE Inventory SET quantity_on_hand = quantity_on_hand - ? WHERE UPPER(name) = UPPER(?)")) {
-                inventoryPs.setInt(1, input.quantity());
-                inventoryPs.setString(2, input.productName());
-                inventoryPs.executeUpdate();
+                conn.commit();
+            } catch (Exception e) {
+                conn.rollback();
+                throw e instanceof RuntimeException
+                        ? (RuntimeException) e
+                        : new IllegalStateException("Unable to record sale.", e);
+            } finally {
+                conn.setAutoCommit(true);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new IllegalStateException("Unable to record sale.", e);
         }
     }
 
@@ -112,6 +132,18 @@ public class SalesDataRepository {
 
     private String saleIdFromDb(int orderId) {
         return "ORD-" + String.format("%03d", orderId);
+    }
+
+    private RuntimeException buildSaleValidationException(Connection conn, String productName) throws SQLException {
+        try (PreparedStatement ps = conn.prepareStatement(
+                "SELECT 1 FROM Inventory WHERE UPPER(name) = UPPER(?)")) {
+            ps.setString(1, productName);
+            try (ResultSet rs = ps.executeQuery()) {
+                return rs.next()
+                        ? new IllegalStateException("Quantity exceeds available stock.")
+                        : new IllegalStateException("Product no longer exists.");
+            }
+        }
     }
 
     public record AvailableProduct(

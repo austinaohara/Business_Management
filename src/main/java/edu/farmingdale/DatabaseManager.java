@@ -1,5 +1,7 @@
 package edu.farmingdale;
 
+import edu.farmingdale.util.PasswordHasher;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -116,7 +118,7 @@ public class DatabaseManager {
     private static void ensureDefaultStaffProfile(Connection conn) {
         try (PreparedStatement update = conn.prepareStatement(
                 "UPDATE StaffProfiles SET password_hash = ?, theme_preference = ? WHERE username = ?")) {
-            update.setString(1, "password");
+            update.setString(1, PasswordHasher.hash("password"));
             update.setString(2, "LIGHT");
             update.setString(3, "employee");
             if (update.executeUpdate() > 0) {
@@ -130,7 +132,7 @@ public class DatabaseManager {
         try (PreparedStatement insert = conn.prepareStatement(
                 "INSERT INTO StaffProfiles(username, password_hash, theme_preference) VALUES(?,?,?)")) {
             insert.setString(1, "employee");
-            insert.setString(2, "password");
+            insert.setString(2, PasswordHasher.hash("password"));
             insert.setString(3, "LIGHT");
             insert.executeUpdate();
         } catch (SQLException e) {
