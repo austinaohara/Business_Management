@@ -140,7 +140,12 @@ public class SalesController implements Refreshable {
             showWarning("Quantity exceeds available stock.");
             return;
         }
-        salesRepository.recordSale(new SalesDataRepository.SaleInput(product, qty, unitPrice));
+        try {
+            salesRepository.recordSale(new SalesDataRepository.SaleInput(product, qty, unitPrice));
+        } catch (IllegalArgumentException | IllegalStateException e) {
+            showWarning(e.getMessage());
+            return;
+        }
 
         onCancelSale();
         loadSales();
