@@ -37,6 +37,10 @@ public class SupplierDataRepository {
     }
 
     public void confirmDelivery(int orderId, String productName, String supplierName, int quantity) {
+        if (quantity <= 0) {
+            throw new IllegalArgumentException("Delivery quantity must be greater than zero.");
+        }
+
         try (Connection conn = DatabaseManager.getUserConnection()) {
             conn.setAutoCommit(false);
 
