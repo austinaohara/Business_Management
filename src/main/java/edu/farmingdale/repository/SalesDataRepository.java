@@ -42,6 +42,9 @@ public class SalesDataRepository {
                 if (input.quantity() <= 0) {
                     throw new IllegalArgumentException("Sale quantity must be greater than zero.");
                 }
+                if (input.unitPrice() <= 0) {
+                    throw new IllegalArgumentException("Sale price must be greater than zero.");
+                }
 
                 try (PreparedStatement inventoryPs = conn.prepareStatement(
                         "UPDATE Inventory SET quantity_on_hand = quantity_on_hand - ? " +
