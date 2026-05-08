@@ -1,6 +1,7 @@
 package edu.farmingdale.repository;
 
 import edu.farmingdale.DatabaseManager;
+import edu.farmingdale.model.Customer;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -44,13 +45,20 @@ public class CustomerDataRepository {
     }
 
     public void saveCustomer(CustomerInput input) {
+        Customer customer = new Customer(
+                input.firstName(),
+                input.lastName(),
+                input.email(),
+                input.phone()
+        );
+
         try (Connection conn = DatabaseManager.getUserConnection();
              PreparedStatement ps = conn.prepareStatement(
                      "INSERT INTO Customers(first_name,last_name,email,phone) VALUES(?,?,?,?)")) {
-            ps.setString(1, input.firstName());
-            ps.setString(2, input.lastName());
-            ps.setString(3, input.email());
-            ps.setString(4, input.phone());
+            ps.setString(1, customer.getFirstName());
+            ps.setString(2, customer.getLastName());
+            ps.setString(3, customer.getEmail());
+            ps.setString(4, customer.getPhone());
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

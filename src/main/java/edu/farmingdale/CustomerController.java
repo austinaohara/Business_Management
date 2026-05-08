@@ -61,6 +61,10 @@ public class CustomerController implements Refreshable {
             showWarning("Please enter a first name.");
             return;
         }
+        if (lastNameField.getText().trim().isEmpty()) {
+            showWarning("Please enter a last name.");
+            return;
+        }
         customerRepository.saveCustomer(new CustomerDataRepository.CustomerInput(
                 firstNameField.getText().trim(),
                 lastNameField.getText().trim(),
