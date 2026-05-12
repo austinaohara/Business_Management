@@ -143,7 +143,7 @@ public class DatabaseManager {
     /** Creates a backup of the operational database for disaster recovery */
     public static void backupUserDatabase(String username) {
         try {
-            String backupPath = "C:/BusinessManagementBackups/" + username + "_backup";
+            String backupPath = System.getProperty("user.home") + "/BusinessManagementBackups/" + username + "_backup";
             java.io.File backupDir = new java.io.File(backupPath);
             backupDir.mkdirs();
 

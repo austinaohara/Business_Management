@@ -22,6 +22,16 @@ public class Main extends Application {
         stage.show();
     }
 
+    @Override
+    public void stop() throws Exception {
+        if (UserSession.getInstance().getCurrentUser() != null) {
+            String currentUsername = UserSession.getInstance().getCurrentUser().getUsername();
+            DatabaseManager.backupUserDatabase(currentUsername);
+            System.out.println("Emergency backup triggered during application shutdown.");
+        }
+        super.stop();
+    }
+
     public static void main(String[] args) {
         launch(args);
     }

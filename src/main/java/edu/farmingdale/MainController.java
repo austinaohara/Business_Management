@@ -51,6 +51,9 @@ public class MainController {
 
     @FXML
     private void onLogout() {
+        String currentUsername = UserSession.getInstance().getCurrentUser().getUsername();
+        DatabaseManager.backupUserDatabase(currentUsername);
+
         UserSession.getInstance().clear();
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/farmingdale/login.fxml"));
