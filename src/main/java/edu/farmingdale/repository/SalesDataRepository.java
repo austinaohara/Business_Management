@@ -1,6 +1,8 @@
 package edu.farmingdale.repository;
 
 import edu.farmingdale.DatabaseManager;
+import edu.farmingdale.util.AuditLogger;
+import edu.farmingdale.UserSession;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -83,6 +85,8 @@ public class SalesDataRepository {
                 itemPs.executeUpdate();
             }
                 conn.commit();
+                String currentUser = UserSession.getInstance().getCurrentUser().getUsername();
+                AuditLogger.logAction(currentUser, "SALE_PROCESSED", "Sold " + input.quantity() + " " + input.productName());
             } catch (Exception e) {
                 conn.rollback();
                 throw e instanceof RuntimeException
