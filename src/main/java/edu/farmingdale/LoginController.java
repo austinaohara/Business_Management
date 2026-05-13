@@ -35,8 +35,8 @@ public class LoginController {
 
     @FXML
     private void onSignIn() {
-        String username = usernameField.getText() == null ? "" : usernameField.getText().trim();
-        String password = passwordField.getText() == null ? "" : passwordField.getText().trim();
+        String username = getEnteredUsername();
+        String password = getEnteredPassword();
 
         if (username.isEmpty() || password.isEmpty()) {
             showStatus("Please enter a username and password.");
@@ -133,6 +133,14 @@ public class LoginController {
         statusLabel.setText("");
         statusLabel.setVisible(false);
         statusLabel.setManaged(false);
+    }
+
+    private String getEnteredUsername() {
+        return usernameField.getText() == null ? "" : usernameField.getText().trim();
+    }
+
+    private String getEnteredPassword() {
+        return passwordField.getText() == null ? "" : passwordField.getText().trim();
     }
 
     private void showStatus(String message) {
