@@ -77,12 +77,17 @@
                         </TextField>
 
                         <Label text="Password" styleClass="auth-label"/>
-                        <PasswordField fx:id="passwordField"
+                        <StackPane fx:id="passwordFieldContainer">
+                            <VBox.margin><Insets bottom="12"/></VBox.margin>
+                            <PasswordField fx:id="passwordField"
+                                           promptText="Enter password"
+                                           onAction="#onSignIn"
+                                           styleClass="auth-field"/>
+                            <TextField fx:id="visiblePasswordField"
                                        promptText="Enter password"
                                        onAction="#onSignIn"
-                                       styleClass="auth-field">
-                            <VBox.margin><Insets bottom="12"/></VBox.margin>
-                        </PasswordField>
+                                       styleClass="auth-field"/>
+                        </StackPane>
                     </VBox>
 
                     <Label fx:id="statusLabel" styleClass="auth-status" wrapText="true">

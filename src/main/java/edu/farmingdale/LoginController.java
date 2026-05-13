@@ -12,6 +12,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -21,6 +22,8 @@ public class LoginController {
     @FXML private BorderPane rootPane;
     @FXML private TextField usernameField;
     @FXML private PasswordField passwordField;
+    @FXML private TextField visiblePasswordField;
+    @FXML private StackPane passwordFieldContainer;
     @FXML private Label statusLabel;
     @FXML private ToggleButton themeToggleSwitch;
     @FXML private Label themeModeLabel;
@@ -30,6 +33,7 @@ public class LoginController {
     @FXML
     public void initialize() {
         clearStatus();
+        initializePasswordFields();
         applyTheme();
     }
 
@@ -135,12 +139,19 @@ public class LoginController {
         statusLabel.setManaged(false);
     }
 
+    private void initializePasswordFields() {
+        visiblePasswordField.setManaged(false);
+        visiblePasswordField.setVisible(false);
+        visiblePasswordField.textProperty().bindBidirectional(passwordField.textProperty());
+    }
+
     private String getEnteredUsername() {
         return usernameField.getText() == null ? "" : usernameField.getText().trim();
     }
 
     private String getEnteredPassword() {
-        return passwordField.getText() == null ? "" : passwordField.getText().trim();
+        TextField activePasswordField = visiblePasswordField.isVisible() ? visiblePasswordField : passwordField;
+        return activePasswordField.getText() == null ? "" : activePasswordField.getText().trim();
     }
 
     private void showStatus(String message) {
