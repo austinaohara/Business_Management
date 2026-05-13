@@ -10,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Button;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
@@ -24,6 +25,7 @@ public class LoginController {
     @FXML private PasswordField passwordField;
     @FXML private TextField visiblePasswordField;
     @FXML private StackPane passwordFieldContainer;
+    @FXML private Button passwordVisibilityButton;
     @FXML private Label statusLabel;
     @FXML private ToggleButton themeToggleSwitch;
     @FXML private Label themeModeLabel;
@@ -64,6 +66,11 @@ public class LoginController {
                 ? ThemePreference.DARK
                 : ThemePreference.LIGHT;
         applyTheme();
+    }
+
+    @FXML
+    private void onTogglePasswordVisibility() {
+        setPasswordVisible(!visiblePasswordField.isVisible());
     }
 
     @FXML
@@ -140,9 +147,8 @@ public class LoginController {
     }
 
     private void initializePasswordFields() {
-        visiblePasswordField.setManaged(false);
-        visiblePasswordField.setVisible(false);
         visiblePasswordField.textProperty().bindBidirectional(passwordField.textProperty());
+        setPasswordVisible(false);
     }
 
     private String getEnteredUsername() {
@@ -152,6 +158,23 @@ public class LoginController {
     private String getEnteredPassword() {
         TextField activePasswordField = visiblePasswordField.isVisible() ? visiblePasswordField : passwordField;
         return activePasswordField.getText() == null ? "" : activePasswordField.getText().trim();
+    }
+
+    private void setPasswordVisible(boolean visible) {
+        visiblePasswordField.setManaged(visible);
+        visiblePasswordField.setVisible(visible);
+        passwordField.setManaged(!visible);
+        passwordField.setVisible(!visible);
+        passwordVisibilityButton.setText(visible ? "Hide" : "Show");
+
+        if (visible) {
+            visiblePasswordField.requestFocus();
+            visiblePasswordField.positionCaret(visiblePasswordField.getText().length());
+            return;
+        }
+
+        passwordField.requestFocus();
+        passwordField.positionCaret(passwordField.getText().length());
     }
 
     private void showStatus(String message) {

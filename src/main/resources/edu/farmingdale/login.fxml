@@ -77,17 +77,23 @@
                         </TextField>
 
                         <Label text="Password" styleClass="auth-label"/>
-                        <StackPane fx:id="passwordFieldContainer">
+                        <HBox spacing="8" alignment="CENTER_LEFT">
                             <VBox.margin><Insets bottom="12"/></VBox.margin>
-                            <PasswordField fx:id="passwordField"
+                            <StackPane fx:id="passwordFieldContainer" HBox.hgrow="ALWAYS">
+                                <PasswordField fx:id="passwordField"
+                                               promptText="Enter password"
+                                               onAction="#onSignIn"
+                                               styleClass="auth-field"/>
+                                <TextField fx:id="visiblePasswordField"
                                            promptText="Enter password"
                                            onAction="#onSignIn"
                                            styleClass="auth-field"/>
-                            <TextField fx:id="visiblePasswordField"
-                                       promptText="Enter password"
-                                       onAction="#onSignIn"
-                                       styleClass="auth-field"/>
-                        </StackPane>
+                            </StackPane>
+                            <Button fx:id="passwordVisibilityButton"
+                                    text="Show"
+                                    onAction="#onTogglePasswordVisibility"
+                                    styleClass="auth-visibility-button"/>
+                        </HBox>
                     </VBox>
 
                     <Label fx:id="statusLabel" styleClass="auth-status" wrapText="true">
