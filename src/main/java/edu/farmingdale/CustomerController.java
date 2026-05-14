@@ -11,6 +11,9 @@ import javafx.scene.layout.VBox;
 import javafx.scene.Node;
 import javafx.event.ActionEvent;
 import javafx.stage.Window;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.geometry.Pos;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +30,7 @@ public class CustomerController implements Refreshable {
 
     private final List<RowData> allRows = new ArrayList<>();
     private final CustomerDataRepository customerRepository = new CustomerDataRepository();
+    private int editingId = -1;
 
     @FXML
     public void initialize() {
@@ -44,12 +48,14 @@ public class CustomerController implements Refreshable {
 
     @FXML
     private void onAddCustomer() {
+        editingId = -1;
         addCustomerForm.setVisible(true);
         addCustomerForm.setManaged(true);
     }
 
     @FXML
     private void onCancelCustomer() {
+        editingId = -1;
         addCustomerForm.setVisible(false);
         addCustomerForm.setManaged(false);
         firstNameField.clear(); lastNameField.clear(); emailField.clear(); phoneField.clear();
@@ -66,6 +72,7 @@ public class CustomerController implements Refreshable {
             return;
         }
         customerRepository.saveCustomer(new CustomerDataRepository.CustomerInput(
+                editingId >= 0 ? editingId : null,
                 firstNameField.getText().trim(),
                 lastNameField.getText().trim(),
                 emailField.getText().trim(),
@@ -114,20 +121,57 @@ public class CustomerController implements Refreshable {
     private HBox buildRow(CustomerDataRepository.CustomerRow customer) {
         HBox row = new HBox();
         row.getStyleClass().add("table-row");
-        double[] widths = {100, 200, 220, 140, 80};
+        row.setAlignment(Pos.CENTER_LEFT);
+
+        double[] widths = {100, 200, 220, 140, 120};
         String[] values = {
                 customer.customerCode(),
                 customer.fullName(),
                 customer.email(),
-                customer.phone(),
-                ""
+                customer.phone()
         };
+
         for (int i = 0; i < values.length; i++) {
             Label lbl = new Label(values[i]);
             lbl.getStyleClass().add("table-cell");
             lbl.setPrefWidth(widths[i]);
             row.getChildren().add(lbl);
         }
+
+        HBox actionBox = new HBox(10);
+        actionBox.setPrefWidth(widths[4]);
+        actionBox.setAlignment(Pos.CENTER_LEFT);
+
+        Button editBtn = new Button("Edit");
+        editBtn.setStyle("-fx-background-color: white; -fx-border-color: #D1D5DB; -fx-border-radius: 6; -fx-background-radius: 6; -fx-font-size: 11px; -fx-padding: 4 10 4 10; -fx-cursor: hand;");
+        editBtn.setOnAction(e -> {
+            editingId = customer.id();
+            firstNameField.setText(customer.firstName());
+            lastNameField.setText(customer.lastName());
+            emailField.setText(customer.email());
+            phoneField.setText(customer.phone());
+            addCustomerForm.setVisible(true);
+            addCustomerForm.setManaged(true);
+        });
+
+        Button deleteBtn = new Button("Delete");
+        deleteBtn.setStyle("-fx-background-color: #fee2e2; -fx-text-fill: #dc2626; -fx-border-color: #fca5a5; -fx-border-radius: 6; -fx-background-radius: 6; -fx-font-size: 11px; -fx-padding: 4 10 4 10; -fx-cursor: hand;");
+        deleteBtn.setOnAction(e -> {
+            Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
+            confirm.setTitle("Delete Customer");
+            confirm.setHeaderText(null);
+            confirm.setContentText("Are you sure you want to delete " + customer.fullName() + "?");
+            confirm.showAndWait().ifPresent(response -> {
+                if (response == ButtonType.OK) {
+                    customerRepository.deleteCustomer(customer.id());
+                    loadCustomers();
+                }
+            });
+        });
+
+        actionBox.getChildren().addAll(editBtn, deleteBtn);
+        row.getChildren().add(actionBox);
+
         return row;
     }
 

@@ -45,20 +45,36 @@ public class CustomerDataRepository {
     }
 
     public void saveCustomer(CustomerInput input) {
-        Customer customer = new Customer(
-                input.firstName(),
-                input.lastName(),
-                input.email(),
-                input.phone()
-        );
+        try (Connection conn = DatabaseManager.getUserConnection()) {
+            if (input.id() != null && input.id() >= 0) {
+                try (PreparedStatement ps = conn.prepareStatement(
+                        "UPDATE Customers SET first_name=?, last_name=?, email=?, phone=? WHERE profile_id=?")) {
+                    ps.setString(1, input.firstName());
+                    ps.setString(2, input.lastName());
+                    ps.setString(3, input.email());
+                    ps.setString(4, input.phone());
+                    ps.setInt(5, input.id());
+                    ps.executeUpdate();
+                }
+            } else {
+                try (PreparedStatement ps = conn.prepareStatement(
+                        "INSERT INTO Customers(first_name,last_name,email,phone) VALUES(?,?,?,?)")) {
+                    ps.setString(1, input.firstName());
+                    ps.setString(2, input.lastName());
+                    ps.setString(3, input.email());
+                    ps.setString(4, input.phone());
+                    ps.executeUpdate();
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
+    public void deleteCustomer(int id) {
         try (Connection conn = DatabaseManager.getUserConnection();
-             PreparedStatement ps = conn.prepareStatement(
-                     "INSERT INTO Customers(first_name,last_name,email,phone) VALUES(?,?,?,?)")) {
-            ps.setString(1, customer.getFirstName());
-            ps.setString(2, customer.getLastName());
-            ps.setString(3, customer.getEmail());
-            ps.setString(4, customer.getPhone());
+             PreparedStatement ps = conn.prepareStatement("DELETE FROM Customers WHERE profile_id=?")) {
+            ps.setInt(1, id);
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -74,6 +90,7 @@ public class CustomerDataRepository {
     }
 
     public record CustomerInput(
+            Integer id,
             String firstName,
             String lastName,
             String email,
