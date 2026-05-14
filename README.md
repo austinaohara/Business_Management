@@ -161,6 +161,7 @@ Our team leveraged generative AI tools (including Claude, Codex, and Gemini) to 
 - **UI/UX Design & Frontend:** Utilized Figma's AI generation tools to design high-fidelity mockups and prototypes. Codex and Claude were used to assist in translating these designs into functional JavaFX `.fxml` markup, specifically aiding in the layout of login page components.
 - **Boilerplate & Core Logic:** AI was used to generate repetitive foundational model boilerplate, draft pseudocode for initial logic mapping, and assist in rewiring system functionality.
 - **Optimization & Debugging:** Used continuously as a pair-programming partner to troubleshoot stack traces, optimize JDBC database queries, and refine JavaFX event handling across the controllers.
+- **Documentation:** Leveraged AI to structure the markdown formatting and ensure the final repository documentation met professional industry standards.
 
 ## Status
 **Completed** - The project has reached its final production-ready state. All frontend UI components are wired to the embedded Apache Derby database. The underlying multi-tenant data architecture is fully implemented and successfully tested.
