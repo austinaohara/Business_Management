@@ -23,6 +23,7 @@ Advanced Programming Capstone
   - [Sales Page](#sales-page)
   - [Database & Repository Architecture](#database--repository-architecture)
   - [Testing & Quality Assurance](#testing--quality-assurance)
+- [AI Usage](#ai-usage)
 - [Status](#status)
 - [Credits](#credits)
 
@@ -33,6 +34,7 @@ Developed collaboratively as a team project for CSC311, this system encapsulates
 
 ## Technologies 
 - **IntelliJ IDEA** - Primary IDE
+- **Figma Make** - [Prototyping](https://www.figma.com/make/kLrltERLUJL0mtTIlUgtaw/Business-Management-Application?p=f&t=QkqfHU0iVCGg5Xav-0&fullscreen=1)
 - **Java** (JDK 25) - Backend programming language
 - **JavaFX** (Version 23) - Frontend markup language, UI controls, and graphics
 - **Apache Derby** (Version 10.16) - Embedded relational SQL database
@@ -65,7 +67,7 @@ Developed collaboratively as a team project for CSC311, this system encapsulates
 - **Dynamic Theming**: Support for light and dark mode staff preferences, automatically saved to the database and applied upon login.
 - **Global Session Management**: Utilizes a `UserSession` singleton to securely track the active employee navigating the application.
 - **Dynamic UI Updates**: Implements a custom `Refreshable` interface across controllers to ensure table views and dashboard statistics instantly reflect database changes without requiring a hard reload.
-- **Input Sanitization**: Utilizes a custom `TextFieldFormatter` to enforce strict formatting rules (e.g., currency, phone numbers) on the frontend.
+- **Input Sanitization**: Utilizes a custom `TextFieldFormatter` to enforce strict formatting rules on the frontend.
 
 ## Intended Users
 - **Retail Staff**: Can process customer orders, look up product locations, and view contact info.
@@ -128,18 +130,26 @@ When a new `SalesOrder` is processed and marked as completed, the system automat
 
 The backend relies on an embedded **Apache Derby** SQL database, utilizing a multi-tenant architecture to ensure data isolation and security.
 - **Master & Per-User Databases:** The `DatabaseManager` maintains a central Master DB exclusively for secure `StaffProfiles` authentication. Upon login, the system dynamically routes the user to their own dedicated, isolated database for all operational tables (Inventory, Customers, Sales).
-- **Interfaces & Implementations:** The application uses the **Repository Pattern**. Interfaces define the required operations, while data classes (e.g., `InventoryDataRepository`) handle the JDBC SQL queries using the active `UserSession` connection.
+- **Interfaces & Implementations:** The application uses the **Repository Pattern**. Interfaces define the required operations, while data classes handle the JDBC SQL queries using the active `UserSession` connection.
 - **Data Integrity:** Model classes are strictly validated using a custom `ModelValidation` utility, Enums (`DeliveryStatus`, `ThemePreference`), and a `TextFieldFormatter` to ensure data integrity before executing SQL inserts.
 - **Decoupled Architecture:** The system fully separates the UI layer (JavaFX Controllers) from the Database layer, allowing for highly modular, testable, and scalable code.
 - **Auditing:** The system actively monitors data integrity by writing to a local `system_audit.log` file for critical transactions. Furthermore, it overrides native JavaFX lifecycle methods to execute Apache Derby's internal `SYSCS_BACKUP_DATABASE` procedure, guaranteeing a failsafe data export if the application is unexpectedly terminated.
+
 ### Testing & Quality Assurance
 
 To maintain a high standard of code reliability, the system is backed by a robust suite of JUnit tests. 
 - **Model Validation:** Every entity (Product, Customer, PurchaseOrder, SalesOrder) is strictly tested to ensure constraints (like negative stock values, invalid emails, or missing names) are caught immediately.
 - **State Verification:** Tests ensure that state changes, such as moving a `PurchaseOrderStatus` from `PENDING` to `DELIVERED`, behave exactly as expected before interacting with the database.
 
+## AI Usage
+Our team leveraged generative AI tools (including Claude, Codex, and Gemini) to accelerate the development of this capstone project. All AI-generated code was strictly reviewed, modified, and integrated by the team to meet our architectural standards. Specific use cases included:
+
+- **UI/UX Design & Frontend:** Utilized Figma's AI generation tools to design high-fidelity mockups and prototypes. Codex and Claude were used to assist in translating these designs into functional JavaFX `.fxml` markup, specifically aiding in the layout of login page components.
+- **Boilerplate & Core Logic:** AI was used to generate repetitive foundational model boilerplate, draft pseudocode for initial logic mapping, and assist in rewiring system functionality.
+- **Optimization & Debugging:** Used continuously as a pair-programming partner to troubleshoot stack traces, optimize JDBC database queries, and refine JavaFX event handling across the controllers.
+
 ## Status
-**Completed** - The project has reached its final production-ready state. All frontend UI components are seamlessly wired to the embedded Apache Derby database. The underlying multi-tenant data architecture, automated CSV exporting, audit logging, and disaster recovery hooks are fully implemented and successfully tested.
+**Completed** - The project has reached its final production-ready state. All frontend UI components are wired to the embedded Apache Derby database. The underlying multi-tenant data architecture is fully implemented and successfully tested.
 
 ## Credits
 - **Jayden Montalvo** - [GitHub Profile](https://github.com/JaydenMontalvo)
