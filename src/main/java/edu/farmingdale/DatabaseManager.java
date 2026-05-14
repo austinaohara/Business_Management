@@ -139,4 +139,22 @@ public class DatabaseManager {
             System.err.println("Error creating default staff profile: " + e.getMessage());
         }
     }
+
+    /** Creates a backup of the operational database for disaster recovery */
+    public static void backupUserDatabase(String username) {
+        try {
+            String backupPath = System.getProperty("user.home") + "/BusinessManagementBackups/" + username + "_backup";
+            java.io.File backupDir = new java.io.File(backupPath);
+            backupDir.mkdirs();
+
+            try (Connection conn = getUserConnection();
+                 java.sql.CallableStatement cs = conn.prepareCall("CALL SYSCS_UTIL.SYSCS_BACKUP_DATABASE(?)")) {
+                cs.setString(1, backupPath);
+                cs.execute();
+                System.out.println("Database successfully backed up to: " + backupPath);
+            }
+        } catch (Exception e) {
+            System.err.println("Database backup failed: " + e.getMessage());
+        }
+    }
 }
