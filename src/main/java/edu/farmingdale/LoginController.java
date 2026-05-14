@@ -3,6 +3,7 @@ package edu.farmingdale;
 import edu.farmingdale.model.User;
 import edu.farmingdale.model.enums.ThemePreference;
 import edu.farmingdale.repository.StaffProfileDataRepository;
+import edu.farmingdale.util.AuditLogger;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -49,6 +50,7 @@ public class LoginController {
 
         UserSession.getInstance().setCurrentUser(new User(username));
         DatabaseManager.initializeUserDatabase(username);
+        AuditLogger.logAction(username, "LOGIN", "Successful authentication");
         openMainApp();
     }
 
