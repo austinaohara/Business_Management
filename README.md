@@ -10,6 +10,9 @@ Advanced Programming Capstone
 - [Setup](#setup)
   - [Prerequisites](#prerequisites)
   - [Instructions](#instructions)
+  - [Testing Credentials & Guide](#testing-credentials--guide)
+  - [Prerequisites](#prerequisites)
+  - [Instructions](#instructions)
 - [Features](#features)
 - [Intended Users](#intended-users)
 - [How it Works](#how-it-works)
@@ -54,6 +57,17 @@ Developed collaboratively as a team project for CSC311, this system encapsulates
 2. **Build the Project:** Allow Maven to resolve and download the required dependencies (JavaFX and Apache Derby) defined in the `pom.xml`.
 3. **Run the Application:** Execute the `Main.java` file. 
 4. **Database Configuration (Automatic):** You do not need to install an external database server. On the first launch, the `DatabaseManager.java` class will automatically execute and generate a local `BusinessManagementDB` folder in your project directory containing the complete SQL schema.
+
+### Testing Credentials & Guide
+Because this repository safely ignores local `.db` files, the database will be generated from scratch upon your first launch. 
+
+**Recommended Testing Path (Registration):**
+We highly recommend creating a **new account** via the Registration portal. This will allow you to experience the Multi-Tenant architecture in action as the system provisions a dedicated Apache Derby database for your profile and automatically seeds the default supplier data in the background.
+
+**Quick Access:**
+If you prefer to bypass registration, the `DatabaseManager` automatically creates a default administrator profile upon initial compilation.
+- **Username:** Admin
+- **Password:** password
 
 ## Features
 - **Centralized Dashboard**: Live statistics for total revenue, active orders, and low-stock alerts.
