@@ -71,6 +71,16 @@ public class CustomerDataRepository {
         }
     }
 
+    public void deleteCustomer(int id) {
+        try (Connection conn = DatabaseManager.getUserConnection();
+             PreparedStatement ps = conn.prepareStatement("DELETE FROM Customers WHERE profile_id=?")) {
+            ps.setInt(1, id);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     private String idFromDb(int id) {
         return "CST-" + String.format("%03d", id);
     }
