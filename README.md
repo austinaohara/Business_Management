@@ -57,7 +57,9 @@ Developed collaboratively as a team project for CSC311, this system encapsulates
 - **Centralized Dashboard**: Live statistics for total revenue, active orders, and low-stock alerts.
 - **Inventory Tracking**: Add products, track storage locations, and monitor minimum stock thresholds.
 - **Supplier Coordination**: Manage active vendors, view upcoming deliveries, and submit new purchase order requests.
-- **Customer Profiles**: Store client contact details and track order history.
+- **Customer Profiles**: Store client contact details, track order history, and perform full CRUD operations (Create, Read, Update, Delete) with built-in safety confirmation prompts to prevent accidental data loss.
+- **Auto-Backups**: Utilizes JavaFX application lifecycle hooks (`stop()`) to trigger automatic database backup routines during secure user logouts and emergency window closures.
+- **System Audit Logging**: A secure background utility automatically tracks employee authentication events and sales transactions into a centralized, timestamped log file.
 - **CSV Data Export**: Generate formatted `.csv` reports for inventory stock, sales ledgers, and customer contact lists directly from the UI.
 - **Secure Authentication & Registration**: A dedicated login portal to verify staff credentials, allowing new employees to securely register their own accounts.
 - **Dynamic Theming**: Support for light and dark mode staff preferences, automatically saved to the database and applied upon login.
@@ -113,7 +115,7 @@ Users can view "Upcoming Deliveries" to see exactly when items will arrive and u
 ### Customer Page
 ![Customer Page](https://github.com/user-attachments/assets/8bd1bbc8-4670-4a35-8572-1e10590d5d32)
 
-A dedicated dashboard to maintain customer relations. Staff can view detailed profiles containing contact information, making it easier to follow up on orders, respond to reviews, and track purchasing history.
+A dedicated dashboard to maintain customer relations. Staff can view detailed profiles containing contact information, making it easier to follow up on orders, respond to reviews, and track purchasing history. The interface supports full data manipulation, allowing administrators to dynamically edit existing customer details or permanently delete profiles through secure, alert-protected UI actions.
 
 ### Sales Page
 ![Sales Page](https://github.com/user-attachments/assets/924cdf8d-9bc9-4e41-ade8-c35bd7abb19b)
@@ -129,7 +131,7 @@ The backend relies on an embedded **Apache Derby** SQL database, utilizing a mul
 - **Interfaces & Implementations:** The application uses the **Repository Pattern**. Interfaces define the required operations, while data classes (e.g., `InventoryDataRepository`) handle the JDBC SQL queries using the active `UserSession` connection.
 - **Data Integrity:** Model classes are strictly validated using a custom `ModelValidation` utility, Enums (`DeliveryStatus`, `ThemePreference`), and a `TextFieldFormatter` to ensure data integrity before executing SQL inserts.
 - **Decoupled Architecture:** The system fully separates the UI layer (JavaFX Controllers) from the Database layer, allowing for highly modular, testable, and scalable code.
-
+- **Auditing:** The system actively monitors data integrity by writing to a local `system_audit.log` file for critical transactions. Furthermore, it overrides native JavaFX lifecycle methods to execute Apache Derby's internal `SYSCS_BACKUP_DATABASE` procedure, guaranteeing a failsafe data export if the application is unexpectedly terminated.
 ### Testing & Quality Assurance
 
 To maintain a high standard of code reliability, the system is backed by a robust suite of JUnit tests. 
@@ -137,7 +139,7 @@ To maintain a high standard of code reliability, the system is backed by a robus
 - **State Verification:** Tests ensure that state changes, such as moving a `PurchaseOrderStatus` from `PENDING` to `DELIVERED`, behave exactly as expected before interacting with the database.
 
 ## Status
-**Active Development** - The project is currently in the implementation phase. The frontend UI shell, database schema, and core repository models are complete. Current development is focused on wiring the JavaFX controllers to the database repositories using data-binding.
+**Completed** - The project has reached its final production-ready state. All frontend UI components are seamlessly wired to the embedded Apache Derby database. The underlying multi-tenant data architecture, automated CSV exporting, audit logging, and disaster recovery hooks are fully implemented and successfully tested.
 
 ## Credits
 - **Jayden Montalvo** - [GitHub Profile](https://github.com/JaydenMontalvo)
