@@ -108,33 +108,33 @@ The primary entry point for existing users. Staff members securely enter their c
 New employees can access the Registration view to create their own accounts. The `RegistrationController.java` handles capturing their details, assigning a secure password, and allowing the user to define their preferred application theme (Light or Dark mode). Once registered, their profile is instantly validated and saved to the database, granting them immediate login access.
 
 ### Main Dashboard
-![Main Dashboard](https://github.com/user-attachments/assets/fa7302c4-66b0-4096-bfd5-65cb020b10e3)
+![Main Dashboard](https://github.com/user-attachments/assets/db310169-dd98-497f-ab43-d620f59194b3)
 
 Once logged in, users are greeted by the Main Dashboard. The application uses a `BorderPane` layout with a persistent left-hand navigation menu. The menu is controlled by the `MainController.java`, which loads the FXML files to keep memory usage low and dynamically updates the active CSS styling based on the user's current view.
 
 The Dashboard provides immediate business intelligence, including total revenue, total orders, active products, and a table of recent customer orders fetched from the database.
 
 ### Inventory Page
-![Inventory Page](https://github.com/user-attachments/assets/8e310b2a-3a34-41d8-8e9f-9adf18aaac74)
+![Inventory Page](https://github.com/user-attachments/assets/d7e8fc13-5ecb-4b05-ac63-adac6c313749)
 
 The Inventory Management page displays the current stock of the business. Managers can view detailed tables containing Product IDs, Categories, Stock levels, and Pricing. 
 
 Through the `InventoryController.java`, users can open a hidden form to add new products to the catalog. The system automatically highlights items that have dropped below their minimum stock threshold, alerting staff that a reorder is necessary.
 
 ### Supplier Page
-![Supplier Page](https://github.com/user-attachments/assets/72197f59-5a95-415e-bb48-3488082f2345)
+![Supplier Page](https://github.com/user-attachments/assets/c88b8a7f-8303-4314-b4bc-e5c71223efbe)
 
 Instead of relying on disorganized email threads for vendor communication, the Supplier Page offers a dedicated interface to maintain contact info, lead times, and active purchase orders. 
 
 Users can view "Upcoming Deliveries" to see exactly when items will arrive and use the "New Order Request" form to draft purchase orders for specific suppliers, assigning priority levels and budgets to each request.
 
 ### Customer Page
-![Customer Page](https://github.com/user-attachments/assets/8bd1bbc8-4670-4a35-8572-1e10590d5d32)
+![Customer Page](https://github.com/user-attachments/assets/c453944a-3c0f-4d0d-b3f5-b8480833dcdb)
 
 A dedicated dashboard to maintain customer relations. Staff can view detailed profiles containing contact information, making it easier to follow up on orders, respond to reviews, and track purchasing history. The interface supports full data manipulation, allowing administrators to dynamically edit existing customer details or permanently delete profiles through secure, alert-protected UI actions.
 
 ### Sales Page
-![Sales Page](https://github.com/user-attachments/assets/924cdf8d-9bc9-4e41-ade8-c35bd7abb19b)
+![Sales Page](https://github.com/user-attachments/assets/ced434c4-b8a5-49e2-96bf-750b04cb6c11)
 
 The Sales page is the point of sale and order processing center of the application. Staff can use this dashboard to process new retail orders and link transactions directly to existing customer profiles. 
 
