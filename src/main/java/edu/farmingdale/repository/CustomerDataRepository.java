@@ -74,6 +74,7 @@ public class CustomerDataRepository {
     }
 
     public record CustomerInput(
+            Integer id,
             String firstName,
             String lastName,
             String email,
