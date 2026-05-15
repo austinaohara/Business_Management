@@ -75,6 +75,10 @@
                             <VBox.margin><Insets bottom="12"/></VBox.margin>
                         </PasswordField>
 
+                        <Label fx:id="passwordStrengthLabel" styleClass="auth-caption">
+                            <VBox.margin><Insets bottom="12"/></VBox.margin>
+                        </Label>
+
                         <Label text="Confirm Password" styleClass="auth-label"/>
                         <PasswordField fx:id="confirmPasswordField"
                                        promptText="Confirm your password"

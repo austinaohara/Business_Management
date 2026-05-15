@@ -17,6 +17,7 @@ public class RegistrationController {
     @FXML private TextField usernameField;
     @FXML private PasswordField passwordField;
     @FXML private PasswordField confirmPasswordField;
+    @FXML private Label passwordStrengthLabel;
     @FXML private Label statusLabel;
 
     private final StaffProfileDataRepository staffProfileRepository = new StaffProfileDataRepository();
@@ -25,6 +26,7 @@ public class RegistrationController {
     @FXML
     public void initialize() {
         clearStatus();
+        initializePasswordStrength();
         applyTheme();
     }
 
@@ -107,6 +109,15 @@ public class RegistrationController {
         statusLabel.setText("");
         statusLabel.setVisible(false);
         statusLabel.setManaged(false);
+    }
+
+    private void initializePasswordStrength() {
+        refreshPasswordStrength();
+        passwordField.textProperty().addListener((observable, oldValue, newValue) -> refreshPasswordStrength());
+    }
+
+    private void refreshPasswordStrength() {
+        passwordStrengthLabel.setText("Password Strength 0/10");
     }
 
     private void showStatus(String message) {
