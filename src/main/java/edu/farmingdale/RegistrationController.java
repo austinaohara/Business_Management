@@ -11,7 +11,15 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
+import java.util.regex.Pattern;
+
 public class RegistrationController {
+
+    private static final Pattern LOWERCASE_PATTERN = Pattern.compile(".*[a-z].*");
+    private static final Pattern UPPERCASE_PATTERN = Pattern.compile(".*[A-Z].*");
+    private static final Pattern DIGIT_PATTERN = Pattern.compile(".*\\d.*");
+    private static final Pattern SPECIAL_CHARACTER_PATTERN = Pattern.compile(".*[^A-Za-z0-9\\s].*");
+    private static final Pattern WHITESPACE_PATTERN = Pattern.compile(".*\\s.*");
 
     @FXML private BorderPane rootPane;
     @FXML private TextField usernameField;
@@ -117,7 +125,61 @@ public class RegistrationController {
     }
 
     private void refreshPasswordStrength() {
-        passwordStrengthLabel.setText("Password Strength 0/10");
+        int score = calculatePasswordStrength(passwordField.getText());
+        passwordStrengthLabel.setText("Password Strength " + score + "/10");
+        updatePasswordStrengthStyle(score);
+    }
+
+    private int calculatePasswordStrength(String password) {
+        if (password == null || password.isEmpty()) {
+            return 0;
+        }
+
+        int score = 0;
+
+        if (password.length() >= 8) {
+            score += 2;
+        }
+        if (password.length() >= 12) {
+            score += 2;
+        }
+        if (LOWERCASE_PATTERN.matcher(password).matches()) {
+            score += 1;
+        }
+        if (UPPERCASE_PATTERN.matcher(password).matches()) {
+            score += 1;
+        }
+        if (DIGIT_PATTERN.matcher(password).matches()) {
+            score += 1;
+        }
+        if (SPECIAL_CHARACTER_PATTERN.matcher(password).matches()) {
+            score += 2;
+        }
+        if (!WHITESPACE_PATTERN.matcher(password).matches()) {
+            score += 1;
+        }
+
+        return Math.min(score, 10);
+    }
+
+    private void updatePasswordStrengthStyle(int score) {
+        passwordStrengthLabel.getStyleClass().removeAll(
+                "password-strength-weak",
+                "password-strength-medium",
+                "password-strength-strong"
+        );
+
+        if (score <= 3) {
+            passwordStrengthLabel.getStyleClass().add("password-strength-weak");
+            return;
+        }
+
+        if (score <= 7) {
+            passwordStrengthLabel.getStyleClass().add("password-strength-medium");
+            return;
+        }
+
+        passwordStrengthLabel.getStyleClass().add("password-strength-strong");
     }
 
     private void showStatus(String message) {
