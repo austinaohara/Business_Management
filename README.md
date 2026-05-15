@@ -38,6 +38,7 @@ Developed collaboratively as a team project for CSC311, this system encapsulates
 
 ## Project Presentation Video
 Click below to watch our full presentation and system walkthrough:
+
 [![Business Management System Presentation](https://img.youtube.com/vi/MMpDqtrNWXQ/maxresdefault.jpg)](https://www.youtube.com/watch?v=MMpDqtrNWXQ)
 
 ## Technologies 
