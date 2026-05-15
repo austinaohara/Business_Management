@@ -5,11 +5,13 @@ import edu.farmingdale.repository.StaffProfileDataRepository;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import javafx.scene.control.TextInputControl;
 
 public class RegistrationController {
 
@@ -17,6 +19,10 @@ public class RegistrationController {
     @FXML private TextField usernameField;
     @FXML private PasswordField passwordField;
     @FXML private PasswordField confirmPasswordField;
+    @FXML private TextField visiblePasswordField;
+    @FXML private TextField visibleConfirmPasswordField;
+    @FXML private Button passwordVisibilityButton;
+    @FXML private Button confirmPasswordVisibilityButton;
     @FXML private Label statusLabel;
 
     private final StaffProfileDataRepository staffProfileRepository = new StaffProfileDataRepository();
@@ -25,14 +31,15 @@ public class RegistrationController {
     @FXML
     public void initialize() {
         clearStatus();
+        initializePasswordFields();
         applyTheme();
     }
 
     @FXML
     private void onCreateAccount() {
-        String username = usernameField.getText() == null ? "" : usernameField.getText().trim();
-        String password = passwordField.getText() == null ? "" : passwordField.getText();
-        String confirm  = confirmPasswordField.getText() == null ? "" : confirmPasswordField.getText();
+        String username = getEnteredUsername();
+        String password = getEnteredPassword();
+        String confirm  = getEnteredConfirmationPassword();
 
         if (username.isEmpty() || password.isEmpty() || confirm.isEmpty()) {
             showStatus("All fields are required.");
@@ -60,6 +67,26 @@ public class RegistrationController {
     @FXML
     private void onSignIn() {
         navigateToLogin();
+    }
+
+    @FXML
+    private void onTogglePasswordVisibility() {
+        setPasswordVisible(
+                visiblePasswordField,
+                passwordField,
+                passwordVisibilityButton,
+                !visiblePasswordField.isVisible()
+        );
+    }
+
+    @FXML
+    private void onToggleConfirmPasswordVisibility() {
+        setPasswordVisible(
+                visibleConfirmPasswordField,
+                confirmPasswordField,
+                confirmPasswordVisibilityButton,
+                !visibleConfirmPasswordField.isVisible()
+        );
     }
 
     public void setThemePreference(ThemePreference themePreference) {
@@ -107,6 +134,51 @@ public class RegistrationController {
         statusLabel.setText("");
         statusLabel.setVisible(false);
         statusLabel.setManaged(false);
+    }
+
+    private void initializePasswordFields() {
+        visiblePasswordField.textProperty().bindBidirectional(passwordField.textProperty());
+        visibleConfirmPasswordField.textProperty().bindBidirectional(confirmPasswordField.textProperty());
+        setPasswordVisible(visiblePasswordField, passwordField, passwordVisibilityButton, false);
+        setPasswordVisible(visibleConfirmPasswordField, confirmPasswordField, confirmPasswordVisibilityButton, false);
+    }
+
+    private String getEnteredUsername() {
+        return usernameField.getText() == null ? "" : usernameField.getText().trim();
+    }
+
+    private String getEnteredPassword() {
+        return getFieldText(visiblePasswordField.isVisible() ? visiblePasswordField : passwordField);
+    }
+
+    private String getEnteredConfirmationPassword() {
+        return getFieldText(visibleConfirmPasswordField.isVisible() ? visibleConfirmPasswordField : confirmPasswordField);
+    }
+
+    private String getFieldText(TextInputControl field) {
+        return field.getText() == null ? "" : field.getText();
+    }
+
+    private void setPasswordVisible(
+            TextField visibleField,
+            PasswordField hiddenField,
+            Button toggleButton,
+            boolean visible
+    ) {
+        visibleField.setManaged(visible);
+        visibleField.setVisible(visible);
+        hiddenField.setManaged(!visible);
+        hiddenField.setVisible(!visible);
+        toggleButton.setText(visible ? "Hide" : "Show");
+
+        if (visible) {
+            visibleField.requestFocus();
+            visibleField.positionCaret(visibleField.getText().length());
+            return;
+        }
+
+        hiddenField.requestFocus();
+        hiddenField.positionCaret(hiddenField.getText().length());
     }
 
     private void showStatus(String message) {

@@ -69,19 +69,40 @@
                         </TextField>
 
                         <Label text="Password" styleClass="auth-label"/>
-                        <PasswordField fx:id="passwordField"
-                                       promptText="Create a password"
-                                       styleClass="auth-field">
+                        <HBox spacing="8" alignment="CENTER_LEFT">
                             <VBox.margin><Insets bottom="12"/></VBox.margin>
-                        </PasswordField>
+                            <StackPane HBox.hgrow="ALWAYS">
+                                <PasswordField fx:id="passwordField"
+                                               promptText="Create a password"
+                                               styleClass="auth-field"/>
+                                <TextField fx:id="visiblePasswordField"
+                                           promptText="Create a password"
+                                           styleClass="auth-field"/>
+                            </StackPane>
+                            <Button fx:id="passwordVisibilityButton"
+                                    text="Show"
+                                    onAction="#onTogglePasswordVisibility"
+                                    styleClass="auth-visibility-button"/>
+                        </HBox>
 
                         <Label text="Confirm Password" styleClass="auth-label"/>
-                        <PasswordField fx:id="confirmPasswordField"
-                                       promptText="Confirm your password"
-                                       onAction="#onCreateAccount"
-                                       styleClass="auth-field">
+                        <HBox spacing="8" alignment="CENTER_LEFT">
                             <VBox.margin><Insets bottom="12"/></VBox.margin>
-                        </PasswordField>
+                            <StackPane HBox.hgrow="ALWAYS">
+                                <PasswordField fx:id="confirmPasswordField"
+                                               promptText="Confirm your password"
+                                               onAction="#onCreateAccount"
+                                               styleClass="auth-field"/>
+                                <TextField fx:id="visibleConfirmPasswordField"
+                                           promptText="Confirm your password"
+                                           onAction="#onCreateAccount"
+                                           styleClass="auth-field"/>
+                            </StackPane>
+                            <Button fx:id="confirmPasswordVisibilityButton"
+                                    text="Show"
+                                    onAction="#onToggleConfirmPasswordVisibility"
+                                    styleClass="auth-visibility-button"/>
+                        </HBox>
                     </VBox>
 
                     <Label fx:id="statusLabel" styleClass="auth-status" wrapText="true">
