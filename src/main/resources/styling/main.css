@@ -357,6 +357,7 @@
 
 .dark-mode .password-strength-strong {
     -fx-text-fill: #86EFAC;
+}
 .dark-mode .auth-visibility-button {
     -fx-border-color: #4B5563;
     -fx-text-fill: #E2E8F0;
