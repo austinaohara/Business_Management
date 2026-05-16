@@ -85,6 +85,10 @@
                                     styleClass="auth-visibility-button"/>
                         </HBox>
 
+                        <Label fx:id="passwordStrengthLabel" styleClass="auth-caption">
+                            <VBox.margin><Insets bottom="12"/></VBox.margin>
+                        </Label>
+
                         <Label text="Confirm Password" styleClass="auth-label"/>
                         <HBox spacing="8" alignment="CENTER_LEFT">
                             <VBox.margin><Insets bottom="12"/></VBox.margin>

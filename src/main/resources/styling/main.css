@@ -211,6 +211,18 @@
     -fx-text-fill: #B91C1C;
 }
 
+.password-strength-weak {
+    -fx-text-fill: #B91C1C;
+}
+
+.password-strength-medium {
+    -fx-text-fill: #B45309;
+}
+
+.password-strength-strong {
+    -fx-text-fill: #15803D;
+}
+
 .auth-submit {
     -fx-background-color: linear-gradient(to right, #374151, #111827);
     -fx-text-fill: white;
@@ -335,6 +347,16 @@
     -fx-border-color: #9CA3AF;
 }
 
+.dark-mode .password-strength-weak {
+    -fx-text-fill: #FCA5A5;
+}
+
+.dark-mode .password-strength-medium {
+    -fx-text-fill: #FCD34D;
+}
+
+.dark-mode .password-strength-strong {
+    -fx-text-fill: #86EFAC;
 .dark-mode .auth-visibility-button {
     -fx-border-color: #4B5563;
     -fx-text-fill: #E2E8F0;

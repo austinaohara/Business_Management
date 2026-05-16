@@ -13,12 +13,23 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.scene.control.TextInputControl;
 
+import java.util.regex.Pattern;
+
 public class RegistrationController {
+
+    private static final String COMMON_PASSWORD_WORD = "password";
+    private static final String COMMON_NUMBER_SEQUENCE = "1234567";
+    private static final Pattern LOWERCASE_PATTERN = Pattern.compile(".*[a-z].*");
+    private static final Pattern UPPERCASE_PATTERN = Pattern.compile(".*[A-Z].*");
+    private static final Pattern DIGIT_PATTERN = Pattern.compile(".*\\d.*");
+    private static final Pattern SPECIAL_CHARACTER_PATTERN = Pattern.compile(".*[^A-Za-z0-9\\s].*");
+    private static final Pattern WHITESPACE_PATTERN = Pattern.compile(".*\\s.*");
 
     @FXML private BorderPane rootPane;
     @FXML private TextField usernameField;
     @FXML private PasswordField passwordField;
     @FXML private PasswordField confirmPasswordField;
+    @FXML private Label passwordStrengthLabel;
     @FXML private TextField visiblePasswordField;
     @FXML private TextField visibleConfirmPasswordField;
     @FXML private Button passwordVisibilityButton;
@@ -31,6 +42,7 @@ public class RegistrationController {
     @FXML
     public void initialize() {
         clearStatus();
+        initializePasswordStrength();
         initializePasswordFields();
         applyTheme();
     }
@@ -136,6 +148,77 @@ public class RegistrationController {
         statusLabel.setManaged(false);
     }
 
+    private void initializePasswordStrength() {
+        refreshPasswordStrength();
+        passwordField.textProperty().addListener((observable, oldValue, newValue) -> refreshPasswordStrength());
+    }
+
+    private void refreshPasswordStrength() {
+        int score = calculatePasswordStrength(passwordField.getText());
+        passwordStrengthLabel.setText("Password Strength " + score + "/10");
+        updatePasswordStrengthStyle(score);
+    }
+
+    private int calculatePasswordStrength(String password) {
+        if (password == null || password.isEmpty()) {
+            return 0;
+        }
+
+        if (containsCommonWeakPattern(password)) {
+            return 3;
+        }
+
+        int score = 0;
+
+        if (password.length() >= 8) {
+            score += 2;
+        }
+        if (password.length() >= 12) {
+            score += 2;
+        }
+        if (LOWERCASE_PATTERN.matcher(password).matches()) {
+            score += 1;
+        }
+        if (UPPERCASE_PATTERN.matcher(password).matches()) {
+            score += 1;
+        }
+        if (DIGIT_PATTERN.matcher(password).matches()) {
+            score += 1;
+        }
+        if (SPECIAL_CHARACTER_PATTERN.matcher(password).matches()) {
+            score += 2;
+        }
+        if (!WHITESPACE_PATTERN.matcher(password).matches()) {
+            score += 1;
+        }
+
+        return Math.min(score, 10);
+    }
+
+    private boolean containsCommonWeakPattern(String password) {
+        String normalizedPassword = password.toLowerCase();
+        return normalizedPassword.contains(COMMON_PASSWORD_WORD)
+                && normalizedPassword.contains(COMMON_NUMBER_SEQUENCE);
+    }
+
+    private void updatePasswordStrengthStyle(int score) {
+        passwordStrengthLabel.getStyleClass().removeAll(
+                "password-strength-weak",
+                "password-strength-medium",
+                "password-strength-strong"
+        );
+
+        if (score <= 3) {
+            passwordStrengthLabel.getStyleClass().add("password-strength-weak");
+            return;
+        }
+
+        if (score <= 7) {
+            passwordStrengthLabel.getStyleClass().add("password-strength-medium");
+            return;
+        }
+
+        passwordStrengthLabel.getStyleClass().add("password-strength-strong");
     private void initializePasswordFields() {
         visiblePasswordField.textProperty().bindBidirectional(passwordField.textProperty());
         visibleConfirmPasswordField.textProperty().bindBidirectional(confirmPasswordField.textProperty());
