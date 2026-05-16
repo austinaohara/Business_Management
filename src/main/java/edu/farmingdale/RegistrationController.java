@@ -219,6 +219,8 @@ public class RegistrationController {
         }
 
         passwordStrengthLabel.getStyleClass().add("password-strength-strong");
+    }
+
     private void initializePasswordFields() {
         visiblePasswordField.textProperty().bindBidirectional(passwordField.textProperty());
         visibleConfirmPasswordField.textProperty().bindBidirectional(confirmPasswordField.textProperty());
