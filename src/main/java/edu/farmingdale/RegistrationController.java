@@ -15,6 +15,8 @@ import java.util.regex.Pattern;
 
 public class RegistrationController {
 
+    private static final String COMMON_PASSWORD_WORD = "password";
+    private static final String COMMON_NUMBER_SEQUENCE = "1234567";
     private static final Pattern LOWERCASE_PATTERN = Pattern.compile(".*[a-z].*");
     private static final Pattern UPPERCASE_PATTERN = Pattern.compile(".*[A-Z].*");
     private static final Pattern DIGIT_PATTERN = Pattern.compile(".*\\d.*");
@@ -135,6 +137,10 @@ public class RegistrationController {
             return 0;
         }
 
+        if (containsCommonWeakPattern(password)) {
+            return 3;
+        }
+
         int score = 0;
 
         if (password.length() >= 8) {
@@ -160,6 +166,12 @@ public class RegistrationController {
         }
 
         return Math.min(score, 10);
+    }
+
+    private boolean containsCommonWeakPattern(String password) {
+        String normalizedPassword = password.toLowerCase();
+        return normalizedPassword.contains(COMMON_PASSWORD_WORD)
+                && normalizedPassword.contains(COMMON_NUMBER_SEQUENCE);
     }
 
     private void updatePasswordStrengthStyle(int score) {
