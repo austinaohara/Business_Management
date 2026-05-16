@@ -183,6 +183,28 @@
     -fx-border-color: #6B7280;
 }
 
+.auth-visibility-button {
+    -fx-min-width: 64;
+    -fx-pref-width: 64;
+    -fx-max-width: 64;
+    -fx-min-height: 40;
+    -fx-pref-height: 40;
+    -fx-background-color: transparent;
+    -fx-border-color: #CBD5E1;
+    -fx-border-width: 1;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-text-fill: #374151;
+    -fx-font-size: 12px;
+    -fx-font-weight: 700;
+    -fx-cursor: hand;
+}
+
+.auth-visibility-button:hover {
+    -fx-border-color: #94A3B8;
+    -fx-text-fill: #111827;
+}
+
 .auth-status {
     -fx-font-size: 12px;
     -fx-font-weight: 600;
@@ -335,6 +357,14 @@
 
 .dark-mode .password-strength-strong {
     -fx-text-fill: #86EFAC;
+.dark-mode .auth-visibility-button {
+    -fx-border-color: #4B5563;
+    -fx-text-fill: #E2E8F0;
+}
+
+.dark-mode .auth-visibility-button:hover {
+    -fx-border-color: #9CA3AF;
+    -fx-text-fill: #F8FAFC;
 }
 
 .dark-mode .auth-submit {

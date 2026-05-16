@@ -6,6 +6,7 @@ Advanced Programming Capstone
 
 ## Table of Contents
 - [Summary](#summary)
+- [Project Presentation Video](#project-presentation-video)
 - [Technologies](#technologies)
 - [Setup](#setup)
   - [Prerequisites](#prerequisites)
@@ -34,6 +35,11 @@ Advanced Programming Capstone
 The Business Management System is a full-stack desktop application built with JavaFX and an embedded Apache Derby SQL database. The main purpose of this application is to streamline and optimize the performance of a small, short-staffed retail business. By centralizing and digitizing operations, the application eliminates the need for generic pen-and-paper tracking or Excel sheets. 
 
 Developed collaboratively as a team project for CSC311, this system encapsulates the core principles of modern software development, utilizing MVC architecture, strong repository data patterns, and an intuitive, dynamic user interface. From product receiving and supplier communication to customer management and order processing, this system serves as a holistic, centralized hub for daily retail operations.
+
+## Project Presentation Video
+Click below to watch our full presentation and system walkthrough:
+
+[![Business Management System Presentation](https://img.youtube.com/vi/MMpDqtrNWXQ/maxresdefault.jpg)](https://www.youtube.com/watch?v=MMpDqtrNWXQ)
 
 ## Technologies 
 - **IntelliJ IDEA** - Primary IDE
